@@ -26,20 +26,20 @@
             {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
             <div>
                 <label for="id_check_in">Check In:</label>
-                <input id="id_check_in" type="text" class="vDateField"
+                <input id="id_check_in" type="text" class="vDateField" onchange="this.form.submit()"
                        name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
             </div>
         </div>
         <div class="form-row check_out">
             <div>
                 <label for="id_check_out">Check Out:</label>
-                <input id="id_check_out" type="text" class="vDateField"
+                <input id="id_check_out" type="text" class="vDateField" onchange="this.form.submit()"
                        name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
             </div>
         </div>
         <div class="form-row area">
             <label for="id_area">Area:</label>
-                <select name="area" id="id_area">
+                <select name="area" id="id_area" onchange="this.form.submit()" >
                     <option value="">---------</option>
                     {% for a in areas %}
                     <option value="{{ a.0 }}" {% if area == a.0 %} selected="selected" {% endif %}> {{ a.1 }} </option>
@@ -48,7 +48,7 @@
         </div>
         <div class="form-row category">
             <label for="id_category">Category:</label>
-                <select name="category" id="id_category">
+                <select name="category" id="id_category" onchange="this.form.submit()">
                     <option value="">---------</option>
                     {% for c in categories %}
                     <option value="{{ c.id }}" {% if category == c.id %} selected="selected" {% endif %}> {{ c.desc }} </option>
@@ -57,12 +57,9 @@
         </div>
         <div class="form-row damaged">
             <div>
-                <label for="id_active" class="vCheckboxLabel">Include Damaged </label>
+                <label for="id_active" class="vCheckboxLabel" onchange="this.form.submit()">Include Damaged </label>
                 <input type="checkbox" name="damaged" id="id_damaged" {% if damaged %} checked="checked" {% endif %} />
             </div>
-        </div>
-        <div class="form-row area">
-            <input type="submit" value="Search">
         </div>
     </form>
     <form>
