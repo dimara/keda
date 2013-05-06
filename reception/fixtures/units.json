@@ -1,0 +1,26 @@
+[
+    {
+        "model": "reception.Unit",
+        "pk": 1,
+        "fields": {
+            "name": "Μ.Σ.Ε",
+            "internal": "4140"
+        }
+    },
+    {
+        "model": "reception.Unit",
+        "pk": 2,
+        "fields": {
+            "name": "ΑΣΦΑΛΕΙΑ",
+            "internal": "1005"
+        }
+    },
+    {
+        "model": "reception.Unit",
+        "pk": 3,
+        "fields": {
+            "name": "ΚΛΕΙΝΟΣΤΡΩΜΗ",
+            "internal": "1066"
+        }
+    }
+]

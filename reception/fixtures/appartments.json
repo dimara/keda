@@ -1,0 +1,74 @@
+[
+    {
+        "model": "reception.Appartment",
+        "pk": 1,
+        "fields": {
+            "area": "B",
+            "no": "1"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 2,
+        "fields": {
+            "area": "B",
+            "no": "2"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 3,
+        "fields": {
+            "area": "B",
+            "no": "3"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 4,
+        "fields": {
+            "area": "Z",
+            "no": "1"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 5,
+        "fields": {
+            "area": "M1",
+            "no": "101"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 6,
+        "fields": {
+            "area": "M2",
+            "no": "201"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 7,
+        "fields": {
+            "area": "M3",
+            "no": "312"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 8,
+        "fields": {
+            "area": "M4",
+            "no": "101"
+        }
+    },
+    {
+        "model": "reception.Appartment",
+        "pk": 9,
+        "fields": {
+            "area": "M5",
+            "no": "101"
+        }
+    }
+]
