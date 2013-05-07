@@ -1,107 +1,17 @@
 [
-    {
-        "model": "reception.Category",
-        "pk": 1,
-        "fields": {
-            "desc": "ΑΜΕΑ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 2,
-        "fields": {
-            "desc": "ΕΑ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 3,
-        "fields": {
-            "desc": "ΚΑΤΩΤΕΡΟΙ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 4,
-        "fields": {
-            "desc": "ΑΝΘΣΤΕΣ-ΥΠΑΞ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 5,
-        "fields": {
-            "desc": "ΑΝΩΤΕΡΟΙ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 6,
-        "fields": {
-            "desc": "ΔΚΤΗΣ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 7,
-        "fields": {
-            "desc": "ΥΠΑΡΧΗΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 8,
-        "fields": {
-            "desc": "ΑΡΧΗΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 9,
-        "fields": {
-            "desc": "ΙΑΤΡΟΣ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 10,
-        "fields": {
-            "desc": "ΙΑΤΡΕΙΑ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 11,
-        "fields": {
-            "desc": "ΑΠΟΣΠΑΣΜΕΝΟΙ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 12,
-        "fields": {
-            "desc": "ΠΑΣΟΙΠΑ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 13,
-        "fields": {
-            "desc": "Μ.Υ.ΣΕΙΔ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 14,
-        "fields": {
-            "desc": "ΜΟΝΑΔΑ"
-        }
-    },
-    {
-        "model": "reception.Category",
-        "pk": 15,
-        "fields": {
-            "desc": "ΣΥΝΤ.ΠΟΛ.ΠΡ."
-        }
-    }
+    { "model": "reception.Category", "pk": 1, "fields": { "desc": "ΑΜΕΑ" } },
+    { "model": "reception.Category", "pk": 2, "fields": { "desc": "ΕΑ" } },
+    { "model": "reception.Category", "pk": 3, "fields": { "desc": "ΚΑΤΩΤΕΡΟΙ" } },
+    { "model": "reception.Category", "pk": 4, "fields": { "desc": "ΑΝΘΣΤΕΣ-ΥΠΑΞ" } },
+    { "model": "reception.Category", "pk": 5, "fields": { "desc": "ΑΝΩΤΕΡΟΙ" } },
+    { "model": "reception.Category", "pk": 6, "fields": { "desc": "ΔΚΤΗΣ" } },
+    { "model": "reception.Category", "pk": 7, "fields": { "desc": "ΥΠΑΡΧΗΓΟΣ" } },
+    { "model": "reception.Category", "pk": 8, "fields": { "desc": "ΑΡΧΗΓΟΣ" } },
+    { "model": "reception.Category", "pk": 9, "fields": { "desc": "ΙΑΤΡΟΣ" } },
+    { "model": "reception.Category", "pk": 10, "fields": { "desc": "ΙΑΤΡΕΙΑ" } },
+    { "model": "reception.Category", "pk": 11, "fields": { "desc": "ΑΠΟΣΠΑΣΜΕΝΟΙ" } },
+    { "model": "reception.Category", "pk": 12, "fields": { "desc": "ΠΑΣΟΙΠΑ" } },
+    { "model": "reception.Category", "pk": 13, "fields": { "desc": "Μ.Υ.ΣΕΙΔ" } },
+    { "model": "reception.Category", "pk": 14, "fields": { "desc": "ΜΟΝΑΔΑ" } },
+    { "model": "reception.Category", "pk": 15, "fields": { "desc": "ΣΥΝΤ.ΠΟΛ.ΠΡ." } }
 ]

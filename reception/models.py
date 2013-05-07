@@ -153,6 +153,14 @@ class Reservation(models.Model):
       ("S", "Schools"),
       )
 
+    STATUSES = (
+      ("PENDING", "Pending Confirmation"),
+      ("CONFIRMED", "Confirmed"),
+      ("CANCELED", "Canceled"),
+      ("STAYING", "Staying"),
+      ("LEFT", "Left"),
+      )
+
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     info = models.TextField("Further Info", max_length=200, null=True, blank=True)
@@ -160,9 +168,9 @@ class Reservation(models.Model):
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations")
-    cancel = models.BooleanField("Canceled", default=False)
+    status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
     res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
-                                null=True, blank=True, default=0)
+                                null=True, blank=True)
 
     def __unicode__(self):
         return  u"%s ( %s - %s ) -> %s" % (self.owner.surname, self.check_in, self.check_out, self.appartment)
