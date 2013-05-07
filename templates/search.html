@@ -20,7 +20,7 @@
 </head>
 <body>
     {% include "includes/keda_icon.html" %}
-    <b>Search for available Appartments based on various criteria</b><br>
+    <br><b>Search for available Appartments based on various criteria</b><br>
     <form action="/search/" method="get">
         <div class="form-row check_in">
             {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
@@ -57,8 +57,9 @@
         </div>
         <div class="form-row damaged">
             <div>
-                <label for="id_active" class="vCheckboxLabel" onchange="this.form.submit()">Include Damaged </label>
-                <input type="checkbox" name="damaged" id="id_damaged" {% if damaged %} checked="checked" {% endif %} />
+                <label for="id_active" class="vCheckboxLabel">Include Damaged </label>
+                <input type="checkbox" name="damaged" id="id_damaged" onchange="this.form.submit()"
+                       {% if damaged %} checked="checked" {% endif %} />
             </div>
         </div>
     </form>
