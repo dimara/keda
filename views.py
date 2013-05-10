@@ -86,5 +86,31 @@ def search(request):
     return render_to_response("search.html", ctx, context_instance=RequestContext(request))
 
 
+def parousiologio(request):
+    staff = Staff.objects.all().order_by("rank__level").reverse()
+    ctx = {
+      "date": datetime.date.today(),
+      "staff": staff,
+      "aksiomatikoi": staff.filter(rank__level__gte=6).count(),
+      "ypaksiomatikoi": staff.filter(rank__level__gte=2, rank__level__lt=6).count(),
+      "smhnites": staff.filter(rank__level=1).count(),
+      "politiko": staff.filter(rank__level=0).count(),
+      "count": staff.count()
+      }
+    return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
+
+
+def appartments(request, idx):
+    appartments = Appartment.objects.filter(id=idx)
+    damages = Damage.objects.filter(appartment=idx)
+    reservations = Reservation.objects.filter(appartment=idx)
+
+    ctx = {
+        "appartments": appartments,
+        "damages": damages,
+        "reservations": reservations,
+      }
+    return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
+
 def test(request):
     return display_meta(request)

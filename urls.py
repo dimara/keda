@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
                      {'document_root': settings.MEDIA_ROOT}),
     url(r'^search/$', search),
+    url(r'^appartments/(\d+)/$', appartments),
+    url(r'^parousiologio/$', parousiologio),
 
 
 
