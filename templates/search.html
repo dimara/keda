@@ -19,25 +19,23 @@
 
 </head>
 <body>
-    {% include "includes/keda_icon.html" %}
-    <br><b>Search for available Appartments based on various criteria</b><br>
+    {% include "includes/top.html" %}
+    <b>Search for available Appartments based on various criteria</b><br>
     <form action="/search/" method="get">
-        <div class="form-row check_in">
+        <div class="form-row period">
             {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
             <div>
-                <label for="id_check_in">Check In:</label>
-                <input id="id_check_in" type="text" class="vDateField" onchange="this.form.submit()"
+                <label for="id_check_in">CheckIn:</label>
+                <input id="id_check_in" type="text" class="vDateField"
                        name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
-            </div>
-        </div>
-        <div class="form-row check_out">
-            <div>
-                <label for="id_check_out">Check Out:</label>
-                <input id="id_check_out" type="text" class="vDateField" onchange="this.form.submit()"
+                <br>
+                <label for="id_check_out">CheckOut:</label>
+                <input id="id_check_out" type="text" class="vDateField"
                        name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
+                <input type="submit" value="Search">
             </div>
         </div>
-        <div class="form-row area">
+        <div class="form-row filters">
             <label for="id_area">Area:</label>
                 <select name="area" id="id_area" onchange="this.form.submit()" >
                     <option value="">---------</option>
@@ -45,8 +43,6 @@
                     <option value="{{ a.0 }}" {% if area == a.0 %} selected="selected" {% endif %}> {{ a.1 }} </option>
                     {% endfor %}
                 </select>
-        </div>
-        <div class="form-row category">
             <label for="id_category">Category:</label>
                 <select name="category" id="id_category" onchange="this.form.submit()">
                     <option value="">---------</option>
@@ -54,24 +50,19 @@
                     <option value="{{ c.id }}" {% if category == c.id %} selected="selected" {% endif %}> {{ c.desc }} </option>
                     {% endfor %}
                 </select>
-        </div>
-        <div class="form-row damaged">
-            <div>
                 <label for="id_active" class="vCheckboxLabel">Include Damaged </label>
                 <input type="checkbox" name="damaged" id="id_damaged" onchange="this.form.submit()"
                        {% if damaged %} checked="checked" {% endif %} />
-            </div>
         </div>
     </form>
-    <form>
       <br>
-      <hr>
       <table border="1">
         <tr>
           <th>Area</th>
           <th>No</th>
           <th>Rooms</th>
           <th>Beds</th>
+          <th></th>
         </tr>
         {% for a in avail %}
         <tr>
@@ -79,9 +70,9 @@
           <td>{{ a.no }}</td>
           <td>{{ a.rooms }}</td>
           <td>{{ a.double }}Δ+{{ a.single }}Μ+{{ a.bunk }}Κ</td>
+          <td><a href="/appartments/{{ a.id }}/">info</a></td>
         </tr>
         {% endfor %}
       </table>
-    </form>
   </body>
 </html>

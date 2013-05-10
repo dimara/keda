@@ -1,0 +1,75 @@
+<html>
+<head>
+    <title>Search for Available Appartments</title>
+<link rel="stylesheet" type="text/css" href="/media/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/forms.css" />
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/media/css/ie.css" /><![endif]-->
+
+<script type="text/javascript">window.__admin_media_prefix__ = "/media/";</script>
+
+
+<script type="text/javascript" src="/media/js/i18n.js/"></script>
+<script type="text/javascript" src="/media/js/core.js"></script>
+<script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/media/js/jquery.min.js"></script>
+<script type="text/javascript" src="/media/js/jquery.init.js"></script>
+<script type="text/javascript" src="/media/js/actions.min.js"></script>
+<script type="text/javascript" src="/media/js/calendar.js"></script>
+<script type="text/javascript" src="/media/js/admin/DateTimeShortcuts.js"></script>
+
+</head>
+<body>
+    {% include "includes/top.html" %}
+    <b>Appartment Info</b><br>
+      <table border="1">
+        <tr>
+          <th>Area</th>
+          <th>No</th>
+          <th>Rooms</th>
+          <th>Beds</th>
+        </tr>
+        {% for a in appartments %}
+        <tr>
+          <td>{{ a.area }}</td>
+          <td>{{ a.no }}</td>
+          <td>{{ a.rooms }}</td>
+          <td>{{ a.double }}Δ+{{ a.single }}Μ+{{ a.bunk }}Κ</td>
+        </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <b>Damages</b>
+      <table border="1">
+        <tr>
+          <th>Tag</th>
+          <th>info</th>
+        </tr>
+        {% for d in damages %}
+        <tr {% if not d.fixed %} style="color:red" {% endif %} >
+          <td>{{ d.tag }}</a></td>
+          <td><a href="/damages/{{ d.id }}/">info</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <br>
+      <b>Reservations</b>
+      <table border="1">
+        <tr>
+          <th>Name</th>
+          <th>CheckIn</th>
+          <th>CheckOut</th>
+          <th>Status</th>
+          <th>Info</th>
+        </tr>
+        {% for r in reservations %}
+        <tr>
+          <td>{{ r.owner }}</td>
+          <td>{{ r.check_in }}</td>
+          <td>{{ r.check_out }}</td>
+          <td>{{ r.status }}</td>
+          <td><a href="/reservations/{{ r.id }}/">info</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+  </body>
+</html>

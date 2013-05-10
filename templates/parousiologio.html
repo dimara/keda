@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>ΠΑΡΟΥΣΙΟΛΟΓΙΟ</title>
+<link rel="stylesheet" type="text/css" href="/media/css/base.css" />
+<link rel="stylesheet" type="text/css" href="/media/css/forms.css" />
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/media/css/ie.css" /><![endif]-->
+
+<script type="text/javascript">window.__admin_media_prefix__ = "/media/";</script>
+
+
+<script type="text/javascript" src="/media/js/i18n.js/"></script>
+<script type="text/javascript" src="/media/js/core.js"></script>
+<script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script>
+<script type="text/javascript" src="/media/js/jquery.min.js"></script>
+<script type="text/javascript" src="/media/js/jquery.init.js"></script>
+<script type="text/javascript" src="/media/js/actions.min.js"></script>
+<script type="text/javascript" src="/media/js/calendar.js"></script>
+<script type="text/javascript" src="/media/js/admin/DateTimeShortcuts.js"></script>
+
+</head>
+
+
+<body>
+    {% include "includes/keda_icon.html" %}
+    <br><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ ΤΗΣ {{ date }}</b><br>
+      <table border="1">
+        <r> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th> <th>
+        <tr> <td>ΑΞΚΟΙ</td> <td>{{ aksiomatikoi }}</td> <td></td> <td></td> </tr>
+        <tr> <td>ΥΠΞΚΟΙ</td> <td>{{ ypaksiomatikoi }}</td> <td></td> <td></td> </tr>
+        <tr> <td>ΣΜΤΕΣ</td> <td>{{ smhnites }}</td> <td></td> <td></td> </tr>
+        <tr> <td>Μ.Υ.</td> <td>{{ politiko }}</td> <td></td> <td></td> </tr>
+        <tr> <td>ΣΥΝΟΛΟ</td> <td>{{ count }}</td> <td></td> <td></td>  </tr>
+        <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ/AITIA</th>
+        {% for s in staff %}
+        <tr>
+            <td> 1</td>
+            <td>{{ s.militaryperson }}</td>
+            <td><input type="checkbox" name="paron" id="id_paron"</td>
+            <td><select name="reason" id="id_reason">
+                    <option value="none" selected="selected"></option>
+                    <option value="1">OFF</option>
+                    <option value="2">ΕΟΡΤΑΣΤΙΚΗ</option>
+                    <option value="3">ΑΠΟΛΥΣΕΩΣ</option>
+                    <option value="4">ΕΠ.ΑΓΟΡΩΝ</option>
+                    <option value="5">ΑΔΙΚ</option>
+                </select>
+        {% endfor %}
+  </body>
+</html>
