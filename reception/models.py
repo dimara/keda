@@ -3,6 +3,22 @@
 from django.db import models
 
 # Create your models here.
+class Rank(models.Model):
+    WEAPONS = (
+      ("ΕΣ", "ΕΣ"),
+      ("ΠΝ", "ΠΝ"),
+      ("ΠΑ", "ΠΑ"),
+      )
+
+    weapon = models.CharField("Force", choices=WEAPONS, max_length=5, default='ΠΑ')
+    rank = models.CharField("Rank", max_length=20)
+    short = models.CharField("Rank (abbreviation)", max_length=10)
+    level = models.IntegerField("Level", default=0, null=True, blank=True)
+
+    def __unicode__(self):
+        return self.short
+
+
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
     color = models.CharField("Color", max_length=20, blank=True, null=True)
@@ -11,6 +27,7 @@ class Vehicle(models.Model):
 
     def __unicode__(self):
         return "%s: %s %s (%s)" % (self.plate, self.brand, self.model, self.color)
+
 
 class ContactInfo(models.Model):
     mobile = models.CharField("Mobile Phone", max_length=30, blank=True, null=True)
@@ -24,36 +41,47 @@ class ContactInfo(models.Model):
 class Person(models.Model):
     name = models.CharField("First Name", max_length=30, blank=True, null=True)
     surname = models.CharField("Last Name", max_length=30)
+    contacts = models.ManyToManyField(ContactInfo, related_name="person", null=True, blank=True)
+    vehicles = models.ManyToManyField(Vehicle, related_name="owner", default=None, null=True, blank=True)
 
     def __unicode__(self):
         return u"%s %s" % (self.surname, self.name)
 
 
-class Rank(models.Model):
-    WEAPONS = (
-      ("ΕΣ", "ΕΣ"),
-      ("ΠΝ", "ΠΝ"),
-      ("ΠΑ", "ΠΑ"),
+class Relative(Person):
+    RELATIONSHIPS = (
+      ("ΥΙΟΣ", "ΥΙΟΣ"),
+      ("ΚΟΡΗ", "ΚΟΡΗ"),
+      ("ΠΑΤΕΡΑΣ", "ΠΑΤΕΡΑΣ"),
+      ("ΜΗΤΕΡΑ", "ΜΗΤΕΡΑ"),
+      ("ΣΥΖΥΓΟΣ", "ΣΥΖΥΓΟΣ"),
       )
-    weapon = models.CharField("Force", choices=WEAPONS, max_length=5, default='ΠΑ')
-    rank = models.CharField("Rank", max_length=20)
-    short = models.CharField("Rank (abbreviation)", max_length=10)
 
-    def __unicode__(self):
-        return self.short
+    related = models.ForeignKey(Person, related_name="relatives", null=True, blank=True)
+    relationship = models.CharField("Relationship", choices=RELATIONSHIPS, max_length=30, blank=True, null=True)
 
 
 class MilitaryPerson(Person):
-    rank = models.ForeignKey(Rank, null=True, blank=True)
-    active = models.BooleanField("Active")
+    rank = models.ForeignKey(Rank, related_name="military_persons", null=True, blank=True)
+    active = models.BooleanField("Active", default=True)
     speciality = models.CharField("Speciality", max_length=20, null=True, blank=True)
-    relatives = models.ManyToManyField(Person, related_name="related", null=True, blank=True)
-    contacts = models.ManyToManyField(ContactInfo, related_name="person", null=True, blank=True)
-    vehicles = models.ManyToManyField(Vehicle, related_name="owner", default=None, null=True, blank=True)
 
-    @property
-    def info(self):
-        return u"%s (%s) %s %s" % (self.rank, self.speciality, self.name, self.surname)
+    def __unicode__(self):
+        ret = u"%s %s" % (self.surname, self.name)
+        if self.speciality:
+            ret = u"(%s) %s" % (self.speciality, ret)
+        if self.rank:
+            ret = u"%s %s" % (self.rank, ret)
+        return ret
+
+
+class Staff(MilitaryPerson):
+    CATEGORIES = (
+      (u"ΟΡΓ", "ΟΡΓΑΝΙΚΟΣ"),
+      (u"ΑΠΟ", "ΑΠΟΣΠΑΣΜΕΝΟΣ"),
+      )
+
+    category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
 
 
 class Category(models.Model):
@@ -104,7 +132,8 @@ class Appartment(models.Model):
 
     @property
     def info(self):
-        return u"%s-%s (%dD+%dS+%dB)" % (self.area, self.no, self.double, self.single, self.bunk)
+        return u"%s-%s (%dΔ+%dΜ+%dΚ)" % (self.area, self.no, self.double, self.single, self.bunk)
+
 
 class Unit(models.Model):
     name = models.CharField("Name", max_length=20)

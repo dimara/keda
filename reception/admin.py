@@ -6,7 +6,7 @@ class MilitaryPersonAdmin(admin.ModelAdmin):
     search_fields = ('surname', )
     list_filter = ('active', )
     ordering = ('surname', )
-    filter_horizontal = ('relatives', 'vehicles', 'contacts' )
+    filter_horizontal = ('vehicles', 'contacts' )
 
 
 class DamageAdmin(admin.ModelAdmin):
@@ -19,12 +19,15 @@ class ReservationAdmin(admin.ModelAdmin):
     search_fields = ('owner', 'appartment')
 
 
-admin.site.register(Person)
-admin.site.register(ContactInfo)
 admin.site.register(Rank)
-admin.site.register(Damage, DamageAdmin)
-admin.site.register(Unit)
-admin.site.register(Appartment)
 admin.site.register(Vehicle)
-admin.site.register(Reservation, ReservationAdmin)
+admin.site.register(ContactInfo)
+admin.site.register(Person)
+admin.site.register(Relative)
 admin.site.register(MilitaryPerson, MilitaryPersonAdmin)
+admin.site.register(Staff)
+admin.site.register(Category)
+admin.site.register(Appartment)
+admin.site.register(Unit)
+admin.site.register(Damage, DamageAdmin)
+admin.site.register(Reservation, ReservationAdmin)
