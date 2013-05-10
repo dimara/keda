@@ -1,130 +1,19 @@
 [
-    {
-        "model": "reception.Rank",
-        "pk": 1,
-        "fields": {
-            "rank": "ΣΜΗΝΙΤΗΣ",
-            "short": "ΣΜΤΗΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 2,
-        "fields": {
-            "rank": "ΥΠΟΣΜΗΝΙΑΣ",
-            "short": "ΥΣΜΙΑΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 3,
-        "fields": {
-            "rank": "ΣΜΗΝΙΑΣ",
-            "short": "ΣΜΙΑΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 4,
-        "fields": {
-            "rank": "ΕΠΙΣΜΗΝΙΑΣ",
-            "short": "ΕΣΜΙΑΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 5,
-        "fields": {
-            "rank": "ΑΡΧΙΣΜΗΝΙΑΣ",
-            "short": "ΑΣΜΙΑΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 6,
-        "fields": {
-            "rank": "ΑΝΘΥΠΑΣΠΙΣΤΗΣ",
-            "short": "ΑΝΘΣΤΗΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 7,
-        "fields": {
-            "rank": "ΑΝΘΥΠΟΣΜΗΝΑΓΟΣ",
-            "short": "ΑΝΘΣΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 8,
-        "fields": {
-            "rank": "ΥΠΟΣΜΗΝΑΓΟΣ",
-            "short": "ΥΠΣΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 9,
-        "fields": {
-            "rank": "ΣΜΗΝΑΓΟΣ",
-            "short": "ΣΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 10,
-        "fields": {
-            "rank": "ΕΠΙΣΜΗΝΑΓΟΣ",
-            "short": "ΕΠΓΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 11,
-        "fields": {
-            "rank": "ΑΝΤΙΣΜΗΝΑΡΧΟΣ",
-            "short": "ΑΣΜΧΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 12,
-        "fields": {
-            "rank": "ΣΜΗΝΑΡΧΟΣ",
-            "short": "ΣΜΧΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 13,
-        "fields": {
-            "rank": "ΤΑΞΙΑΡΧΟΣ",
-            "short": "ΤΑΞΧΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 14,
-        "fields": {
-            "rank": "ΥΠΟΠΤΕΡΑΡΧΟΣ",
-            "short": "ΥΠΤΧΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 15,
-        "fields": {
-            "rank": "ANTIΠΤΕΡΑΡΧΟΣ",
-            "short": "AΠΤΧΟΣ"
-        }
-    },
-    {
-        "model": "reception.Rank",
-        "pk": 16,
-        "fields": {
-            "rank": "ΠΤΕΡΑΡΧΟΣ",
-            "short": "ΠΤΧΟΣ"
-        }
-    }
+    { "model": "reception.Rank", "pk": 1, "fields": { "level": 1, "rank": "Σμηνίτης", "short": "Σμτης" } },
+    { "model": "reception.Rank", "pk": 2, "fields": { "level": 2, "rank": "Υποσμηνίας", "short": "Υσμίας" } },
+    { "model": "reception.Rank", "pk": 3, "fields": { "level": 3, "rank": "Σμηνίας", "short": "Σμίας" } },
+    { "model": "reception.Rank", "pk": 4, "fields": { "level": 4, "rank": "Επισμηνίας", "short": "Εσμίας" } },
+    { "model": "reception.Rank", "pk": 5, "fields": { "level": 5, "rank": "Αρχισμηνίας", "short": "Ασμίας" } },
+    { "model": "reception.Rank", "pk": 6, "fields": { "level": 6, "rank": "Ανθυπασπιστής", "short": "Ανθστής" } },
+    { "model": "reception.Rank", "pk": 7, "fields": { "level": 7, "rank": "Ανθυποσμηναγός", "short": "Ανθσγός" } },
+    { "model": "reception.Rank", "pk": 8, "fields": { "level": 8, "rank": "Υποσμηναγός", "short": "Υπσγός" } },
+    { "model": "reception.Rank", "pk": 9, "fields": { "level": 9, "rank": "Σμηναγός", "short": "Σγός" } },
+    { "model": "reception.Rank", "pk": 10, "fields": { "level": 10, "rank": "Επισμηναγός", "short": "Επγός" } },
+    { "model": "reception.Rank", "pk": 11, "fields": { "level": 11, "rank": "Αντισμήναρχος", "short": "Ασμχος" } },
+    { "model": "reception.Rank", "pk": 12, "fields": { "level": 12, "rank": "Σμήναρχος", "short": "Σμχος" } },
+    { "model": "reception.Rank", "pk": 13, "fields": { "level": 13, "rank": "Ταξίαρχος", "short": "Ταξχος" } },
+    { "model": "reception.Rank", "pk": 14, "fields": { "level": 14, "rank": "Υποπτέραρχος", "short": "Υπτχος" } },
+    { "model": "reception.Rank", "pk": 15, "fields": { "level": 15, "rank": "Aντιπτέραρχος", "short": "Aπτχος" } },
+    { "model": "reception.Rank", "pk": 16, "fields": { "level": 16, "rank": "Πτεραρχος", "short": "Πτχος" } },
+    { "model": "reception.Rank", "pk": 17, "fields": { "level": 0, "rank": "Πολιτικό Προσωπικό" } }
 ]
