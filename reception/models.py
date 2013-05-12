@@ -18,6 +18,18 @@ class Rank(models.Model):
     def __unicode__(self):
         return self.short
 
+    @property
+    def category(self):
+        """ 4 categories used for staff.
+
+        pol.pr., sminites, ypaks, aks
+        """
+        if self.level in (0, 1):
+            return self.level
+        if self.level in (2, 3, 4, 5):
+            return 2
+        return 3
+
 
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)

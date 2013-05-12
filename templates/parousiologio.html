@@ -22,24 +22,28 @@
 
 
 <body>
-    {% include "includes/top.html" %}
-    <br><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ ΤΗΣ {{ date }}</b><br>
-      <table border="1" style="text-align:center">
-        <tr> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th> </tr>
-        <tr> <td>ΑΞΚΟΙ</td> <td id="c1"></td> <td id="p1"></td> <td id="a1"></td> </tr>
-        <tr> <td>ΥΠΞΚΟΙ</td> <td id="c2"></td> <td id="p2"></td> <td id="a2"></td> </tr>
-        <tr> <td>ΣΜΤΕΣ</td> <td id="c3"></td> <td id="p3"></td> <td id="a3"></td> </tr>
-        <tr> <td>Μ.Υ.</td> <td id="c4"></td> <td id="p4"></td> <td id="a4"></td> </tr>
-        <tr> <td>ΣΥΝΟΛΟ</td> <td id="c"></td> <td id="p"></td> <td id="a"></td>  </tr>
+    {% include "includes/menu.html" %}
+    <b>{{ date }}<b>
+      <table border="1" style="text-align:center" id="summary">
+       <tr> <th colspan="5" style="text-align:center"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ</b></th> </tr>
+        <tr> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th>
+             <td rowspan="6"><img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="height:130; width:auto"</tr>
+        <tr id="3"> <td>ΑΞΚΟΙ</td> <td id="c3"></td> <td id="p3"></td> <td id="a3"></td> </tr>
+        <tr id="2"> <td>ΥΠΞΚΟΙ</td> <td id="c2"></td> <td id="p2"></td> <td id="a2"></td> </tr>
+        <tr id="1"> <td>ΣΜΤΕΣ</td> <td id="c1"></td> <td id="p1"></td> <td id="a1"></td> </tr>
+        <tr id="0"> <td>Μ.Υ.</td> <td id="c0"></td> <td id="p0"></td> <td id="a0"></td> </tr>
+        <tr id="4"> <td>ΣΥΝΟΛΟ</td> <td id="c4"></td> <td id="p4"></td> <td id="a4"></td>  </tr>
       </table>
       <table border="1" class="tbl" id="staff">
         <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ/AITIA</th>
-        {% for staff in staff_categories %}
         {% for s in staff %}
-        <tr id="{{ s.rank.level }}"></td>
-            <td id="idx" style="text-align:center"></script></td>
+        <tr id="{{ s.id }}" style="height:10px"></td>
+            <td id="idx" style="text-align:center">{{ forloop.counter }}</td>
             <td>{{ s.militaryperson }}</td>
-            <td style="text-align:center"><input type="checkbox" name="paron" id="id_paron_{{ forloop.parentloop.counter }}"</td>
+            <td style="text-align:center">
+                <input type="checkbox" name="paron"
+                       class="{{ s.rank.category }}">
+            </td>
             <td><select name="reason" class="id_reason">
                     <option value="none" selected="selected"></option>
                     <option value="1">OFF</option>
@@ -48,7 +52,6 @@
                     <option value="4">ΕΠ.ΑΓΟΡΩΝ</option>
                     <option value="5">ΑΔΙΚ</option>
                 </select>
-        {% endfor %}
         {% endfor %}
   </body>
 </html>

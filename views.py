@@ -90,10 +90,7 @@ def parousiologio(request):
     staff = Staff.objects.all().order_by("rank__level").reverse()
     ctx = {
       "date": datetime.date.today(),
-      "staff_categories": [ staff.filter(rank__level__gte=6),
-                 staff.filter(rank__level__gte=2, rank__level__lt=6),
-                 staff.filter(rank__level=1),
-                 staff.filter(rank__level=0)],
+      "staff": staff,
       }
     return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
 
