@@ -90,12 +90,10 @@ def parousiologio(request):
     staff = Staff.objects.all().order_by("rank__level").reverse()
     ctx = {
       "date": datetime.date.today(),
-      "staff": staff,
-      "aksiomatikoi": staff.filter(rank__level__gte=6).count(),
-      "ypaksiomatikoi": staff.filter(rank__level__gte=2, rank__level__lt=6).count(),
-      "smhnites": staff.filter(rank__level=1).count(),
-      "politiko": staff.filter(rank__level=0).count(),
-      "count": staff.count()
+      "staff_categories": [ staff.filter(rank__level__gte=6),
+                 staff.filter(rank__level__gte=2, rank__level__lt=6),
+                 staff.filter(rank__level=1),
+                 staff.filter(rank__level=0)],
       }
     return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
 
