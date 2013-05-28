@@ -6,28 +6,34 @@
 </head>
 <body>
     {% include "includes/menu.html" %}
-    <b>Search for Appartments</b><br>
+    <b>Search for Visitors</b><br>
     <input type="text" id="search" size="20" placeholder="Type to search" />
     <table border="1" id="table">
       <tr>
-        <th>Appartment</th>
-        <th>Damages</th>
+        <th></th>
+        <th>Visitor</th>
+        <th>Relatives</th>
+        <th>Vehicles</th>
         <th>Reservations</th>
       </tr>
-      {% for a in appartments %}
-      <tr>
-        <td>{{ a }}</td>
+      {% for v in visitors %}
+      <tr class="v">
+        <td>{{ forloop.counter }}</td>
+        <td>{{ v }}</td>
         <td>
-        {% for d in a.damages.all %}
-          {% if not d.fixed %}
-            {{ d.info }}<br>
-          {% endif %}
+        {% for r in v.relatives.all %}
+          {{ r }} - {{ r.relationship }}<br>
         {% endfor %}
         </td>
         <td>
-        {% for res in a.reservations.all %}
+        {% for c in v.vehicles.all %}
+          {{ c }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for res in v.reservations.all %}
           {% if res.active %}
-            {{ res.owner }}<br>
+            {{ res.appartment }}<br>
           {% endif %}
         {% endfor %}
         </td>

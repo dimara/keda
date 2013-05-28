@@ -1,22 +1,12 @@
 <html>
 <head>
     <title>ΠΑΡΟΥΣΙΟΛΟΓΙΟ</title>
-<link rel="stylesheet" type="text/css" href="/media/css/base.css" />
-<link rel="stylesheet" type="text/css" href="/media/css/forms.css" />
-<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/media/css/ie.css" /><![endif]-->
 
-<script type="text/javascript">window.__admin_media_prefix__ = "/media/";</script>
-
-
-<script type="text/javascript" src="/media/js/i18n.js/"></script>
-<script type="text/javascript" src="/media/js/core.js"></script>
-<script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script>
 <script type="text/javascript" src="/media/js/jquery.min.js"></script>
 <script type="text/javascript" src="/media/js/jquery.init.js"></script>
-<script type="text/javascript" src="/media/js/actions.min.js"></script>
-<script type="text/javascript" src="/media/js/calendar.js"></script>
-<script type="text/javascript" src="/media/js/admin/DateTimeShortcuts.js"></script>
-<script type="text/javascript" src="/media/js/olga.js"></script>
+
+<script type="text/javascript" src="/media/js/parousiologio.js"></script>
+
 
 </head>
 
@@ -39,7 +29,7 @@
         {% for s in staff %}
         <tr id="{{ s.id }}" style="height:10px"></td>
             <td id="idx" style="text-align:center">{{ forloop.counter }}</td>
-            <td>{{ s.militaryperson }}</td>
+            <td>{{ s.info }}</td>
             <td style="text-align:center">
                 <input type="checkbox" name="paron"
                        class="{{ s.rank.category }}">

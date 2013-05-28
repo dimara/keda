@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>Resevations</title>
+    {% include "includes/scripts.html" %}
+</head>
+<body>
+    {% include "includes/menu.html" %}
+    <b>Make a Reservation</b><br>
+    <form action="/reservations/add/" method="post">{% csrf_token %}
+        <div class="form-row period">
+            {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
+            <div>
+                <label for="id_check_in">CheckIn:</label>
+                <input id="id_check_in" type="text" class="vDateField"
+                       name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
+                <br>
+                <label for="id_check_out">CheckOut:</label>
+                <input id="id_check_out" type="text" class="vDateField"
+                       name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
+            </div>
+        </div>
+        <div class="form-row appartment">
+            <label for="id_appartment">Appartment:</label>
+                <select name="appartment" id="id_appartment">
+                    <option value="">---------</option>
+                    {% for a in avail %}
+                    <option value="{{ a.id }}" {% if a.id == aid %} selected="selected" {% endif %}> {{ a.info }} </option>
+                    {% endfor %}
+                </select>
+        </div>
+        <div class="form-row person">
+            <label for="id_person">Person:</label>
+                <select name="person" id="id_person">
+                    <option value="">---------</option>
+                    {% for p in persons %}
+                    <option value="{{ p.id }}" {% if p.id == pid %} selected="selected" {% endif %}> {{ p }} </option>
+                    {% endfor %}
+                </select>
+        </div>
+        <div>
+            <input type="button" onClick="history.go(-1);return true;" value="Cancel">
+            <input type="submit" value="Confirm">
+        </div>
+    </form>
+  </body>
+</html>

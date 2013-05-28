@@ -1,27 +1,12 @@
 <html>
 <head>
     <title>Search for Available Appartments</title>
-<link rel="stylesheet" type="text/css" href="/media/css/base.css" />
-<link rel="stylesheet" type="text/css" href="/media/css/forms.css" />
-<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/media/css/ie.css" /><![endif]-->
-
-<script type="text/javascript">window.__admin_media_prefix__ = "/media/";</script>
-
-
-<script type="text/javascript" src="/media/js/i18n.js/"></script>
-<script type="text/javascript" src="/media/js/core.js"></script>
-<script type="text/javascript" src="/media/js/admin/RelatedObjectLookups.js"></script>
-<script type="text/javascript" src="/media/js/jquery.min.js"></script>
-<script type="text/javascript" src="/media/js/jquery.init.js"></script>
-<script type="text/javascript" src="/media/js/actions.min.js"></script>
-<script type="text/javascript" src="/media/js/calendar.js"></script>
-<script type="text/javascript" src="/media/js/admin/DateTimeShortcuts.js"></script>
-
+    {% include "includes/scripts.html" %}
 </head>
 <body>
-    {% include "includes/top.html" %}
+    {% include "includes/menu.html" %}
     <b>Search for available Appartments based on various criteria</b><br>
-    <form action="/search/" method="get">
+    <form action="/availability/" method="get">
         <div class="form-row period">
             {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
             <div>
@@ -58,19 +43,17 @@
       <br>
       <table border="1">
         <tr>
-          <th>Area</th>
-          <th>No</th>
-          <th>Rooms</th>
-          <th>Beds</th>
+          <th></th>
+          <th>Appartment</th>
+          <th></th>
           <th></th>
         </tr>
         {% for a in avail %}
         <tr>
-          <td>{{ a.area }}</td>
-          <td>{{ a.no }}</td>
-          <td>{{ a.rooms }}</td>
-          <td>{{ a.double }}Δ+{{ a.single }}Μ+{{ a.bunk }}Κ</td>
+          <td>{{ forloop.counter }}</td>
+          <td>{{ a.info }}</td>
           <td><a href="/appartments/{{ a.id }}/">info</a></td>
+          <td><a href="/reservations/add/?appartment={{ a.id }}">reserve</a></td>
         </tr>
         {% endfor %}
       </table>
