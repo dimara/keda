@@ -14,20 +14,26 @@
         <th>Visitor</th>
         <th>Relatives</th>
         <th>Vehicles</th>
-        <th>Reservations</th>
+        <th>Contacts</th>
+        <th>Appartment</th>
       </tr>
       {% for v in visitors %}
-      <tr class="v">
+      <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ v }}</td>
+        <td>{{ v.info }}</td>
         <td>
         {% for r in v.relatives.all %}
           {{ r }} - {{ r.relationship }}<br>
         {% endfor %}
         </td>
         <td>
-        {% for c in v.vehicles.all %}
-          {{ c }}<br>
+        {% for veh in v.vehicles.all %}
+          {{ veh }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for c in v.contacts.all %}
+          {{ c.mobile }}<br>
         {% endfor %}
         </td>
         <td>
