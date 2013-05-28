@@ -1,16 +1,20 @@
 from django.contrib import admin
 from keda.reception.models import *
 
-class MilitaryPersonAdmin(admin.ModelAdmin):
-    list_display = ('rank', 'surname', 'name')
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('surname', 'name')
     search_fields = ('surname', )
-    list_filter = ('active', )
     ordering = ('surname', )
-    filter_horizontal = ('vehicles', 'contacts' )
+
+class MilitaryPersonAdmin(PersonAdmin):
+    list_display = ('rank', ) + PersonAdmin.list_display
+    list_filter = ('active', )
 
 
 class DamageAdmin(admin.ModelAdmin):
     list_filter = ('fixed', )
+    ordering = ('tag', 'appartment', )
+    list_display = ('appartment', 'tag', 'info')
 
 
 class ReservationAdmin(admin.ModelAdmin):
@@ -19,13 +23,13 @@ class ReservationAdmin(admin.ModelAdmin):
     search_fields = ('owner', 'appartment')
 
 
+
 admin.site.register(Rank)
 admin.site.register(Vehicle)
 admin.site.register(ContactInfo)
-admin.site.register(Person)
-admin.site.register(Relative)
-admin.site.register(MilitaryPerson, MilitaryPersonAdmin)
-admin.site.register(Staff)
+admin.site.register(Relative, PersonAdmin)
+admin.site.register(Visitor, MilitaryPersonAdmin)
+admin.site.register(Staff, MilitaryPersonAdmin)
 admin.site.register(Category)
 admin.site.register(Appartment)
 admin.site.register(Unit)

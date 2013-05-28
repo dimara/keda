@@ -1,13 +1,14 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from django.db import models
+import datetime
 
 # Create your models here.
 class Rank(models.Model):
     WEAPONS = (
-      ("ΕΣ", "ΕΣ"),
-      ("ΠΝ", "ΠΝ"),
-      ("ΠΑ", "ΠΑ"),
+      (u"ΕΣ", "ΕΣ"),
+      (u"ΠΝ", "ΠΝ"),
+      (u"ΠΑ", "ΠΑ"),
       )
 
     weapon = models.CharField("Force", choices=WEAPONS, max_length=5, default='ΠΑ')
@@ -31,42 +32,45 @@ class Rank(models.Model):
         return 3
 
 
+class Person(models.Model):
+    name = models.CharField("First Name", max_length=30, blank=True, null=True)
+    surname = models.CharField("Last Name", max_length=30)
+
+    def __unicode__(self):
+        return u"%s %s" % (self.surname, self.name)
+
+
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
     color = models.CharField("Color", max_length=20, blank=True, null=True)
     brand = models.CharField("Brand", max_length=20, blank=True, null=True)
     model = models.CharField("Model", max_length=20, blank=True, null=True)
+    owner = models.ForeignKey(Person, related_name="vehicles", null=True, blank=True)
 
     def __unicode__(self):
-        return "%s: %s %s (%s)" % (self.plate, self.brand, self.model, self.color)
+        return u"%s: %s %s (%s)" % (self.plate, self.brand, self.model, self.color)
 
 
 class ContactInfo(models.Model):
     mobile = models.CharField("Mobile Phone", max_length=30, blank=True, null=True)
     telephone = models.CharField("Telephone", max_length=30, blank=True, null=True)
     address = models.CharField("Address", max_length=30, blank=True, null=True)
+    person = models.ForeignKey(Person, related_name="contacts", null=True, blank=True)
 
     def __unicode__(self):
-        return u"%s" % self.mobile
-
-
-class Person(models.Model):
-    name = models.CharField("First Name", max_length=30, blank=True, null=True)
-    surname = models.CharField("Last Name", max_length=30)
-    contacts = models.ManyToManyField(ContactInfo, related_name="person", null=True, blank=True)
-    vehicles = models.ManyToManyField(Vehicle, related_name="owner", default=None, null=True, blank=True)
-
-    def __unicode__(self):
-        return u"%s %s" % (self.surname, self.name)
+        return u"Address: %s, Tel: %s, Mobile: %s" % (self.address, self.telephone, self.mobile)
 
 
 class Relative(Person):
     RELATIONSHIPS = (
-      ("ΥΙΟΣ", "ΥΙΟΣ"),
-      ("ΚΟΡΗ", "ΚΟΡΗ"),
-      ("ΠΑΤΕΡΑΣ", "ΠΑΤΕΡΑΣ"),
-      ("ΜΗΤΕΡΑ", "ΜΗΤΕΡΑ"),
-      ("ΣΥΖΥΓΟΣ", "ΣΥΖΥΓΟΣ"),
+      (u"ΥΙΟΣ", "ΥΙΟΣ"),
+      (u"ΚΟΡΗ", "ΚΟΡΗ"),
+      (u"ΠΑΤΕΡΑΣ", "ΠΑΤΕΡΑΣ"),
+      (u"ΜΗΤΕΡΑ", "ΜΗΤΕΡΑ"),
+      (u"ΣΥΖΥΓΟΣ", "ΣΥΖΥΓΟΣ"),
+      (u"ΑΝΗΨΙΑ", "ΑΝΗΨΙΑ"),
+      (u"ΑΔΕΡΦΙΑ", "ΑΔΕΡΦΙΑ"),
+      (u"ΕΓΓΟΝΙΑ", "ΕΓΓΟΝΙΑ"),
       )
 
     related = models.ForeignKey(Person, related_name="relatives", null=True, blank=True)
@@ -78,12 +82,21 @@ class MilitaryPerson(Person):
     active = models.BooleanField("Active", default=True)
     speciality = models.CharField("Speciality", max_length=20, null=True, blank=True)
 
-    def __unicode__(self):
-        ret = u"%s %s" % (self.surname, self.name)
+    def info(self):
+        ret = super(MilitaryPerson, self).__unicode__()
         if self.speciality:
             ret = u"(%s) %s" % (self.speciality, ret)
         if self.rank:
             ret = u"%s %s" % (self.rank, ret)
+        return ret
+
+class Visitor(MilitaryPerson):
+    member = models.BooleanField("Member", default=False)
+
+    def __unicode__(self):
+        ret = super(Visitor, self).__unicode__()
+        if self.member:
+            ret += u" (ΜΕΛΟΣ)"
         return ret
 
 
@@ -144,7 +157,8 @@ class Appartment(models.Model):
 
     @property
     def info(self):
-        return u"%s-%s (%dΔ+%dΜ+%dΚ)" % (self.area, self.no, self.double, self.single, self.bunk)
+        return u"%s-%s, Δωμάτια: %d (%dΔ+%dΜ+%dΚ)" % \
+                (self.area, self.no, self.rooms, self.double, self.single, self.bunk)
 
 
 class Unit(models.Model):
@@ -159,9 +173,11 @@ class Damage(models.Model):
     DAMAGES = (
       ("AC" , "AirCondition"),
       ("TV", "Television"),
-      ("ELECTRICAL", "Lights, etc."),
+      ("ELECTRICAL", "Lights, Sockets, etc."),
       ("DIRTY", "Extremely Dirty"),
       ("HYDRAVLICS", "Water leak, etc."),
+      ("OTHER", "Doors, Locks, Windows, etc."),
+      ("EQUIPMENT", "Broken/Missing equipment, etc"),
     )
     tag = models.CharField("Tag", choices=DAMAGES, max_length=30)
     appartment = models.ForeignKey(Appartment, related_name="damages", null=True, blank=True)
@@ -170,7 +186,7 @@ class Damage(models.Model):
     fixed = models.BooleanField("Fixed", default=False)
 
     def __unicode__(self):
-        r = u"%s -> %s" % (self.appartment, self.tag)
+        r = u"%s -> %s: %s" % (self.appartment, self.tag, self.info)
         if self.fixed:
             r += " (FIXED)"
 
@@ -198,14 +214,12 @@ class Reservation(models.Model):
       ("PENDING", "Pending Confirmation"),
       ("CONFIRMED", "Confirmed"),
       ("CANCELED", "Canceled"),
-      ("STAYING", "Staying"),
-      ("LEFT", "Left"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     info = models.TextField("Further Info", max_length=200, null=True, blank=True)
-    owner = models.ForeignKey(MilitaryPerson, related_name="reservations")
+    owner = models.ForeignKey(Visitor, related_name="reservations")
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations")
@@ -214,7 +228,19 @@ class Reservation(models.Model):
                                 null=True, blank=True)
 
     def __unicode__(self):
-        return  u"%s ( %s - %s ) -> %s" % (self.owner.surname, self.check_in, self.check_out, self.appartment)
+        return  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
+
+    @property
+    def info(self):
+        return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s" % \
+                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment)
+
+
+    @property
+    def active(self):
+        return (self.status == "CONFIRMED" and
+                self.check_in and self.check_in <= datetime.date.today() and
+                (not self.check_out or (self.check_out and self.check_out >= datetime.date.today())))
 
 
 class Period(models.Model):

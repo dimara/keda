@@ -7,11 +7,14 @@ fi
 
 if [ "$1" == "init" ]; then
   su - postgres -c "psql -w -f /home/dimara/keda/db_init.psql"
+  python manage.py schemamigration --initial reception
   python manage.py syncdb
+  python manage.py migrate reception
   python manage.py loaddata reception/fixtures/*
 fi
 
 if [ "$1" == "drop" ]; then
+  rm reception/migrations/*
   su - postgres -c "psql -w -c 'DROP DATABASE KEDA;'"
   su - postgres -c "psql -w -c 'DROP USER keda;'"
 fi
