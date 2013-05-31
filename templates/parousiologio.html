@@ -2,14 +2,11 @@
 <head>
     <title>ΠΑΡΟΥΣΙΟΛΟΓΙΟ</title>
 
-<script type="text/javascript" src="/media/js/jquery.min.js"></script>
-<script type="text/javascript" src="/media/js/jquery.init.js"></script>
-
+{% include "includes/scripts.html" %}
+<link rel="stylesheet" type="text/css" href="/media/css/dimara.css" />
 <script type="text/javascript" src="/media/js/parousiologio.js"></script>
 
-
 </head>
-
 
 <body>
     {% include "includes/menu.html" %}
@@ -25,26 +22,31 @@
         <tr id="4"> <td>ΣΥΝΟΛΟ</td> <td id="c4"></td> <td id="p4"></td> <td id="a4"></td>  </tr>
       </table>
       <table border="1" class="tbl" id="staff">
-        <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ/AITIA</th>
+        <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ</th> <th>AITIA</th>
         {% for s in staff %}
-        <tr id="{{ s.id }}" style="height:10px"></td>
+        <tr id="{{ s.id }}">
             <td id="idx" style="text-align:center">{{ forloop.counter }}</td>
             <td>{{ s.info }}</td>
             <td style="text-align:center">
                 <input type="checkbox" name="paron"
-                       class="{{ s.rank.category }}">
+                       class="p{{ s.rank.category }}">
             </td>
-            <td><select name="reason" class="id_reason">
-                    <option value="none" selected="selected"></option>
-                    <option value="1">OFF</option>
-                    <option value="2">ΕΟΡΤΑΣΤΙΚΗ</option>
-                    <option value="3">ΑΠΟΛΥΣΕΩΣ</option>
-                    <option value="4">ΕΠ.ΑΓΟΡΩΝ</option>
-                    <option value="5">ΑΔΙΚ</option>
-                    <option value="6">251 ΓΝΑ</option>
-                    <option value="7">ΕΞΟΔΟΥΧΟΣ</option>
-                    <option value="8">Ε.Υ.</option>
+            <td style="text-align:center">
+                <input type="checkbox" name="apon"
+                       class="a{{ s.rank.category }}">
+            </td>
+            <td><select name="reason" class="id_reason" style="margin:0;padding:0;display:none">
+                    <option selected="selected"></option>
+                    <option>OFF</option>
+                    <option>ΕΟΡΤΑΣΤΙΚΗ</option>
+                    <option>ΑΠΟΛΥΣΕΩΣ</option>
+                    <option>ΕΠ.ΑΓΟΡΩΝ</option>
+                    <option>251 ΓΝΑ</option>
+                    <option>ΕΞΟΔΟΥΧΟΣ</option>
+                    <option>Ε.Υ.</option>
+                    <option>ΑΔΙΚ</option>
                 </select>
+        </tr>
         {% endfor %}
   </body>
 </html>
