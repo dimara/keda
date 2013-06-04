@@ -16,7 +16,7 @@
    version="1.1"
    inkscape:version="0.47 r22583"
    sodipodi:docname="paralia_anotaton.svg"
-   inkscape:export-filename="/data/keda/paralia_anotaton.png"
+   inkscape:export-filename="/home/dimara/keda/reception/media/paralia_anotaton.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -569,8 +569,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="591.06533"
-     inkscape:cy="337.93147"
+     inkscape:cx="533.39045"
+     inkscape:cy="353.09404"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -603,7 +603,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1722,7 +1722,7 @@
          sodipodi:role="line"
          id="tspan7101"
          x="204.93404"
-         y="769.63617">104-206</tspan></text>
+         y="769.63617">105-106</tspan></text>
     <text
        id="text7103"
        y="815.63617"
@@ -1732,7 +1732,7 @@
          y="815.63617"
          x="204.93404"
          id="tspan7105"
-         sodipodi:role="line">207-208</tspan></text>
+         sodipodi:role="line">107-108</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:9px;font-style:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Charter"
@@ -1833,7 +1833,7 @@
          y="769.63617"
          x="296.93402"
          id="tspan7185"
-         sodipodi:role="line">104-206</tspan></text>
+         sodipodi:role="line">105-106</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:9px;font-style:normal;font-weight:normal;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Charter"
@@ -1853,7 +1853,7 @@
          sodipodi:role="line"
          id="tspan7193"
          x="296.93402"
-         y="815.63617">207-208</tspan></text>
+         y="815.63617">107-108</tspan></text>
     <text
        id="text7195"
        y="815.63617"
