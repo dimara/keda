@@ -6,8 +6,14 @@
 </head>
 <body>
     {% include "includes/menu.html" %}
-    <b>Search for Visitors</b><br>
-    <input type="text" id="search" size="20" placeholder="Type to search" />
+    <form action="/visitors/" method="GET">
+      <div>
+      <b>{{ date }}</b><br>
+      <input id="id_date" type="text" class="vDateField" name="date" size="10"
+             placeholder="Date to check" onkeyup="this.form.submit()"/><br>
+      <input type="text" id="search" size="20" placeholder="Type to search" />
+      </div>
+    </form>
     <table border="1" id="table">
       <tr>
         <th></th>
@@ -16,6 +22,7 @@
         <th>Vehicles</th>
         <th>Contacts</th>
         <th>Appartment</th>
+        <th>Period</th>
       </tr>
       {% for v in visitors %}
       <tr>
@@ -38,9 +45,12 @@
         </td>
         <td>
         {% for res in v.reservations.all %}
-          {% if res.active %}
             {{ res.appartment }}<br>
-          {% endif %}
+        {% endfor %}
+        </td>
+        <td>
+        {% for res in v.reservations.all %}
+            {{ res.period }})<br>
         {% endfor %}
         </td>
       {% endfor %}

@@ -2,6 +2,7 @@
 <head>
     <title>Search for Available Appartments</title>
     {% include "includes/scripts.html" %}
+    <script type="text/javascript" src="/media/js/filter.js"></script>
 </head>
 <body>
     {% include "includes/menu.html" %}
@@ -10,14 +11,10 @@
         <div class="form-row period">
             {% if date_errors %} <p style="color: red;" > {{ date_errors }} </p> {% endif %}
             <div>
-                <label for="id_check_in">CheckIn:</label>
-                <input id="id_check_in" type="text" class="vDateField"
+                <input placeholder="Check In" id="id_check_in" type="text" class="vDateField" onkeyup="this.form.submit()"
                        name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
-                <br>
-                <label for="id_check_out">CheckOut:</label>
-                <input id="id_check_out" type="text" class="vDateField"
+                <input placeholder="Check Out" id="id_check_out" type="text" class="vDateField" onkeyup="this.form.submit()"
                        name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
-                <input type="submit" value="Search">
             </div>
         </div>
         <div class="form-row filters">
@@ -40,20 +37,30 @@
                        {% if damaged %} checked="checked" {% endif %} />
         </div>
     </form>
-      <br>
-      <table border="1">
+      <input type="text" id="search" size="20" placeholder="Type to search" />
+      <table border="1" id="table">
         <tr>
           <th></th>
           <th>Appartment</th>
-          <th></th>
-          <th></th>
+          <th>Rooms</th>
+          <th>Beds</th>
+          <th>Category</th>
+          <th>Damages</th>
         </tr>
         {% for a in avail %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td>{{ a.info }}</td>
-          <td><a href="/appartments/{{ a.id }}/">info</a></td>
-          <td><a href="/reservations/add/?appartment={{ a.id }}">reserve</a></td>
+          <td>{{ a }}</td>
+          <td>{{ a.rooms }}</td>
+          <td>{{ a.beds }}</td>
+          <td>{{ a.category }}</td>
+          <td>
+            {% for d in a.damages.all %}
+              {% if not d.fixed %}
+                {{ d.tag }}: {{ d.info }}<br>
+              {% endif %}
+            {% endfor %}
+          </td>
         </tr>
         {% endfor %}
       </table>
