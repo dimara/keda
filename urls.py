@@ -21,7 +21,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
     url(r'^$', home),
-    url(r'^military_persons/$', military_persons),
     (r'^admin/', include(admin.site.urls)),
     url(r'^test/$', test),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve',
@@ -30,8 +29,6 @@ urlpatterns = patterns('',
     url(r'^availability/$', availability),
     url(r'^appartments/$', appartments),
     url(r'^visitors/$', visitors),
-
-
 
 )
 
