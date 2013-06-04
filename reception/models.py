@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.forms import ModelForm
 import datetime
 
 # Create your models here.
@@ -99,6 +100,10 @@ class Visitor(MilitaryPerson):
             ret += u" (ΜΕΛΟΣ)"
         return ret
 
+class VisitorForm(ModelForm):
+    class Meta:
+            model = Visitor
+
 
 class Staff(MilitaryPerson):
     CATEGORIES = (
@@ -151,6 +156,10 @@ class Appartment(models.Model):
     bunk = models.IntegerField("Bunk Beds", default=0, choices=BEDS)
     category = models.ForeignKey(Category, related_name="appartments", default=None, blank=True, null=True)
     ranking = models.IntegerField("Quality Ranking", choices=RANKINGS, default=None, blank=True, null=True)
+
+    @property
+    def beds(self):
+        return u"%dΔ+%dΜ+%dΚ" % (self.double, self.single, self.bunk)
 
     def __unicode__(self):
         return u"%s-%s" % (self.area, self.no)
@@ -219,7 +228,7 @@ class Reservation(models.Model):
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     info = models.TextField("Further Info", max_length=200, null=True, blank=True)
-    owner = models.ForeignKey(Visitor, related_name="reservations")
+    owner = models.ForeignKey(Person, related_name="reservations")
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations")
@@ -235,12 +244,16 @@ class Reservation(models.Model):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s" % \
                   (self.check_in, self.check_out, self.owner, self.persons, self.appartment)
 
-
     @property
-    def active(self):
+    def period(self):
+        return u"%s..%s" % (self.check_in, self.check_out)
+
+    def active(self, date=None):
+        if not date:
+            date = datetime.date.today()
         return (self.status == "CONFIRMED" and
-                self.check_in and self.check_in <= datetime.date.today() and
-                (not self.check_out or (self.check_out and self.check_out >= datetime.date.today())))
+                self.check_in and self.check_in <= date and
+                (not self.check_out or (self.check_out and self.check_out >= date)))
 
 
 class Period(models.Model):

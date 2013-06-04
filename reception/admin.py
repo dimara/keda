@@ -1,10 +1,30 @@
 from django.contrib import admin
 from keda.reception.models import *
 
+class RelativeInline(admin.TabularInline):
+    model = Relative
+    fk_name = "related"
+    extra = 1
+
+class ContactInfoInline(admin.TabularInline):
+    model = ContactInfo
+    fk_name = "person"
+    extra = 1
+
+class VehicleInline(admin.TabularInline):
+    model = Vehicle
+    fk_name = "owner"
+    extra = 1
+
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('surname', 'name')
     search_fields = ('surname', )
     ordering = ('surname', )
+    inlines = [
+        RelativeInline,
+        ContactInfoInline,
+        VehicleInline,
+        ]
 
 class MilitaryPersonAdmin(PersonAdmin):
     list_display = ('rank', ) + PersonAdmin.list_display
