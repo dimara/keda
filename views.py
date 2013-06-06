@@ -117,13 +117,13 @@ def parousiologio(request):
 def visitors(request):
 
     date = request.GET.get("date", None)
-    print date
     if date:
         y, m, d = map(int, date.split("-"))
         date = datetime.date(y, m, d)
     else:
         date = datetime.date.today()
     visitors = Visitor.objects.all()
+    print date
     ctx = {
       "date": date,
       "visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
