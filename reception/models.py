@@ -112,6 +112,7 @@ class Staff(MilitaryPerson):
       )
 
     category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
+    extra = models.CharField("Extra Info", max_length=25, null=True, blank=True)
 
 
 class Category(models.Model):
@@ -169,6 +170,9 @@ class Appartment(models.Model):
         return u"%s-%s, Δωμάτια: %d (%dΔ+%dΜ+%dΚ)" % \
                 (self.area, self.no, self.rooms, self.double, self.single, self.bunk)
 
+    @property
+    def appartment(self):
+        return u"%s-%s" % (self.area, self.no)
 
 class Unit(models.Model):
     name = models.CharField("Name", max_length=20)
@@ -182,11 +186,13 @@ class Damage(models.Model):
     DAMAGES = (
       ("AC" , "AirCondition"),
       ("TV", "Television"),
+      ("DIRTY", "Extremely Dirty, Needs cleaning, etc."),
       ("ELECTRICAL", "Lights, Sockets, etc."),
-      ("DIRTY", "Extremely Dirty"),
-      ("HYDRAVLICS", "Water leak, etc."),
-      ("OTHER", "Doors, Locks, Windows, etc."),
-      ("EQUIPMENT", "Broken/Missing equipment, etc"),
+      ("HYDRAVLICS", "Water leak, toilet, boiler, etc."),
+      ("DOORS", "Doors, Locks, Windows, etc."),
+      ("EQUIPMENT", "Broken/Missing equipment, etc."),
+      ("WALLS", "Needs painting, broken sealing, etc."),
+      ("OTHER", "Other kind of damage"),
     )
     tag = models.CharField("Tag", choices=DAMAGES, max_length=30)
     appartment = models.ForeignKey(Appartment, related_name="damages", null=True, blank=True)
@@ -213,10 +219,12 @@ class Reservation(models.Model):
     )
 
     RESERVATION_TYPES = (
-      ("V", "Vacation"),
-      ("O", "Permanent"),
-      ("U", "Unit"),
-      ("S", "Schools"),
+      (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
+      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
+      (u"ΗΜ.ΑΠΟΖ", "ΗΜ.ΑΠΟΖ."),
+      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
+      (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
+      (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
       )
 
     STATUSES = (
@@ -254,6 +262,23 @@ class Reservation(models.Model):
         return (self.status == "CONFIRMED" and
                 self.check_in and self.check_in <= date and
                 (not self.check_out or (self.check_out and self.check_out >= date)))
+
+
+class Receipt(models.Model):
+    RECEIPT_TYPES = (
+      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
+      (u"ΗΜ.ΑΠΟΖ", "ΗΜ.ΑΠΟΖ."),
+      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
+      )
+    rtype = models.CharField("Type", choices=RECEIPT_TYPES, max_length=20,
+                                null=True, blank=True)
+    no = models.CharField("No", max_length=10)
+    reservation = models.ForeignKey(Reservation, related_name="receipts")
+    euro = models.DecimalField("Euro", decimal_places=2, max_digits=10 )
+
+    def __unicode__(self):
+        return u"Type: %s, No: %s, Euro: %0.2f, Name: %s, Reservation: %s" % \
+                    (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
 
 
 class Period(models.Model):

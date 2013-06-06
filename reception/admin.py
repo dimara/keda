@@ -16,6 +16,11 @@ class VehicleInline(admin.TabularInline):
     fk_name = "owner"
     extra = 0
 
+class ReceiptInline(admin.TabularInline):
+    model = Receipt
+    fk_name = "reservation"
+    extra = 0
+
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('surname', 'name')
     search_fields = ('surname', )
@@ -58,7 +63,9 @@ class ReservationAdmin(admin.ModelAdmin):
     list_display = ('owner', 'check_in', 'check_out', 'appartment', 'res_type')
     ordering = ('check_in', 'check_out', )
     search_fields = ('owner', 'appartment')
-
+    inlines = [
+        ReceiptInline,
+        ]
 
 
 admin.site.register(Rank)
