@@ -21,12 +21,13 @@
         <tr id="0"> <td>Μ.Υ.</td> <td id="c0"></td> <td id="p0"></td> <td id="a0"></td> </tr>
         <tr id="4"> <td>ΣΥΝΟΛΟ</td> <td id="c4"></td> <td id="p4"></td> <td id="a4"></td>  </tr>
       </table>
+      <br>
       <table border="1" class="tbl" id="staff">
         <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ</th> <th>AITIA</th>
         {% for s in staff %}
         <tr id="{{ s.id }}">
             <td id="idx" style="text-align:center">{{ forloop.counter }}</td>
-            <td>{{ s.info }}</td>
+            <td>{{ s.info }} {% if s.extra %} ({{ s.extra }}) {% endif %}</td>
             <td style="text-align:center">
                 <input type="checkbox" name="paron"
                        class="p{{ s.rank.category }}">
@@ -36,13 +37,13 @@
                        class="a{{ s.rank.category }}">
             </td>
             <td><select name="reason" class="id_reason" style="margin:0;padding:0;display:none">
-                    <option selected="selected"></option>
-                    <option>OFF</option>
+                    <option selected="selected">OFF</option>
                     <option>ΕΟΡΤΑΣΤΙΚΗ</option>
                     <option>ΑΠΟΛΥΣΕΩΣ</option>
                     <option>ΕΠ.ΑΓΟΡΩΝ</option>
                     <option>251 ΓΝΑ</option>
                     <option>ΕΞΟΔΟΥΧΟΣ</option>
+                    <option>ΑΠΟΓ.ΒΑΡΔΙΑ</option>
                     <option>Ε.Υ.</option>
                     <option>ΑΔΙΚ</option>
                 </select>
