@@ -7,12 +7,19 @@
 <body>
     {% include "includes/menu.html" %}
     <form action="/visitors/" method="GET">
-      <b>{{ date }}</b><br>
-      <div class="form-row date">
-        <input id="id_date" type="text" class="vDateField" name="date" size="10"
-               placeholder="Date to check" onkeyup="this.form.submit()"/><br>
+      <div class="form-row">
+        <b>{{ date }}</b><br>
+        <input id="id_date" type="text" class="vDateField" name="date" size="20"
+               placeholder="Check for specific date.." onkeyup="this.form.submit()"/><br>
       </div>
-      <div class="form-row date">
+      <div class="form-row">
+        <b> {% if start and end %} {{ start }} ... {{ end }} {% endif %} </b><br>
+        <input id="id_start" type="text" class="vDateField" name="start" size="20"
+               placeholder="Check for specific.." /><br>
+        <input id="id_end" type="text" class="vDateField" name="end" size="20"
+               placeholder="..period" onkeyup="this.form.submit()"/><br>
+      </div>
+      <div class="form-row">
         <input type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
@@ -25,35 +32,35 @@
         <th>Contacts</th>
         <th>Appartment</th>
         <th>Period</th>
+        <th>Type</th>
       </tr>
-      {% for v in visitors %}
+      {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ v.info }}</td>
+        <td>{{ r.owner }}</td>
         <td>
-        {% for r in v.relatives.all %}
-          {{ r }} - {{ r.relationship }}<br>
+        {% for rr in r.owner.relatives.all %}
+          {{ rr }} - {{ rr.relationship }}<br>
         {% endfor %}
         </td>
         <td>
-        {% for veh in v.vehicles.all %}
-          {{ veh }}<br>
+        {% for v in r.owner.vehicles.all %}
+          {{ v }}<br>
         {% endfor %}
         </td>
         <td>
-        {% for c in v.contacts.all %}
+        {% for c in r.owner.contacts.all %}
           {{ c.mobile }}<br>
         {% endfor %}
         </td>
         <td>
-        {% for res in v.reservations.all %}
-            {{ res.appartment }}<br>
-        {% endfor %}
+            {{ r.appartment }}
         </td>
         <td>
-        {% for res in v.reservations.all %}
-            {{ res.period }}<br>
-        {% endfor %}
+            {{ r.period }}
+        </td>
+        <td>
+            {{ r.res_type }}
         </td>
       {% endfor %}
     </table>

@@ -117,16 +117,31 @@ def parousiologio(request):
 def visitors(request):
 
     date = request.GET.get("date", None)
-    if date:
-        y, m, d = map(int, date.split("-"))
-        date = datetime.date(y, m, d)
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    reservations = Reservation.objects.all().order_by("appartment")
+    if start and end:
+        y, m, d = map(int, start.split("-"))
+        start = datetime.date(y, m, d)
+        y, m, d = map(int, end.split("-"))
+        end = datetime.date(y, m, d)
+        reservations = [r for r in reservations if r.inside(start, end)]
     else:
-        date = datetime.date.today()
-    visitors = Visitor.objects.all()
-    print date
+        if date:
+            y, m, d = map(int, date.split("-"))
+            date = datetime.date(y, m, d)
+        else:
+            date = datetime.date.today()
+        reservations = [r for r in reservations if r.active(date)]
+
+    #visitors = Visitor.objects.all()
+    print reservations
     ctx = {
       "date": date,
-      "visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "start": start,
+      "end": end,
+      #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "reservations": reservations,
       }
     return render_to_response("visitors.html", ctx, context_instance=RequestContext(request))
 

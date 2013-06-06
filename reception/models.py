@@ -262,6 +262,14 @@ class Reservation(models.Model):
                 self.check_in and self.check_in <= date and
                 (not self.check_out or (self.check_out and self.check_out >= date)))
 
+    def inside(self, start, end):
+        return (
+             (self.check_in >= start and self.check_in <= end) or
+             (self.check_out >= start and self.check_out <= end) or
+             (self.check_in >= start and self.check_out <= end) or
+             (self.check_in <= start and self.check_out >= end)
+           )
+
 
 class Receipt(models.Model):
     RECEIPT_TYPES = (

@@ -21,6 +21,11 @@ class ReceiptInline(admin.TabularInline):
     fk_name = "reservation"
     extra = 0
 
+class ReservationInline(admin.TabularInline):
+    model = Reservation
+    fk_name = "owner"
+    extra = 0
+
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('surname', 'name')
     search_fields = ('surname', )
@@ -29,6 +34,7 @@ class PersonAdmin(admin.ModelAdmin):
         RelativeInline,
         ContactInfoInline,
         VehicleInline,
+        ReservationInline,
         ]
 
 class DamageInline(admin.TabularInline):
