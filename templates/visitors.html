@@ -7,11 +7,13 @@
 <body>
     {% include "includes/menu.html" %}
     <form action="/visitors/" method="GET">
-      <div>
       <b>{{ date }}</b><br>
-      <input id="id_date" type="text" class="vDateField" name="date" size="10"
-             placeholder="Date to check" onkeyup="this.form.submit()"/><br>
-      <input type="text" id="search" size="20" placeholder="Type to search" />
+      <div class="form-row date">
+        <input id="id_date" type="text" class="vDateField" name="date" size="10"
+               placeholder="Date to check" onkeyup="this.form.submit()"/><br>
+      </div>
+      <div class="form-row date">
+        <input type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
     <table border="1" id="table">
