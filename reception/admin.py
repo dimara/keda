@@ -4,17 +4,17 @@ from keda.reception.models import *
 class RelativeInline(admin.TabularInline):
     model = Relative
     fk_name = "related"
-    extra = 1
+    extra = 0
 
 class ContactInfoInline(admin.TabularInline):
     model = ContactInfo
     fk_name = "person"
-    extra = 1
+    extra = 0
 
 class VehicleInline(admin.TabularInline):
     model = Vehicle
     fk_name = "owner"
-    extra = 1
+    extra = 0
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('surname', 'name')
@@ -26,9 +26,26 @@ class PersonAdmin(admin.ModelAdmin):
         VehicleInline,
         ]
 
+class DamageInline(admin.TabularInline):
+    model = Damage
+    fk_name = "appartment"
+    extra = 0
+
+class AppartmentAdmin(admin.ModelAdmin):
+    list_display = ('appartment', 'rooms', 'beds', 'category', )
+    ordering = ('category', )
+    inlines = [
+        DamageInline,
+        ]
+
 class MilitaryPersonAdmin(PersonAdmin):
-    list_display = ('rank', ) + PersonAdmin.list_display
+    list_display = PersonAdmin.list_display + ('rank', 'speciality')
     list_filter = ('active', )
+    ordering = ('rank', )
+
+
+class StaffAdmin(MilitaryPersonAdmin):
+    list_display = MilitaryPersonAdmin.list_display + ('category', 'extra')
 
 
 class DamageAdmin(admin.ModelAdmin):
@@ -38,7 +55,7 @@ class DamageAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'check_in', 'check_out', 'appartment')
+    list_display = ('owner', 'check_in', 'check_out', 'appartment', 'res_type')
     ordering = ('check_in', 'check_out', )
     search_fields = ('owner', 'appartment')
 
@@ -49,9 +66,9 @@ admin.site.register(Vehicle)
 admin.site.register(ContactInfo)
 admin.site.register(Relative, PersonAdmin)
 admin.site.register(Visitor, MilitaryPersonAdmin)
-admin.site.register(Staff, MilitaryPersonAdmin)
+admin.site.register(Staff, StaffAdmin)
 admin.site.register(Category)
-admin.site.register(Appartment)
+admin.site.register(Appartment, AppartmentAdmin)
 admin.site.register(Unit)
 admin.site.register(Damage, DamageAdmin)
 admin.site.register(Reservation, ReservationAdmin)
