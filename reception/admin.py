@@ -66,13 +66,17 @@ class DamageAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'check_in', 'check_out', 'appartment', 'res_type')
+    list_display = ('owner', 'check_in', 'check_out', 'appartment', 'res_type', 'telephone')
+    list_filter = ('telephone', )
     ordering = ('check_in', 'check_out', )
     search_fields = ('owner', 'appartment')
     inlines = [
         ReceiptInline,
         ]
 
+class ReceiptAdmin(admin.ModelAdmin):
+    ordering = ('no', 'reservation', 'euro', 'rtype' )
+    list_display = ('no', 'reservation', 'euro', 'rtype')
 
 admin.site.register(Rank)
 admin.site.register(Vehicle)
@@ -83,5 +87,6 @@ admin.site.register(Staff, StaffAdmin)
 admin.site.register(Category)
 admin.site.register(Appartment, AppartmentAdmin)
 admin.site.register(Unit)
+admin.site.register(Receipt, ReceiptAdmin)
 admin.site.register(Damage, DamageAdmin)
 admin.site.register(Reservation, ReservationAdmin)

@@ -38,7 +38,10 @@ class Person(models.Model):
     surname = models.CharField("Last Name", max_length=30)
 
     def __unicode__(self):
-        return u"%s %s" % (self.surname, self.name)
+        ret = u"%s " % (self.surname)
+        if self.name:
+          ret += self.name
+        return ret
 
 
 class Vehicle(models.Model):
@@ -49,7 +52,14 @@ class Vehicle(models.Model):
     owner = models.ForeignKey(Person, related_name="vehicles", null=True, blank=True)
 
     def __unicode__(self):
-        return u"%s: %s %s (%s)" % (self.plate, self.brand, self.model, self.color)
+        ret = u"%s" % self.plate
+        if self.brand:
+            ret += self.brand
+        if self.model:
+            ret += self.model
+        if self.color:
+            ret += "(%s)" % self.color
+        return ret
 
 
 class ContactInfo(models.Model):
@@ -59,7 +69,15 @@ class ContactInfo(models.Model):
     person = models.ForeignKey(Person, related_name="contacts", null=True, blank=True)
 
     def __unicode__(self):
-        return u"Address: %s, Tel: %s, Mobile: %s" % (self.address, self.telephone, self.mobile)
+        ret = u""
+        if self.mobile:
+          ret += "Mobile: %s" % self.mobile
+        if self.telephone:
+          ret += " Tel: %s, " % self.telephone
+        if self.address:
+          ret += " Address: %s, " % self.address
+
+        return ret
 
 
 class Relative(Person):
@@ -76,6 +94,12 @@ class Relative(Person):
 
     related = models.ForeignKey(Person, related_name="relatives", null=True, blank=True)
     relationship = models.CharField("Relationship", choices=RELATIONSHIPS, max_length=30, blank=True, null=True)
+
+    def __unicode__(self):
+        ret = super(Relative, self).__unicode__()
+        if self.relationship:
+            ret += " - %s" % self.relationship
+        return ret
 
 
 class MilitaryPerson(Person):
@@ -242,9 +266,13 @@ class Reservation(models.Model):
     status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
     res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
                                 null=True, blank=True)
+    telephone = models.BooleanField("Telephone", default=False)
 
     def __unicode__(self):
-        return  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
+        ret =  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
+        if self.receipts:
+            ret += "(PAYED)"
+        return ret
 
     @property
     def info(self):
@@ -253,21 +281,29 @@ class Reservation(models.Model):
 
     @property
     def period(self):
-        return u"%s..%s" % (self.check_in, self.check_out)
+        ret = u"%s..." % self.check_in
+        if self.check_out:
+            ret += u"%s" % self.check_out
+        return ret
 
-    def active(self, date=None):
+    def active(self, date=None, include_canceled=True):
         if not date:
             date = datetime.date.today()
-        return (self.status == "CONFIRMED" and
-                self.check_in and self.check_in <= date and
-                (not self.check_out or (self.check_out and self.check_out >= date)))
+        status = (self.check_in and self.check_in <= date and
+                 (not self.check_out or (self.check_out and self.check_out >= date)))
+        if include_canceled:
+            return status
+        else:
+            return self.status == "CONFIRMED" and status
 
     def inside(self, start, end):
+        #TODO: please make it simpler
         return (
-             (self.check_in >= start and self.check_in <= end) or
-             (self.check_out >= start and self.check_out <= end) or
-             (self.check_in >= start and self.check_out <= end) or
-             (self.check_in <= start and self.check_out >= end)
+             (self.check_in and not self.check_out and self.check_in <= end) or
+             (self.check_in and self.check_in >= start and self.check_in <= end) or
+             (self.check_out and self.check_out >= start and self.check_out <= end) or
+             (self.check_in and self.check_out and self.check_in >= start and self.check_out <= end) or
+             (self.check_in and self.check_out and self.check_in <= start and self.check_out >= end)
            )
 
 

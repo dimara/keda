@@ -92,7 +92,6 @@ def availability(request):
       "damaged": damaged,
       "avail": avail,
       }
-    print ctx
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
 
@@ -119,7 +118,8 @@ def visitors(request):
     date = request.GET.get("date", None)
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
-    reservations = Reservation.objects.all().order_by("appartment")
+    #reservations = Reservation.objects.all().order_by("owner__surname")
+    reservations = Reservation.objects.all().order_by("owner__surname")
     if start and end:
         y, m, d = map(int, start.split("-"))
         start = datetime.date(y, m, d)
@@ -135,7 +135,6 @@ def visitors(request):
         reservations = [r for r in reservations if r.active(date)]
 
     #visitors = Visitor.objects.all()
-    print reservations
     ctx = {
       "date": date,
       "start": start,

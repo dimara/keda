@@ -30,22 +30,23 @@
         <th>Relatives</th>
         <th>Vehicles</th>
         <th>Contacts</th>
-        <th>Appartment</th>
         <th>Period</th>
+        <th>Appartment</th>
         <th>Type</th>
+        <th>Payed</th>
       </tr>
       {% for r in reservations %}
-      <tr>
+      <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}>
         <td>{{ forloop.counter }}</td>
-        <td>{{ r.owner }}</td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner }}</a></td>
         <td>
         {% for rr in r.owner.relatives.all %}
-          {{ rr }} - {{ rr.relationship }}<br>
+          {{ rr }}<br>
         {% endfor %}
         </td>
         <td>
         {% for v in r.owner.vehicles.all %}
-          {{ v }}<br>
+          {{ v.plate }}<br>
         {% endfor %}
         </td>
         <td>
@@ -53,14 +54,15 @@
           {{ c.mobile }}<br>
         {% endfor %}
         </td>
+        <td><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
         <td>
             {{ r.appartment }}
         </td>
+        <td>{{ r.res_type }}</td>
         <td>
-            {{ r.period }}
-        </td>
-        <td>
-            {{ r.res_type }}
+        {% for p in r.receipts.all %}
+          {{ p.no }}<br>
+        {% endfor %}
         </td>
       {% endfor %}
     </table>
