@@ -1,5 +1,9 @@
 # Django settings for keda project.
 
+import os
+
+ROOT_DIR = os.getcwd()
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -22,7 +26,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '/home/tasos13/keda/db.sqlite3',                      # Or path to database file if using sqlite3.
+        'NAME': 'db.sqlite3',                      # Or path to database file if using sqlite3.
     }
 }
 # Hosts/domain names that are valid for this site; required if DEBUG is False
@@ -54,7 +58,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/tasos13/keda/reception/media/'
+MEDIA_ROOT = ROOT_DIR + '/reception/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -90,7 +94,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/tasos13/keda/templates',
+    ROOT_DIR + '/templates',
 )
 
 INSTALLED_APPS = (
