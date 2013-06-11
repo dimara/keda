@@ -9,17 +9,22 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+#         'NAME': 'keda',                      # Or path to database file if using sqlite3.
+#         'USER': 'keda',                      # Not used with sqlite3.
+#         'PASSWORD': 'marika',                  # Not used with sqlite3.
+#         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+#         'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'keda',                      # Or path to database file if using sqlite3.
-        'USER': 'keda',                      # Not used with sqlite3.
-        'PASSWORD': 'marika',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': '/home/dimara/keda/db.sqlite3',                      # Or path to database file if using sqlite3.
     }
 }
-
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
