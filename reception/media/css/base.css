@@ -757,3 +757,6 @@ table#change-history tbody th {
     color: #666;
 }
 
+#titles{
+    display: table-row!important;
+}
