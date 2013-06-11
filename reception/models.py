@@ -90,6 +90,10 @@ class Relative(Person):
       (u"ΑΝΗΨΙΑ", "ΑΝΗΨΙΑ"),
       (u"ΑΔΕΡΦΙΑ", "ΑΔΕΡΦΙΑ"),
       (u"ΕΓΓΟΝΙΑ", "ΕΓΓΟΝΙΑ"),
+      (u"ΝΥΦΗ", "ΝΥΦΗ"),
+      (u"ΓΑΜΠΡΟΣ", "ΓΑΜΠΡΟΣ"),
+      (u"ΠΕΘΕΡΟΣ", "ΠΕΘΕΡΟΣ"),
+      (u"ΠΕΘΕΡΑ", "ΠΕΘΕΡΑ"),
       )
 
     related = models.ForeignKey(Person, related_name="relatives", null=True, blank=True)
