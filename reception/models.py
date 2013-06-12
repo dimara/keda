@@ -271,6 +271,7 @@ class Reservation(models.Model):
     res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
                                 null=True, blank=True)
     telephone = models.BooleanField("Telephone", default=False)
+    book_ref = models.IntegerField("No", null=True, blank=True)
 
     def __unicode__(self):
         ret =  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
