@@ -57,6 +57,8 @@ class MilitaryPersonAdmin(PersonAdmin):
 
 class StaffAdmin(MilitaryPersonAdmin):
     list_display = MilitaryPersonAdmin.list_display + ('category', 'extra')
+    list_filter = ('extra', )
+    search_fields = ('extra', )
 
 
 class DamageAdmin(admin.ModelAdmin):
