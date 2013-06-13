@@ -36,9 +36,10 @@
         <th>Payed</th>
       </tr>
       {% for r in reservations %}
-      <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}>
+      <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}
+          {% if r.status = "PENDING" %} style="color:yellow" {% endif %}>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner }}</a></td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
         <td>
         {% for rr in r.owner.relatives.all %}
           {{ rr }}<br>

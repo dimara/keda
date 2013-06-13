@@ -275,7 +275,7 @@ class Reservation(models.Model):
 
     def __unicode__(self):
         ret =  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
-        if self.receipts:
+        if self.receipts.all():
             ret += "(PAYED)"
         return ret
 
