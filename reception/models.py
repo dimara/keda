@@ -43,6 +43,9 @@ class Person(models.Model):
           ret += self.name
         return ret
 
+    class Meta:
+        unique_together = ('name', 'surname',)
+
 
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
@@ -310,6 +313,14 @@ class Reservation(models.Model):
              (self.check_in and self.check_out and self.check_in >= start and self.check_out <= end) or
              (self.check_in and self.check_out and self.check_in <= start and self.check_out >= end)
            )
+
+    def save(self, force_insert=False, force_update=False):
+        all_res = self.appartment.reservations.all()
+        for r in all_res:
+            if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
+                raise Exception("FATAL: Appartment %s already booked by %s from %s until %s" %
+                                (r.appartment, r.owner, r.check_in, r.check_out))
+        super(Reservation, self).save(force_insert, force_update)
 
 
 class Receipt(models.Model):
