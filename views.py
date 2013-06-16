@@ -118,9 +118,13 @@ def visitors(request):
     date = request.GET.get("date", None)
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
+    period = id_from_request(request.GET, "period")
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.all().order_by("owner__surname")
-    if start and end:
+    if period:
+        p = Period.objects.get(id=period)
+        reservations = [r for r in reservations if r.inside(p.start, p.end)]
+    elif start and end:
         y, m, d = map(int, start.split("-"))
         start = datetime.date(y, m, d)
         y, m, d = map(int, end.split("-"))
@@ -139,7 +143,9 @@ def visitors(request):
       "date": date,
       "start": start,
       "end": end,
+      "period": p,
       #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "periods": Period.objects.all(),
       "reservations": reservations,
       }
     return render_to_response("visitors.html", ctx, context_instance=RequestContext(request))

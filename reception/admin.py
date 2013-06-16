@@ -80,6 +80,7 @@ class ReceiptAdmin(admin.ModelAdmin):
     ordering = ('no', 'reservation', 'euro', 'rtype' )
     list_display = ('no', 'reservation', 'euro', 'rtype')
 
+admin.site.register(Period)
 admin.site.register(Rank)
 admin.site.register(Vehicle)
 admin.site.register(ContactInfo)

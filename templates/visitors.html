@@ -20,6 +20,15 @@
                placeholder="..period" onkeyup="this.form.submit()"/><br>
       </div>
       <div class="form-row">
+        <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
+                <select name="period" onchange="this.form.submit()" >
+                    <option value="">---------</option>
+                    {% for p in periods %}
+                    <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
+                    {% endfor %}
+                </select>
+      </div>
+      <div class="form-row">
         <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
