@@ -156,6 +156,8 @@ class Category(models.Model):
 
 class Appartment(models.Model):
     AREAS = (
+      ("A", "A"),
+      ("I", "I"),
       ("B", "B"),
       ("Z", "Z"),
       ("M1", "M1"),
@@ -316,6 +318,8 @@ class Reservation(models.Model):
 
     def save(self, force_insert=False, force_update=False):
         all_res = self.appartment.reservations.all()
+        if self.id:
+            all_res = all_res.exclude(id=self.id)
         for r in all_res:
             if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
                 raise Exception("FATAL: Appartment %s already booked by %s from %s until %s" %
