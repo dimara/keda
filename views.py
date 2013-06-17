@@ -122,6 +122,7 @@ def visitors(request):
     p = None
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.all().order_by("owner__surname")
+    p = None
     if period:
         p = Period.objects.get(id=period)
         reservations = [r for r in reservations if r.inside(p.start, p.end)]

@@ -1,32 +1,40 @@
 from django.contrib import admin
+from nested_inlines.admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
 from keda.reception.models import *
 
 class RelativeInline(admin.TabularInline):
     model = Relative
     fk_name = "related"
     extra = 0
+    inlines = []
 
 class ContactInfoInline(admin.TabularInline):
     model = ContactInfo
     fk_name = "person"
     extra = 0
+    inlines = []
 
 class VehicleInline(admin.TabularInline):
     model = Vehicle
     fk_name = "owner"
     extra = 0
+    inlines = []
 
 class ReceiptInline(admin.TabularInline):
     model = Receipt
     fk_name = "reservation"
     extra = 0
+    inlines = []
 
-class ReservationInline(admin.TabularInline):
+class NestedReservationInline(NestedTabularInline):
     model = Reservation
     fk_name = "owner"
     extra = 0
+    inlines = [
+        ReceiptInline,
+        ]
 
-class PersonAdmin(admin.ModelAdmin):
+class NestedPersonAdmin(NestedModelAdmin):
     list_display = ('surname', 'name')
     search_fields = ('surname', )
     ordering = ('surname', )
@@ -34,13 +42,14 @@ class PersonAdmin(admin.ModelAdmin):
         RelativeInline,
         ContactInfoInline,
         VehicleInline,
-        ReservationInline,
+        NestedReservationInline,
         ]
 
 class DamageInline(admin.TabularInline):
     model = Damage
     fk_name = "appartment"
     extra = 0
+    inlines = []
 
 class AppartmentAdmin(admin.ModelAdmin):
     list_display = ('appartment', 'rooms', 'beds', 'category', )
@@ -49,14 +58,14 @@ class AppartmentAdmin(admin.ModelAdmin):
         DamageInline,
         ]
 
-class MilitaryPersonAdmin(PersonAdmin):
-    list_display = PersonAdmin.list_display + ('rank', 'speciality')
+class NestedMilitaryPersonAdmin(NestedPersonAdmin):
+    list_display = NestedPersonAdmin.list_display + ('rank', 'speciality')
     list_filter = ('active', )
     ordering = ('rank', )
 
 
-class StaffAdmin(MilitaryPersonAdmin):
-    list_display = MilitaryPersonAdmin.list_display + ('category', 'extra')
+class NestedStaffAdmin(NestedMilitaryPersonAdmin):
+    list_display = NestedMilitaryPersonAdmin.list_display + ('category', 'extra')
     list_filter = ('extra', )
     search_fields = ('extra', )
 
@@ -84,9 +93,9 @@ admin.site.register(Period)
 admin.site.register(Rank)
 admin.site.register(Vehicle)
 admin.site.register(ContactInfo)
-admin.site.register(Relative, PersonAdmin)
-admin.site.register(Visitor, MilitaryPersonAdmin)
-admin.site.register(Staff, StaffAdmin)
+admin.site.register(Relative, NestedPersonAdmin)
+admin.site.register(Visitor, NestedMilitaryPersonAdmin)
+admin.site.register(Staff, NestedStaffAdmin)
 admin.site.register(Category)
 admin.site.register(Appartment, AppartmentAdmin)
 admin.site.register(Unit)
