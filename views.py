@@ -119,6 +119,7 @@ def visitors(request):
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
     period = id_from_request(request.GET, "period")
+    p = None
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.all().order_by("owner__surname")
     if period:
