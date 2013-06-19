@@ -1,0 +1,80 @@
+<html>
+<head>
+    <title>Search for Persons</title>
+    {% include "includes/scripts.html" %}
+    <script type="text/javascript" src="/media/js/filter.js"></script>
+</head>
+<body>
+    {% include "includes/menu.html" %}
+    <form action="/visitors/" method="GET">
+      <div class="form-row">
+        <b>{{ date }}</b><br>
+        <input id="id_date" type="text" class="vDateField" name="date" size="20"
+               placeholder="Check for specific date.." onkeyup="this.form.submit()"/><br>
+      </div>
+      <div class="form-row">
+        <b> {% if start and end %} {{ start }} ... {{ end }} {% endif %} </b><br>
+        <input id="id_start" type="text" class="vDateField" name="start" size="20"
+               placeholder="Check for specific.." /><br>
+        <input id="id_end" type="text" class="vDateField" name="end" size="20"
+               placeholder="..period" onkeyup="this.form.submit()"/><br>
+      </div>
+      <div class="form-row">
+        <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
+                <select name="period" onchange="this.form.submit()" >
+                    <option value="">---------</option>
+                    {% for p in periods %}
+                    <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
+                    {% endfor %}
+                </select>
+      </div>
+      <div class="form-row">
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
+      </div>
+    </form>
+    <table border="1" id="table">
+      <tr id="titles">
+        <th></th>
+        <th>Visitor</th>
+        <th>Relatives</th>
+        <th>Vehicles</th>
+        <th>Contacts</th>
+        <th>Period</th>
+        <th>Appartment</th>
+        <th>Type</th>
+        <th>Payed</th>
+      </tr>
+      {% for r in reservations %}
+      <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}
+          {% if r.status = "PENDING" %} style="color:yellow" {% endif %}>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
+        <td>
+        {% for rr in r.owner.relatives.all %}
+          {{ rr }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for v in r.owner.vehicles.all %}
+          {{ v.plate }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for c in r.owner.contacts.all %}
+          {{ c.mobile }}<br>
+        {% endfor %}
+        </td>
+        <td><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
+        <td>
+            {{ r.appartment }}
+        </td>
+        <td>{{ r.res_type }}</td>
+        <td>
+        {% for p in r.receipts.all %}
+          {{ p.no }}<br>
+        {% endfor %}
+        </td>
+      {% endfor %}
+    </table>
+  </body>
+</html>
