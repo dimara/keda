@@ -1,5 +1,5 @@
 from django.contrib import admin
-from nested_inlines.admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
+from keda.reception.nested_inlines.admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
 from keda.reception.models import *
 
 class RelativeInline(admin.TabularInline):
