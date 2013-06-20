@@ -36,8 +36,10 @@
                 <input type="checkbox" name="damaged" id="id_damaged" onchange="this.form.submit()"
                        {% if damaged %} checked="checked" {% endif %} />
         </div>
+        <div class="form-row filters">
+            <input type="text" id="search" size="20" placeholder="Type to search" />
+        </div>
     </form>
-      <input type="text" id="search" size="20" placeholder="Type to search" />
       <table border="1" id="table">
         <tr id="titles">
           <th></th>

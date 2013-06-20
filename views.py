@@ -45,18 +45,23 @@ def id_from_request(qd, name):
 
 def check_period(avail, check_in, check_out):
     err = None
+    ret = []
     if (check_in and check_out):
         if (check_out <= check_in):
             err = "ERROR: Check-out before Check-in!!!"
         else:
-            # check in not inside period
-            avail = avail.exclude(reservations__check_in__lt=check_in, reservations__check_out__gt=check_in)
-            # check out not inside period
-            avail = avail.exclude(reservations__check_in__lt=check_out, reservations__check_out__gt=check_out)
-            # period not between check in and check out
-            avail = avail.exclude(reservations__check_in__gt=check_in, reservations__check_out__lt=check_out)
+            for a in avail:
+                ok = True
+                for r in a.reservations.all():
+                    if r.status in ("CONFIRMED") and r.inside(check_in, check_out):
+                        ok = False
+                        break
+                if ok:
+                    ret.append(a)
 
-    return (avail, err)
+    ret = sorted(ret, key=lambda a: a.appartment)
+
+    return (ret, err)
 
 
 def availability(request):
@@ -79,14 +84,14 @@ def availability(request):
 
     date_errors = None
     if (check_in and check_out):
-        avail, date_errors = check_period(avail, check_in, check_out)
+        avail, date_errors = check_period(avail, get_datetime(check_in), get_datetime(check_out))
 
     ctx =  {
       "check_in": check_in,
       "check_out": check_out,
       "date_errors": date_errors,
       "area": area,
-      "areas": Appartment.AREAS + settings.USER_DEFINED_AREAS,
+      "areas": Appartment.AREAS,
       "category": category,
       "categories": Category.objects.values(),
       "damaged": damaged,
@@ -113,6 +118,13 @@ def parousiologio(request):
     return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
 
 
+def get_datetime(value):
+    if value:
+      y, m, d = map(int, value.split("-"))
+      return datetime.date(y, m, d)
+    else:
+      return datetime.date.today()
+
 def visitors(request):
 
     date = request.GET.get("date", None)
@@ -127,17 +139,11 @@ def visitors(request):
         p = Period.objects.get(id=period)
         reservations = [r for r in reservations if r.inside(p.start, p.end)]
     elif start and end:
-        y, m, d = map(int, start.split("-"))
-        start = datetime.date(y, m, d)
-        y, m, d = map(int, end.split("-"))
-        end = datetime.date(y, m, d)
+        start = get_datetime(start)
+        end = get_datetime(end)
         reservations = [r for r in reservations if r.inside(start, end)]
     else:
-        if date:
-            y, m, d = map(int, date.split("-"))
-            date = datetime.date(y, m, d)
-        else:
-            date = datetime.date.today()
+        date = get_datetime(date)
         reservations = [r for r in reservations if r.active(date)]
 
     #visitors = Visitor.objects.all()
@@ -166,17 +172,11 @@ def test(request):
         p = Period.objects.get(id=period)
         reservations = [r for r in reservations if r.inside(p.start, p.end)]
     elif start and end:
-        y, m, d = map(int, start.split("-"))
-        start = datetime.date(y, m, d)
-        y, m, d = map(int, end.split("-"))
-        end = datetime.date(y, m, d)
+        start = get_datetime(start)
+        end = get_datetime(end)
         reservations = [r for r in reservations if r.inside(start, end)]
     else:
-        if date:
-            y, m, d = map(int, date.split("-"))
-            date = datetime.date(y, m, d)
-        else:
-            date = datetime.date.today()
+        date = get_datetime(date)
         reservations = [r for r in reservations if r.active(date)]
 
     #visitors = Visitor.objects.all()
