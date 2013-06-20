@@ -317,13 +317,14 @@ class Reservation(models.Model):
            )
 
     def save(self, force_insert=False, force_update=False):
-        all_res = self.appartment.reservations.all()
-        if self.id:
-            all_res = all_res.exclude(id=self.id)
-        for r in all_res:
-            if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
-                raise Exception("FATAL: Appartment %s already booked by %s from %s until %s" %
-                                (r.appartment, r.owner, r.check_in, r.check_out))
+        if self.appartment:
+            all_res = self.appartment.reservations.all()
+            if self.id:
+                all_res = all_res.exclude(id=self.id)
+            for r in all_res:
+                if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
+                    raise Exception("FATAL: Appartment %s already booked by %s from %s until %s" %
+                                    (r.appartment, r.owner, r.check_in, r.check_out))
         super(Reservation, self).save(force_insert, force_update)
 
 
