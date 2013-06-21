@@ -217,15 +217,15 @@ class Unit(models.Model):
 
 class Damage(models.Model):
     DAMAGES = (
-      ("AC" , "AirCondition"),
-      ("TV", "Television"),
-      ("DIRTY", "Extremely Dirty, Needs cleaning, etc."),
-      ("ELECTRICAL", "Lights, Sockets, etc."),
-      ("HYDRAVLICS", "Water leak, toilet, boiler, etc."),
-      ("DOORS", "Doors, Locks, Windows, etc."),
-      ("EQUIPMENT", "Broken/Missing equipment, etc."),
-      ("WALLS", "Needs painting, broken sealing, etc."),
-      ("OTHER", "Other kind of damage"),
+      ("AC" , "A/C"),
+      ("TV", "TV"),
+      ("DIRTY", "Πολύ βρώμικο, Θέλει καθάρισμα, κλπ."),
+      ("ELECTRICAL", "Φώτα, Μπρίζες, κλπ."),
+      ("HYDRAVLICS", "Διαρροές, τουαλέτες, Θερμοσίφωνες, κλπ."),
+      ("DOORS", "Πόρτες, Κλειδαριές, Παράθυρα, κλπ."),
+      ("EQUIPMENT", "Χαλασμένος/Ελλιπής εξοπλισμός, etc."),
+      ("WALLS", "Θέλει βάψιμο, χαλασμένο ταβάνι/τοίχοι, etc."),
+      ("OTHER", "Άλλου είδους βλάβη"),
     )
     tag = models.CharField("Tag", choices=DAMAGES, max_length=30)
     appartment = models.ForeignKey(Appartment, related_name="damages", null=True, blank=True)
