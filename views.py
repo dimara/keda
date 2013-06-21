@@ -130,10 +130,16 @@ def visitors(request):
     date = request.GET.get("date", None)
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
+    rtype = request.GET.get("rtype", None)
+    status = request.GET.get("status", None)
     period = id_from_request(request.GET, "period")
     p = None
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.all().order_by("owner__surname")
+    if rtype:
+        reservations = reservations.filter(res_type=rtype)
+    if status:
+        reservations = reservations.filter(status=status)
     p = None
     if period:
         p = Period.objects.get(id=period)
@@ -153,6 +159,10 @@ def visitors(request):
       "end": end,
       "period": p,
       #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "rtype": rtype,
+      "status": status,
+      "rtypes": Reservation.RESERVATION_TYPES,
+      "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,
       }
