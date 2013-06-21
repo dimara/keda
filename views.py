@@ -125,7 +125,7 @@ def get_datetime(value):
     else:
       return datetime.date.today()
 
-def visitors(request):
+def reservations(request):
 
     date = request.GET.get("date", None)
     start = request.GET.get("start", None)
@@ -166,15 +166,33 @@ def visitors(request):
       "periods": Period.objects.all(),
       "reservations": reservations,
       }
-    return render_to_response("visitors.html", ctx, context_instance=RequestContext(request))
+    return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
+def th(request):
+
+    period = id_from_request(request.GET, "period")
+    p = None
+    #reservations = Reservation.objects.all().order_by("owner__surname")
+    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True).order_by("appartment")
+    if period:
+        p = Period.objects.get(id=period)
+        reservations = [r for r in reservations if r.inside(p.start, p.end)]
+
+    #visitors = Visitor.objects.all()
+    ctx = {
+      "period": p,
+      #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "periods": Period.objects.all(),
+      "reservations": reservations,
+      }
+    return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
 def test(request):
 
     period = id_from_request(request.GET, "period")
     p = None
     #reservations = Reservation.objects.all().order_by("owner__surname")
-    reservations = Reservation.objects.all().order_by("owner__surname")
+    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True).order_by("appartment")
     if period:
         p = Period.objects.get(id=period)
         reservations = [r for r in reservations if r.inside(p.start, p.end)]

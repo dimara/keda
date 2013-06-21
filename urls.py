@@ -28,7 +28,8 @@ urlpatterns = patterns('',
     url(r'^parousiologio/$', parousiologio),
     url(r'^availability/$', availability),
     url(r'^appartments/$', appartments),
-    url(r'^visitors/$', visitors),
+    url(r'^reservations/$', reservations),
+    url(r'^th/$', th),
 
 )
 
