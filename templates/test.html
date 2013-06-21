@@ -6,23 +6,11 @@
 </head>
 <body>
     {% include "includes/menu.html" %}
-    <form action="/visitors/" method="GET">
-      <div class="form-row">
-        <b>{{ date }}</b><br>
-        <input id="id_date" type="text" class="vDateField" name="date" size="20"
-               placeholder="Check for specific date.." onkeyup="this.form.submit()"/><br>
-      </div>
-      <div class="form-row">
-        <b> {% if start and end %} {{ start }} ... {{ end }} {% endif %} </b><br>
-        <input id="id_start" type="text" class="vDateField" name="start" size="20"
-               placeholder="Check for specific.." /><br>
-        <input id="id_end" type="text" class="vDateField" name="end" size="20"
-               placeholder="..period" onkeyup="this.form.submit()"/><br>
-      </div>
+    <form action="/test/" method="GET">
       <div class="form-row">
         <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
                 <select name="period" onchange="this.form.submit()" >
-                    <option value="">---------</option>
+                    <option value="">Select period</option>
                     {% for p in periods %}
                     <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
                     {% endfor %}
@@ -36,13 +24,8 @@
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
-        <th>Relatives</th>
-        <th>Vehicles</th>
-        <th>Contacts</th>
-        <th>Period</th>
         <th>Appartment</th>
-        <th>Type</th>
-        <th>Payed</th>
+        <th>Telephone</th>
       </tr>
       {% for r in reservations %}
       <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}

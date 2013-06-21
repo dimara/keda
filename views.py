@@ -171,9 +171,6 @@ def visitors(request):
 
 def test(request):
 
-    date = request.GET.get("date", None)
-    start = request.GET.get("start", None)
-    end = request.GET.get("end", None)
     period = id_from_request(request.GET, "period")
     p = None
     #reservations = Reservation.objects.all().order_by("owner__surname")
@@ -181,19 +178,9 @@ def test(request):
     if period:
         p = Period.objects.get(id=period)
         reservations = [r for r in reservations if r.inside(p.start, p.end)]
-    elif start and end:
-        start = get_datetime(start)
-        end = get_datetime(end)
-        reservations = [r for r in reservations if r.inside(start, end)]
-    else:
-        date = get_datetime(date)
-        reservations = [r for r in reservations if r.active(date)]
 
     #visitors = Visitor.objects.all()
     ctx = {
-      "date": date,
-      "start": start,
-      "end": end,
       "period": p,
       #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
       "periods": Period.objects.all(),
