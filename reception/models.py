@@ -231,6 +231,7 @@ class Damage(models.Model):
     appartment = models.ForeignKey(Appartment, related_name="damages", null=True, blank=True)
     info = models.TextField("Further Info", null=True, blank=True)
     notified = models.ForeignKey(Unit, null=True, blank=True)
+    date = models.DateField("Date", null=True, blank=True)
     fixed = models.BooleanField("Fixed", default=False)
 
     def __unicode__(self):

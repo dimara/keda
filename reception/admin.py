@@ -90,6 +90,7 @@ class ReceiptAdmin(admin.ModelAdmin):
     list_display = ('no', 'reservation', 'euro', 'rtype')
 
 admin.site.register(Period)
+admin.site.register(Person, NestedPersonAdmin)
 admin.site.register(Rank)
 admin.site.register(Vehicle)
 admin.site.register(ContactInfo)
