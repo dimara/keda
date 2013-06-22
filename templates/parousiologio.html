@@ -4,10 +4,10 @@
 
 {% block content %}
     <b>{{ date }}<b>
-      <table border="1" style="text-align:center" id="summary">
+      <table class="table table-hover table-bordered table-condensed" id="summary">
        <tr> <th colspan="5" style="text-align:center"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ</b></th> </tr>
         <tr> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th>
-             <td rowspan="6"><img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="float:right; width:100px;"></tr>
+             <td rowspan="6" style="text-align:center;"><img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="width: 10em;"></tr>
         <tr id="3"> <td>ΑΞΚΟΙ</td> <td id="c3"></td> <td id="p3"></td> <td id="a3"></td> </tr>
         <tr id="2"> <td>ΥΠΞΚΟΙ</td> <td id="c2"></td> <td id="p2"></td> <td id="a2"></td> </tr>
         <tr id="1"> <td>ΣΜΤΕΣ</td> <td id="c1"></td> <td id="p1"></td> <td id="a1"></td> </tr>
@@ -15,7 +15,7 @@
         <tr id="4"> <td>ΣΥΝΟΛΟ</td> <td id="c4"></td> <td id="p4"></td> <td id="a4"></td>  </tr>
       </table>
       <br>
-      <table border="1" class="tbl" id="staff">
+      <table class="table table-hover table-bordered table-condensed" class="tbl" id="staff">
         <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ</th> <th>AITIA</th>
         {% for s in staff %}
         <tr id="{{ s.id }}">
@@ -29,7 +29,7 @@
                 <input type="checkbox" name="apon"
                        class="a{{ s.rank.category }}">
             </td>
-            <td><select name="reason" class="id_reason" style="margin:0;padding:0;display:none">
+            <td><select name="reason" class="id_reason" style="display:none">
                     <option selected="selected">OFF</option>
                     <option>ΕΟΡΤΑΣΤΙΚΗ</option>
                     <option>ΑΠΟΛΥΣΕΩΣ</option>
