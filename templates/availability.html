@@ -1,11 +1,8 @@
-<html>
-<head>
-    <title>Search for Available Appartments</title>
-    {% include "includes/scripts.html" %}
-    <script type="text/javascript" src="/media/js/filter.js"></script>
-</head>
-<body>
-    {% include "includes/menu.html" %}
+{% extends "base.html" %}
+
+{% block title %}Search for Available Appartments{% endblock %}
+
+{% block content %}
     <b>Search for available Appartments based on various criteria</b><br>
     <form action="/availability/" method="get">
         <div class="form-row period">
@@ -66,5 +63,5 @@
         </tr>
         {% endfor %}
       </table>
-  </body>
-</html>
+<script type="text/javascript" src="/media/js/filter.js"></script>    
+{% endblock %}

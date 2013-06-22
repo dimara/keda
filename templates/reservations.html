@@ -1,11 +1,8 @@
-<html>
-<head>
-    <title>Search for Persons</title>
-    {% include "includes/scripts.html" %}
-    <script type="text/javascript" src="/media/js/filter.js"></script>
-</head>
-<body>
-    {% include "includes/menu.html" %}
+{% extends "base.html" %}
+
+{% block title %}Search for Persons{% endblock %}
+
+{% block content %}
     <form action="/reservations/" method="GET">
       <div class="form-row">
         <b>{{ date }}</b><br>
@@ -91,5 +88,5 @@
         </td>
       {% endfor %}
     </table>
-  </body>
-</html>
+<script type="text/javascript" src="/media/js/filter.js"></script>
+{% endblock %}

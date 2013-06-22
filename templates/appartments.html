@@ -1,11 +1,8 @@
-<html>
-<head>
-    <title>Appartments</title>
-    {% include "includes/scripts.html" %}
-    <script type="text/javascript" src="/media/js/filter.js"></script>
-</head>
-<body>
-    {% include "includes/menu.html" %}
+{% extends "base.html" %}
+
+{% block title %}Appartments{% endblock %}
+
+{% block content %}
     <b>Search for Appartments</b><br>
     <input type="text" id="search" size="20" placeholder="Type to search" />
     <table border="1" id="table">
@@ -33,5 +30,5 @@
         </td>
       {% endfor %}
     </table>
-  </body>
-</html>
+<script type="text/javascript" src="/media/js/filter.js"></script>
+{% endblock %}

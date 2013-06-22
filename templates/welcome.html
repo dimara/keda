@@ -1,15 +1,12 @@
-<html>
-<head>
-    <title>Home @ ΚΕΑΔ/Ζ</title>
-    {% include "includes/scripts.html" %}
-</head>
-  <body>
-    {% include "includes/menu.html" %}
-    {% include "includes/keda_icon.html" %}
+{% extends "base.html" %}
+
+{% block title %}Home @ ΚΕΑΔ/Ζ{% endblock %}
+
+{% block content %}
+    <img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="float:right; width:100px;">
     <br><br>
     <b>Welcome to the new KEDA/Z site!</b>
     <br><br>
     <hr>
     <i>{{ now }}</i>
-  </body>
-</html>
+{% endblock %}

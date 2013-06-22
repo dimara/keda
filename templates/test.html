@@ -1,11 +1,8 @@
-<html>
-<head>
-    <title>Search for Persons</title>
-    {% include "includes/scripts.html" %}
-    <script type="text/javascript" src="/media/js/filter.js"></script>
-</head>
-<body>
-    {% include "includes/menu.html" %}
+{% extends "base.html" %}
+
+{% block title %}Testing Page{% endblock %}
+
+{% block content %}
     <form action="/test/" method="GET">
       <div class="form-row">
         <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
@@ -36,5 +33,5 @@
         </td>
       {% endfor %}
     </table>
-  </body>
-</html>
+<script type="text/javascript" src="/media/js/filter.js"></script>    
+{% endblock %}
