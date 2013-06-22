@@ -1,0 +1,5 @@
+body{padding-top: 41px;}
+#time{float: right;}
+#titles{
+    display: table-row!important;
+}
