@@ -1,18 +1,61 @@
-<hr><br>
-<b>Home:</b>
-<a href=/>Site</a>
-<a href=/admin/reception/>Admin</a>
-<br>
-<b>Reception:</b>
-<a href=/reservations/>Reservations</a>
-<a href=/availability/>Availability</a>
-<b>Lists:</b>
-<a href=/th/>T.H.</a>
-<a href=/test/>Testing Page</a>
-<br>
-<b>Personel Office:</b>
-<a href=/parousiologio/>Παρουσιολόγιο</a>
-<b>Facilities:</b>
-<a href=/media/paralia_anotaton.png>Παραλία Ανωτάτων</a>
-<a href=/media/paralia.png>Παραλία</a>
-<hr>
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <ul class="nav">
+    <li class="active"><a href="#" id="page-title">Home</a></li>
+      <li><a href=/>Site</a></li>
+      <li><a href=/admin/reception/>Admin</a></li>
+    </ul>
+
+    <ul class="nav">
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	      Reception
+	      <b class="caret"></b>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href=/reservations/>Reservations</a></li>
+    		<li><a href=/availability/>Availability</a></li>
+	    </ul>
+	  </li>
+	</ul>
+
+    <ul class="nav">
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	      Lists
+	      <b class="caret"></b>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href=/th/>T.H.</a></li>
+    		<li><a href=/test/>Test Page</a></li>
+	    </ul>
+	  </li>
+	</ul>
+
+    <ul class="nav">
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	      Personel Office
+	      <b class="caret"></b>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href=/parousiologio/>Παρουσιολόγιο</a></li>
+	    </ul>
+	  </li>
+	</ul>
+
+    <ul class="nav">
+	  <li class="dropdown">
+	    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+	      Facilities
+	      <b class="caret"></b>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href=/media/paralia_anotaton.png>Παραλία Ανωτάτων</a></li>
+	    	<li><a href=/media/paralia.png>Παραλία</a></li>
+	    </ul>
+	  </li>
+	</ul>
+<a class="brand" href="#" id="time">{{ date }}</a>
+  </div>
+</div>

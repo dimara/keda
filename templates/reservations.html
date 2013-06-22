@@ -3,9 +3,9 @@
 {% block title %}Search for Persons{% endblock %}
 
 {% block content %}
+{{ request.path }}
     <form action="/reservations/" method="GET">
       <div class="form-row">
-        <b>{{ date }}</b><br>
         <input id="id_date" type="text" class="vDateField" name="date" size="20"
                placeholder="Check for specific date.." onkeyup="this.form.submit()"/><br>
       </div>
@@ -17,6 +17,7 @@
                placeholder="..period" onkeyup="this.form.submit()"/><br>
       </div>
       <div class="form-row">
+        <span class="help-block">Choose period</span>
         <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
                 <select name="period" onchange="this.form.submit()" >
                     <option value="">---------</option>
@@ -38,13 +39,13 @@
                     <option value="{{ s.0 }}" {% if status == s.0 %} selected="selected" {% endif %}> {{ s.1 }}</option>
                     {% endfor %}
                 </select>
-		<input type="submit" value="Search" />
+    <button type="submit" class="btn">Search</button>
       </div>
       <div class="form-row">
         <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
-    <table border="1" id="table">
+    <table  id="table" class="table table-hover ">
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
@@ -57,10 +58,9 @@
         <th>Payed</th>
       </tr>
       {% for r in reservations %}
-      <tr {% if r.status = "CANCELED" %} style="color:red" {% endif %}
-          {% if r.status = "PENDING" %} style="color:yellow" {% endif %}>
+      <tr>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >{% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}{% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}</td>
         <td>
         {% for rr in r.owner.relatives.all %}
           {{ rr }}<br>
@@ -89,4 +89,7 @@
       {% endfor %}
     </table>
 <script type="text/javascript" src="/media/js/filter.js"></script>
+<script type="text/javascript">
+
+</script>
 {% endblock %}
