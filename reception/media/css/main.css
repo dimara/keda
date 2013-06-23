@@ -3,3 +3,180 @@ body{padding-top: 41px;}
 #titles{
     display: table-row!important;
 }
+
+.label{
+	margin-left: 5px;
+	position: absolute;
+}
+
+.datetimeshortcuts{
+	position: absolute;
+	margin-top: 5px;
+}
+
+button{
+/*	position: absolute;
+	margin-left: 4px;*/
+}
+
+#input_damaged{
+	margin-bottom: 5px;
+	margin-right: 5px;
+	margin-left: 1px;
+}
+
+#id_check_out, #id_end{
+	margin-left: 100px;
+}
+/*--------------calendar - widget------------------------*/
+#calendarbox0, #calendarbox1, #calendarbox2{
+	/*top:40px!important;*/
+/*	border-width: 1px;
+	border-style: solid;*/		
+	background-color: #fff;
+border: 1px solid #ccc;
+-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+-moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+-webkit-transition: border linear .2s,box-shadow linear .2s;
+-moz-transition: border linear .2s,box-shadow linear .2s;
+-o-transition: border linear .2s,box-shadow linear .2s;
+transition: border linear .2s,box-shadow linear .2s;
+border-radius: 4px;	
+}
+
+.calendarbox, .clockbox {
+margin: 5px auto;
+font-size: 11px;
+width: 16em;
+text-align: center;
+background: white;
+position: relative;
+}
+
+.calendarbox, .clockbox {
+font-size: 11px;
+text-align: center;
+}
+
+.calendarbox .calendarnav-previous, .calendarbox .calendarnav-next {
+display: block;
+position: absolute;
+font-weight: bold;
+font-size: 12px;
+background: #C9DBED url(../img/default-bg.gif) bottom left repeat-x;
+padding: 1px 4px 2px 4px;
+color: white;
+}
+
+.module h2, .module caption, .inline-group h2 {
+margin: 0;
+padding: 2px 5px 3px 5px;
+font-size: 11px;
+text-align: left;
+font-weight: bold;
+background: #7CA0C7 url(../img/default-bg.gif) top left repeat-x;
+color: white;
+}
+
+.calendarnav-previous {
+top: 0;
+left: 0;
+}
+
+.calendarnav-next {
+top: 0;
+right: 0;
+}
+
+.calendarbox, .clockbox {
+font-size: 11px;
+text-align: center;
+}
+
+.calendar {
+margin: 0;
+padding: 0;
+}
+
+.calendar table {
+margin: 0;
+padding: 0;
+border-collapse: collapse;
+background: white;
+width: 100%;
+}
+
+.calendarbox, .clockbox {
+font-size: 11px;
+text-align: center;
+}
+
+.calendar caption, .calendarbox h2 {
+margin: 0;
+font-size: 11px;
+text-align: center;
+border-top: none;
+}
+
+.calendar table {
+border-collapse: collapse;
+}	
+
+.calendar th {
+font-size: 10px;
+color: #666;
+padding: 2px 3px;
+text-align: center;
+background: #e1e1e1 url(../img/nav-bg.gif) 0 50% repeat-x;
+border-bottom: 1px solid #ddd;
+}
+
+.calendar td {
+font-size: 11px;
+text-align: center;
+padding: 0;
+border: 1px solid #eee;
+
+}
+
+.calendar td a, .timelist a {
+display: block;
+font-weight: bold;
+/*padding: 4px;*/
+text-decoration: none;
+color: #444;
+}
+
+.calendar-shortcuts {
+background: white;
+font-size: 10px;
+line-height: 11px;
+border-top: 1px solid #eee;
+padding: 3px 0 4px;
+color: #ccc;
+}
+
+.calendar-shortcuts {
+font-size: 10px;
+line-height: 11px;
+color: #ccc;
+}
+
+.calendar-cancel {
+margin: 0 !important;
+padding: 0 !important;
+font-size: 10px;
+background: #e1e1e1 url(../img/nav-bg.gif) 0 50% repeat-x;
+border-top: 1px solid #ddd;
+}
+
+.calendar-cancel a {
+color: black;
+display: block;
+}
+
+.calendar td a:hover, .timelist a:hover {
+background: #5b80b2;
+color: white;
+}
