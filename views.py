@@ -16,8 +16,9 @@ from django import forms
 
 
 def home(request):
+    date = datetime.date.today()
     now = datetime.datetime.now()
-    return render_to_response("welcome.html", {"now": now}, context_instance=RequestContext(request))
+    return render_to_response("welcome.html", {"now" : now,"date": date}, context_instance=RequestContext(request))
 
 
 def display_meta(request):
@@ -71,6 +72,7 @@ def availability(request):
     area = qd.get("area")
     category = id_from_request(qd, "category")
     damaged = qd.get("damaged", False)
+    date = datetime.date.today()
 
     avail = Appartment.objects.all()
     if area:
@@ -96,6 +98,7 @@ def availability(request):
       "categories": Category.objects.values(),
       "damaged": damaged,
       "avail": avail,
+      "date": date,
       }
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
@@ -172,6 +175,7 @@ def th(request):
 
     period = id_from_request(request.GET, "period")
     p = None
+    date = datetime.date.today()
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True).order_by("appartment")
     if period:
@@ -184,6 +188,7 @@ def th(request):
       #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
       "periods": Period.objects.all(),
       "reservations": reservations,
+      "date":date,
       }
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
@@ -191,6 +196,7 @@ def test(request):
 
     period = id_from_request(request.GET, "period")
     p = None
+    date = datetime.date.today()
     #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True).order_by("appartment")
     if period:
@@ -203,5 +209,6 @@ def test(request):
       #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
       "periods": Period.objects.all(),
       "reservations": reservations,
+      "date":date,
       }
     return render_to_response("test.html", ctx, context_instance=RequestContext(request))
