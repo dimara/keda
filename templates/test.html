@@ -1,37 +1,110 @@
 {% extends "base.html" %}
 
-{% block title %}Testing Page{% endblock %}
+{% block title %}Test Page{% endblock %}
 
 {% block content %}
+    <h3>Search for Persons based on various criteria(test page)</h3><br>
     <form action="/test/" method="GET">
       <div class="form-row">
-        <b> {% if period %} Period {{ period.id }}: ({{ period.start }} ... {{ period.end }}) {% endif %} </b><br>
-                <select name="period" onchange="this.form.submit()" >
+        {% if start and end %}<div class="alert alert-info">{{ start }} ... {{ end }}</div>{% endif %}
+        {% if period %}<div class="alert alert-info"> Period {{ period.id }}: ({{ period.start }} ... {{ period.end }})</div>{% endif %}
+        <div>
+          <input id="id_start" type="text" class="vDateField" name="start" size="20"
+                 placeholder="Check for specific..." />
+          <input id="id_end" type="text" class="vDateField" name="end" size="20"
+                 placeholder="...period" onkeyup="this.form.submit()"/>
+        </div>
+      </div><br>
+      <div class="form-row">
+        <input id="id_date" type="text" class="vDateField" name="date" size="20"
+               placeholder="Check for specific date." onkeyup="this.form.submit()"/><br>
+      </div>
+
+      <div class="form-row">
+        <br>
+                <select name="period" >
                     <option value="">Select period</option>
                     {% for p in periods %}
                     <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
                     {% endfor %}
                 </select>
-      </div>
-      <div class="form-row">
+                
+
+                <select name="rtype" >
+                    <option value="">Reservation Type (All)</option>
+                    {% for t in rtypes %}
+                    <option value="{{ t.0 }}" {% if rtype == t.0 %} selected="selected" {% endif %} > {{ t.1 }}</option>
+                    {% endfor %}
+                </select>
+                <select name="status" >
+                    <option value="">Reservation Status (All)</option>
+                    {% for s in statuses %}
+                    <option value="{{ s.0 }}" {% if status == s.0 %} selected="selected" {% endif %}> {{ s.1 }}</option>
+                    {% endfor %}
+                </select><br>
+    <button type="submit" class="btn"><i class="icon-search"></i> Search</button>
+      </div><br>
+      <div class="input-prepend form-row">
+        <span class="add-on"><i class="icon-search"></i></span>
         <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
-    <br> <b> Visitors that requested phone activation </b> <br>
-    <table class="table table-hover" id="table">
+      <input id="condensed" type="checkbox"> table-condensed
+    <div>
+      <input class="rltvs" type="checkbox" checked> Relatives
+      <input class="vhcls" type="checkbox" checked> Vehicles
+      <input class="cntcts" type="checkbox" checked> Contacts
+      <input class="prd" type="checkbox" checked> Period
+      <input class="aprtmnt" type="checkbox" checked> Appartment
+      <input class="tp" type="checkbox" checked> Type
+      <input class="pd" type="checkbox" checked> Payed
+    </div>
+    <br>
+    <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
-        <th>Appartment</th>
+        <th class="relatives">Relatives</th>
+        <th class="vehicles">Vehicles</th>
+        <th class="contacts">Contacts</th>
+        <th class="period">Period</th>
+        <th class="appartment">Appartment</th> 
+        <th class="type">Type</th>
+        <th class="payed">Payed</th>
       </tr>
       {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
-        <td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >{% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}{% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}</td>
+        <td class="relatives">
+        {% for rr in r.owner.relatives.all %}
+          {{ rr }}<br>
+        {% endfor %}
+        </td>
+        <td class="vehicles">
+        {% for v in r.owner.vehicles.all %}
+          {{ v.plate }}<br>
+        {% endfor %}
+        </td>
+        <td class="contacts">
+        {% for c in r.owner.contacts.all %}
+          {{ c.mobile }}<br>
+        {% endfor %}
+        </td>
+        <td class="period"><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
+        <td class="appartment">
             {{ r.appartment }}
+        </td>
+        <td class="type">{{ r.res_type }}</td>
+        <td class="payed">
+        {% for p in r.receipts.all %}
+          {{ p.no }}<br>
+        {% endfor %}
         </td>
       {% endfor %}
     </table>
-<script type="text/javascript" src="/media/js/filter.js"></script>    
+<script type="text/javascript" src="/media/js/filter.js"></script>
+<script type="text/javascript">
+
+</script>
 {% endblock %}

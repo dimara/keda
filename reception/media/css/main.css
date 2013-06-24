@@ -19,10 +19,10 @@ button{
 	margin-left: 4px;*/
 }
 
-#input_damaged{
-	margin-bottom: 5px;
-	margin-right: 5px;
-	margin-left: 1px;
+#input_damaged,.rltvs,.vhcls,.cntcts,.prd,.aprtmnt,.tp,.pd{
+	margin-bottom: 5px!important;
+	margin-right: 5px!important;
+	margin-left: 1px!important;
 }
 
 #id_check_out, #id_end{
