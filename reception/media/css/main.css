@@ -1,5 +1,21 @@
-body{padding-top: 41px;}
-#time{float: right;}
+@media print {
+	form,.navbar{
+		display: none!important;
+	}
+
+	a[href]:after {
+		content: none!important;
+  }
+}
+
+body{
+	padding-top: 41px;
+}
+
+#time{
+	float: right;
+}
+
 #titles{
     display: table-row!important;
 }
