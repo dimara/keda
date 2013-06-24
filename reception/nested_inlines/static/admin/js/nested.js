@@ -13,7 +13,7 @@ e.length&&a.prepopulate(e,a.attr("maxlength"))});"undefined"!=typeof DateTimeSho
 
 $(document).ready(function(){
 
-  col = $('.nested-inline-row td').parent().prev().children().length;
-  $('.nested-inline-row td').first().attr("colspan", col);
+  col = $('.nested-inline').parent().parent().prev().first().children().length;
+  $('.nested-inline').parent("td").attr("colspan", col);
 
 })
