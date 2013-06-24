@@ -17,8 +17,8 @@
         <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
       </div>
     </form>
-    <br> <b> Visitors that requested phone activation </b> <br>
-    <table class="table table-hover" id="table">
+    <br> <h4>Visitors that requested phone activation {% if period %}in {{ period.id }}rd period{% endif %}</h4> <br>
+    <table class="table table-hover table-condensed" id="table">
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
