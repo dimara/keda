@@ -3,10 +3,26 @@
 {% block title %}Home @ ΚΕΑΔ/Ζ{% endblock %}
 
 {% block content %}
-    <img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="float:right; width:100px;">
+<style type="text/css">
+img {
+  -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+}
+ 
+img:hover {
+  -webkit-transform: rotateY(180deg);
+     -moz-transform: rotateY(180deg);
+       -o-transform: rotateY(180deg);
+      -ms-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+}
+</style>
+    <img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="display:block;margin-left:auto;margin-right:auto;width:180px;">
     <br><br>
-    <b>Welcome to the new KEDA/Z site!</b>
-    <br><br>
-    <hr>
-    <i>{{ now }}</i>
+    <h2 style="text-align:center;">Welcome to the new KEDA/Z site!</h2>
+    <br><hr><br>
+    <h6 style="text-align:center;">{{ now }}</h6>
 {% endblock %}
