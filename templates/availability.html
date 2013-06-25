@@ -8,8 +8,10 @@
         <div class="form-row period">
             {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
             <div>
-              <input placeholder="Check In" type="text" class="datepicker" name="start" />
-              <input placeholder="Check Out" type="text" class="datepicker" name="end" />
+                <input placeholder="Check In" id="id_check_in" type="text" class="datepicker" onkeyup="this.form.submit()"
+                       name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
+                <input placeholder="Check Out" id="id_check_out" type="text" class="datepicker" onkeyup="this.form.submit()"
+                       name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
             </div>
         </div><br>
         <div class="form-row filters">
