@@ -205,3 +205,10 @@ table#staff td, th {
     padding: 1px;
     font-family: "Lucida Grande", Verdana, Arial, sans-serif;
 }
+
+select.id_reason {
+    font-size: 11px;
+    height: 15px;
+    line-height: 15px;
+    width: 100px;
+}
