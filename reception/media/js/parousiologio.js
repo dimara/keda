@@ -8,12 +8,12 @@ function update_row(tds, p, a) {
 
 function update(){
     for (var i=0; i<4; i++){
-        tds = $("#summary tr#" + i + " td")
+        tds = $("#summary-par tr#" + i + " td")
         p = $('.p' + i)
         a = $('.a' + i)
         update_row(tds, p, a)
     }
-    tds = $("#summary tr#4 td")
+    tds = $("#summary-par tr#4 td")
     p = $('#staff td input[name="paron"]')
     a = $('#staff td input[name="apon"]')
     update_row(tds, p, a)

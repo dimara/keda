@@ -4,8 +4,8 @@
 
 {% block content %}
     <b>{{ date }}<b>
-      <table class="table table-hover table-bordered table-condensed" id="summary">
-       <tr> <th colspan="5" style="text-align:center"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ</b></th> </tr>
+      <table class="table table-hover table-bordered table-condensed" id="summary-par">
+       <tr> <th colspan="5" style="text-align:center;"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ</b></th> </tr>
         <tr> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th>
              <td rowspan="6" style="text-align:center;"><img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="width: 10em;"></tr>
         <tr id="3"> <td>ΑΞΚΟΙ</td> <td id="c3"></td> <td id="p3"></td> <td id="a3"></td> </tr>
@@ -19,18 +19,18 @@
         <tr> <th>Α/Α</th> <th>ΟΝΟΜΑΤΕΠΩΝΥΜΟ</th> <th>ΠΑΡΩΝ</th> <th>ΑΠΩΝ</th> <th>AITIA</th>
         {% for s in staff %}
         <tr id="{{ s.id }}">
-            <td id="idx" style="text-align:center">{{ forloop.counter }}</td>
+            <td id="idx" style="text-align:center;">{{ forloop.counter }}</td>
             <td>{{ s.info }} {% if s.extra %} ({{ s.extra }}) {% endif %}</td>
-            <td style="text-align:center">
+            <td style="text-align:center;">
                 <input type="checkbox" name="paron"
                        class="p{{ s.rank.category }}">
             </td>
-            <td style="text-align:center">
+            <td style="text-align:center;">
                 <input type="checkbox" name="apon"
                        class="a{{ s.rank.category }}">
             </td>
-            <td style="vertical-align:middle">
-                <select name="reason" class="id_reason" style="margin:0;padding:0;display:none">
+            <td style="text-align:center;" id="id_reason">
+                <select name="reason" >
                     <option selected="selected">OFF</option>
                     <option>ΕΟΡΤΑΣΤΙΚΗ</option>
                     <option>ΑΠΟΛΥΣΕΩΣ</option>

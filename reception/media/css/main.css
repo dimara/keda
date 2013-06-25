@@ -1,11 +1,25 @@
 @media print {
+	body {
+		padding-top: 0px!important;
+	}
+
 	form,.navbar{
 		display: none!important;
 	}
 
 	a[href]:after {
 		content: none!important;
-  }
+	}
+
+	table,table td,table th{
+		padding: 1px!important;
+		font-size: 11px!important;
+		margin-bottom: 0px!important;
+	}
+	#id_reason select {
+		height: 16px!important;
+	}
+
 }
 
 body{
@@ -36,7 +50,7 @@ button{
 }
 
 #input_damaged,.rltvs,.vhcls,.cntcts,.prd,.aprtmnt,.tp,.pd{
-	margin-bottom: 5px!important;
+	margin-bottom: 2px!important;
 	margin-right: 5px!important;
 	margin-left: 1px!important;
 }
@@ -196,19 +210,33 @@ display: block;
 background: #5b80b2;
 color: white;
 }
-
+/*--------------calendar - widget -end------------------------*/
 table#staff td, th {
-    font-size: 11px;
+/*    font-size: 11px;
     line-height: 11px;
     border-bottom: 1px solid #eee;
+    padding: 1px;*/
+    /*font-family: "Lucida Grande", Verdana, Arial, sans-serif;*/
     vertical-align: middle;
-    padding: 1px;
-    font-family: "Lucida Grande", Verdana, Arial, sans-serif;
 }
-
-select.id_reason {
+#id_reason select{
     font-size: 11px;
-    height: 15px;
+    height: 19px;
     line-height: 15px;
     width: 100px;
+    margin:0;padding:0;display:none;
+}
+
+#id_reason{
+	width: 184px;
+	/*height: 34px;*/
+}
+
+#staff th, #summary-par td,#summary-par th{
+	text-align: center!important;
+	vertical-align:middle;
+}
+
+input[type="checkbox"] {
+margin: 0px!important;
 }
