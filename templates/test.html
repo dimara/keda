@@ -9,15 +9,14 @@
         {% if start and end %}<div class="alert alert-info">{{ start }} ... {{ end }}</div>{% endif %}
         {% if period %}<div class="alert alert-info"> Period {{ period.id }}: ({{ period.start }} ... {{ period.end }})</div>{% endif %}
         <div>
-          <input id="id_start" type="text" class="vDateField" name="start" size="20"
-                 placeholder="Check for specific..." />
-          <input id="id_end" type="text" class="vDateField" name="end" size="20"
-                 placeholder="...period" onkeyup="this.form.submit()"/>
+          <input placeholder="Check In" type="text" class="datepicker" name="start" />
+          <input placeholder="Check Out" type="text" class="datepicker" name="end" />
+
+
         </div>
       </div><br>
       <div class="form-row">
-        <input id="id_date" type="text" class="vDateField" name="date" size="20"
-               placeholder="Check for specific date." onkeyup="this.form.submit()"/><br>
+        <input placeholder="Check for specific date." type="text" class="datepicker" name="date" /><br>
       </div>
 
       <div class="form-row">
@@ -103,7 +102,7 @@
         </td>
       {% endfor %}
     </table>
-<script type="text/javascript" src="/media/js/filter.js"></script>
+
 <script type="text/javascript">
 
 </script>

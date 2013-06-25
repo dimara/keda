@@ -1,4 +1,3 @@
-$ = django.jQuery;
 
 function update_row(tds, p, a) {
         tds[1].innerHTML = p.length;

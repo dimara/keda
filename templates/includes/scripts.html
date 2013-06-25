@@ -5,18 +5,24 @@
 <!-- <link rel="stylesheet" type="text/css" href="/media/css/dimara.css" /> -->
 <link rel="stylesheet" type="text/css" href="/media/css/main.css">
 <!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="/static/admin/css/ie.css" /><![endif]-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 
-<script type="text/javascript">window.__admin_media_prefix__ = "/static/admin/";</script>
 
 
-<script type="text/javascript" src="/admin/jsi18n/"></script>
-<script type="text/javascript" src="/static/admin/js/core.js"></script>
-<!-- <script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js"></script> -->
-<script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="/media/js/jquery-1.10.1.min.js"></script> -->
+
+<script type="text/javascript" src="/media/js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="/media/js/jquery-ui.js"></script>
 <script type="text/javascript" src="/media/js/main.js"></script>
 <script type="text/javascript" src="/media/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
-<!-- <script type="text/javascript" src="/static/admin/js/actions.min.js"></script> -->
-<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
-<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+<script type="text/javascript" src="/media/js/filter.js"></script>
+
+
+
+
+
+
+  <script>
+  $(function() {
+    $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
+  });
+  </script>

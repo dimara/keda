@@ -1,5 +1,3 @@
-$ = django.jQuery;
-
 $(document).ready(function(){
 
   var $rows = $('#table tr');
