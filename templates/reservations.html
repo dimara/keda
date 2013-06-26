@@ -7,7 +7,7 @@
     <form action="/reservations/" method="GET">
       <div class="form-row">
         {% if start and end %}<div class="alert alert-info">{{ start }} ... {{ end }}</div>{% endif %}
-        {% if period %}<div class="alert alert-info"> Period {{ period.id }}: ({{ period.start }} ... {{ period.end }})</div>{% endif %}
+        {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div>{% endif %}
         {% if date %}<div class="alert alert-info"> {{ date }} </div>{% endif %}
         <div>
           <input placeholder="Check for specific..." type="text" class="datepicker" name="start" />
@@ -23,7 +23,7 @@
                 <select name="period" >
                     <option value="">Select period</option>
                     {% for p in periods %}
-                    <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
+                    <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
                     {% endfor %}
                 </select>
                 

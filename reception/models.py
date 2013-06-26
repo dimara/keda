@@ -373,7 +373,7 @@ class Receipt(models.Model):
 
 
 class Period(models.Model):
-    # name = models.CharField("Period", max_length=10)
+    name = models.CharField("Period", max_length=10, null=True, blank=True)
     start = models.DateField("Starting Date")
     end = models.DateField("Ending Date")
 

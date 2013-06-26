@@ -5,11 +5,11 @@
 {% block content %}
     <form action="/th/" method="GET">
       <div class="form-row">
-         {% if period %}<div class="alert alert-info"> Period {{ period.id }}: ({{ period.start }} ... {{ period.end }})</div> {% endif %}
+         {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div> {% endif %}
                 <select name="period" onchange="this.form.submit()" >
                     <option value="">Select period</option>
                     {% for p in periods %}
-                    <option value="{{ p.id }}"> Period: {{ p.id }}: Από {{ p.start }} έως {{ p.end }}</option>
+                    <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
                     {% endfor %}
                 </select>
       </div>
