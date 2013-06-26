@@ -377,3 +377,11 @@ class Period(models.Model):
     start = models.DateField("Starting Date")
     end = models.DateField("Ending Date")
 
+    def __unicode__(self):
+        r = u"%s" % (self.name)
+        if self.start:
+            r += " (%s .." % self.start
+        if self.end:
+            r += " %s)" % self.end
+
+        return r
