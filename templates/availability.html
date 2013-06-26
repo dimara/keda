@@ -3,7 +3,7 @@
 {% block title %}Search for Available Appartments{% endblock %}
 
 {% block content %}
-    <h3>Search for available Appartments based on various criteria</h3><br>
+    <h3>Search for available Apartments</h3><br>
     <form action="/availability/" method="get">
         <div class="form-row period">
             {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
@@ -32,10 +32,8 @@
                 <label>
                 <input id="input_damaged" type="checkbox" name="damaged" {% if damaged %} checked="checked" {% endif %} />Include Damaged
                 </label>
-                
                 <button type="submit" class="btn">Search</button>
         </div><br>
-        
         <div class="form-row filters">
             <input type="text" id="search" size="20" placeholder="Type to search" />
         </div>
