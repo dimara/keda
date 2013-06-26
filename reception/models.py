@@ -272,7 +272,7 @@ class Reservation(models.Model):
     owner = models.ForeignKey(Person, related_name="reservations")
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
-    appartment = models.ForeignKey(Appartment, related_name="reservations")
+    appartment = models.ForeignKey(Appartment, related_name="reservations", null=True, blank=True)
     status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
     res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
                                 null=True, blank=True)
