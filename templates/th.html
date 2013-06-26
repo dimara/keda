@@ -3,21 +3,19 @@
 {% block title %}List for TH{% endblock %}
 
 {% block content %}
+    <h4>Phone activations</h4> <br>
     <form action="/th/" method="GET">
       <div class="form-row">
-         {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div> {% endif %}
                 <select name="period" onchange="this.form.submit()" >
                     <option value="">Select period</option>
                     {% for p in periods %}
                     <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
                     {% endfor %}
                 </select>
-      </div>
-      <div class="form-row">
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right"/>
       </div>
     </form>
-    <br> <h4>Visitors that requested phone activation {% if period %}in {{ period.id }}rd period{% endif %}</h4> <br>
+    {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div> {% endif %}
     <table class="table table-hover table-condensed" id="table">
       <tr id="titles">
         <th></th>

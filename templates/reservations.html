@@ -1,49 +1,47 @@
 {% extends "base.html" %}
 
-{% block title %}Search for Persons{% endblock %}
+{% block title %}Reservations{% endblock %}
 
 {% block content %}
-    <h3>Search for existing Reservations</h3><br>
+    <h3>Reservations</h3><br>
     <form action="/reservations/" method="GET">
       <div class="form-row">
-        {% if start and end %}<div class="alert alert-info">{{ start }} ... {{ end }}</div>{% endif %}
-        {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div>{% endif %}
-        {% if date %}<div class="alert alert-info"> {{ date }} </div>{% endif %}
-        <div>
-          <input placeholder="Check for specific..." type="text" class="datepicker" name="start" />
-          <input placeholder="...period" type="text" class="datepicker" name="end" />
-        </div>
-      </div><br>
-      <div class="form-row">
-        <input placeholder="Check for specific date." type="text" class="datepicker" name="date" /><br>
+          <input placeholder="From.." type="text" class="datepicker" name="start" />
+          <input placeholder="..until" type="text" class="datepicker" name="end" />
+          or
+          <input placeholder="at.." type="text" class="datepicker" name="date" />
+          or
+          <select name="period" >
+              <option value="">during..</option>
+              {% for p in periods %}
+              <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
+              {% endfor %}
+          </select>
       </div>
-
       <div class="form-row">
-        <br>
-                <select name="period" >
-                    <option value="">Select period</option>
-                    {% for p in periods %}
-                    <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
-                    {% endfor %}
-                </select>
-                
-
                 <select name="rtype" >
                     <option value="">Reservation Type (All)</option>
                     {% for t in rtypes %}
-                    <option value="{{ t.0 }}" {% if rtype == t.0 %} selected="selected" {% endif %} > {{ t.1 }}</option>
+                    <option value="{{ t.0 }}"> {{ t.1 }}</option>
                     {% endfor %}
                 </select>
                 <select name="status" >
                     <option value="">Reservation Status (All)</option>
                     {% for s in statuses %}
-                    <option value="{{ s.0 }}" {% if status == s.0 %} selected="selected" {% endif %}> {{ s.1 }}</option>
+                    <option value="{{ s.0 }}"> {{ s.1 }}</option>
                     {% endfor %}
-                </select><br>
-    <button type="submit" class="btn">Search</button>
-      </div><br>
+                </select>
+        <input type="submit" class="btn" value="Search" style="float:right" />
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right" />
+      </div>
       <div class="form-row">
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
+        <div class="alert alert-info">
+            {% if start and end %} From {{ start }} until {{ end }} {% endif %}
+            {% if period %} During period {{ period.name }}: ({{ period.start }} ... {{ period.end }}) {% endif %}
+            {% if date %} At {{ date }} {% endif %}
+            {% if rtype %} + type {{ rtype }} {% endif %}
+            {% if status %} + status {{ status }} {% endif %}
+        </div>
       </div>
     </form>
     <table  id="table" class="table table-hover">

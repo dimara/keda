@@ -5,37 +5,33 @@
 {% block content %}
     <h3>Search for available Apartments</h3><br>
     <form action="/availability/" method="get">
-        <div class="form-row period">
-            {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
-            <div>
-                <input placeholder="Check In" id="id_check_in" type="text" class="datepicker" onkeyup="this.form.submit()"
-                       name="check_in" size="10" {% if check_in %} value="{{ check_in }}" {% endif %} />
-                <input placeholder="Check Out" id="id_check_out" type="text" class="datepicker" onkeyup="this.form.submit()"
-                       name="check_out" size="10" {% if check_out %} value="{{ check_out }}" {% endif %} />
-            </div>
-        </div><br>
-        <div class="form-row filters">
-            <!-- <label for="id_area">Area:</label> -->
+        <div class="form-row">
+                {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
+                <input placeholder="Check In" type="text" class="datepicker" name="check_in" />
+                <input placeholder="Check Out" type="text" class="datepicker" name="check_out" />
+        </div>
+        <div>
                 <select name="area" id="id_area">
                     <option value="">Area (All)</option>
                     {% for a in areas %}
-                    <option value="{{ a.0 }}" {% if area == a.0 %} selected="selected" {% endif %}> {{ a.1 }} </option>
+                    <option value="{{ a.0 }}"> {{ a.1 }} </option>
                     {% endfor %}
                 </select>
-            <!-- <label for="id_category">Category:</label> -->
                 <select name="category" id="id_category">
                     <option value="">Category (All)</option>
                     {% for c in categories %}
-                    <option value="{{ c.id }}" {% if category == c.id %} selected="selected" {% endif %}> {{ c.desc }} </option>
+                    <option value="{{ c.id }}"> {{ c.desc }} </option>
                     {% endfor %}
                 </select>
-                <label>
-                <input id="input_damaged" type="checkbox" name="damaged" {% if damaged %} checked="checked" {% endif %} />Include Damaged
-                </label>
-                <button type="submit" class="btn">Search</button>
+                <input type="submit" class="btn" value="Search" style="float:right" />
+                <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right" />
+                <input id="input_damaged" type="checkbox" name="damaged"> Include Damaged
         </div><br>
-        <div class="form-row filters">
-            <input type="text" id="search" size="20" placeholder="Type to search" />
+        <div class="alert alert-info">
+            {% if check_in and check_out %} From {{ check_in }} until {{ check_out }} {% endif %}
+            {% if area %} + area {{ area }} {% endif %}
+            {% if category %} + category {{ category }} {% endif %}
+            {% if damaged %} + DAMAGED {% endif %}
         </div>
     </form>
       <table class="table table-hover" id="table">
