@@ -300,8 +300,7 @@ class Reservation(models.Model):
     def active(self, date=None, include_canceled=True):
         if not date:
             date = datetime.date.today()
-        status = (self.check_in and self.check_in <= date and
-                 (not self.check_out or (self.check_out and self.check_out >= date)))
+        status = self.inside(date, None)
         if include_canceled:
             return status
         else:
@@ -309,13 +308,40 @@ class Reservation(models.Model):
 
     def inside(self, start, end):
         #TODO: please make it simpler
-        return (
-             (self.check_in and not self.check_out and self.check_in <= end) or
-             (self.check_in and self.check_in >= start and self.check_in <= end) or
-             (self.check_out and self.check_out >= start and self.check_out <= end) or
-             (self.check_in and self.check_out and self.check_in >= start and self.check_out <= end) or
-             (self.check_in and self.check_out and self.check_in <= start and self.check_out >= end)
-           )
+        # case that period or reservation are defined
+        # reservation: [   ]
+        # period:      {   }
+        if self.check_in and start:
+          # cases that reservation is fully defined
+          # [   ]
+          if self.check_out:
+              # {   }
+              if end:
+                  return (
+                    # case of period end is between reservation dates
+                    # {  [  }  ]
+                    (self.check_in <= end and self.check_out >= end) or
+                    # case of reservation is between period dates
+                    # { [   ] }
+                    (self.check_in >= start and self.check_out <= end) or
+                    # case of period is between reservation dates
+                    # [ {  } ]
+                    (self.check_in <= start and self.check_out >= end)
+                    )
+              # case of period start is between reservation dates
+              # [ { ] (})
+              return self.check_in <= start and self.check_out >= start
+          # case of partialy defined reservations
+          # [
+          else:
+              # case of partialy defined period or case of end after check in
+              # [ {
+              # { [
+              # { [ }
+              return not end or self.check_in <= end
+        else:
+          return False
+
 
     def save(self, force_insert=False, force_update=False):
         if self.appartment:
