@@ -238,7 +238,13 @@ table#staff td, th {
 }
 
 input[type="checkbox"] {
-margin: 0px!important;
+	margin: 0px!important;
 }
 
-.ui-widget { font-size: 0.8em!important; }
+.ui-widget { 
+	font-size: 0.8em!important; 
+}
+
+#search{
+	margin-right: 4px;
+}

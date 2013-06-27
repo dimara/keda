@@ -1,15 +1,17 @@
-// $(function(){
-//     var url = window.location.pathname,
-//         urlRegExp = new RegExp(url.replace(/\/$/,''));    
-//         $('.nav li a').each(function(){
-//         if(urlRegExp.test($(this).attr('href'))){
-//             $(this).addClass('active');
-//         }
-//         });
-// });​
-
-
 $(document).ready(function () {
+
+  var $rows = $('#table tr');
+  $('#search').keyup(function() {
+      var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+      $rows.show().filter(function() {
+          var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+          return !~text.indexOf(val);
+      }).hide();
+  });
+
+
+
     if(window.location.href.indexOf("reservations") > -1) {
        $('#page-title').html('Reservation');
     }
