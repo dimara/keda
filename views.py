@@ -192,6 +192,17 @@ def th(request):
       }
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
+def damages(request):
+
+    date = datetime.date.today()
+    damages = Damage.objects.filter(fixed=False).order_by("tag")
+
+    ctx = {
+      "damages": damages,
+      "date":date,
+      }
+    return render_to_response("damages.html", ctx, context_instance=RequestContext(request))
+
 def test(request):
 
     date = request.GET.get("date", None)

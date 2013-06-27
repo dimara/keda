@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}List of Damages{% endblock %}
+
+{% block content %}
+    <h3>Damages</h3> <br>
+    <form action="/damages/" method="GET">
+      <div class="form-row">
+	{{ date }}
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right"/>
+      </div>
+    </form>
+    <table class="table table-hover table-condensed" id="table">
+      <tr id="titles">
+        <th></th>
+        <th>Appartment</th>
+        <th>Tag</th>
+        <th>Info</th>
+      </tr>
+      {% for d in damages %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/admin/reception/appartment/{{ d.appartment.id }}/">{{ d.appartment }}</a></td>
+        <td>{{ d.tag }}</td>
+        <td>{{ d.info }}</td>
+      {% endfor %}
+    </table>
+<script type="text/javascript" src="/media/js/filter.js"></script>
+{% endblock %}
