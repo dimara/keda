@@ -54,7 +54,7 @@ def check_period(avail, check_in, check_out):
             for a in avail:
                 ok = True
                 for r in a.reservations.all():
-                    if r.status in ("CONFIRMED") and r.inside(check_in, check_out):
+                    if r.status in ("CONFIRMED", "PENDING") and r.inside(check_in, check_out):
                         ok = False
                         break
                 if ok:
