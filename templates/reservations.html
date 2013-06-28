@@ -59,7 +59,21 @@
       {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >{% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}{% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}</td>
+        <td>
+            {% if r.owner.militaryperson %}
+                {% if r.owner.militaryperson.visitor %}
+                    <a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.visitor.info }}</a >
+                {% else %}
+                    <a href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
+                {% endif %}
+
+            {% else %}
+                <a href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
+            {% endif %}
+            {% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}
+            {% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}
+        </td>
+
         <td>
         {% for rr in r.owner.relatives.all %}
           {{ rr }}<br>
