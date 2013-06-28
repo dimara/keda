@@ -84,6 +84,14 @@ $(document).ready(function () {
             }
         });
 
+        $(".actv").click(function() {
+            if($('.actv:checked').length) {
+                $(".ea").show();
+            } else {
+                $(".ea").hide();
+            }
+        });
+
         $("#condensed").click(function() {
             if($('#condensed:checked').length) {
                 $("#table").addClass("table table-hover table-condensed");
