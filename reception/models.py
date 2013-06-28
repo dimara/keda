@@ -131,6 +131,13 @@ class Visitor(MilitaryPerson):
             ret += u" (ΜΕΛΟΣ)"
         return ret
 
+    def info(self):
+        ret = super(Visitor, self).info()
+        if self.member:
+            ret += u" (ΜΕΛΟΣ)"
+        return ret
+
+
 class VisitorForm(ModelForm):
     class Meta:
             model = Visitor
@@ -156,15 +163,15 @@ class Category(models.Model):
 
 class Appartment(models.Model):
     AREAS = (
-      ("A", "A"),
-      ("I", "I"),
-      ("B", "B"),
-      ("Z", "Z"),
-      ("M1", "M1"),
-      ("M2", "M2"),
-      ("M3", "M3"),
-      ("M4", "M4"),
-      ("M5", "M5"),
+      (u"Α", "Α"),
+      (u"Ι", "Ι"),
+      (u"Β", "Β"),
+      (u"Ζ", "Ζ"),
+      (u"Μ1", "Μ1"),
+      (u"Μ2", "Μ2"),
+      (u"Μ3", "Μ3"),
+      (u"Μ4", "Μ4"),
+      (u"Μ5", "Μ5"),
     )
     BEDS = (
       (0, "None"),
