@@ -3,7 +3,7 @@
 {% block title %}Search for Available Appartments{% endblock %}
 
 {% block content %}
-    <h3>Search for available Apartments</h3><br>
+    <h3>Availability</h3><br>
     <form action="/availability/" method="get">
         <div class="form-row">
                 {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
@@ -23,10 +23,13 @@
                     <option value="{{ c.id }}"> {{ c.desc }} </option>
                     {% endfor %}
                 </select>
-                <input type="submit" class="btn" value="Search" style="float:right" />
-                <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right" />
                 <input id="input_damaged" type="checkbox" name="damaged"> Include Damaged
-        </div><br>
+    	<button type="submit" class="btn" style="float:right"><i class="icon-search"></i> Search</button>
+      </div><br>
+      <div class="input-prepend form-row">
+        <span class="add-on"><i class="icon-search"></i></span>
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
+      </div>
         {% if check_in and check_out or area or category or damaged %}
         <div class="alert alert-info">
             {% if check_in and check_out %} From {{ check_in }} until {{ check_out }} {% endif %}
