@@ -32,7 +32,7 @@
           <td>
             {% for d in a.damages.all %}
               {% if not d.fixed %}
-                {{ d.tag }}: {{ d.info }}<br>
+                {{ d.tag }},
               {% endif %}
             {% endfor %}
           </td>
