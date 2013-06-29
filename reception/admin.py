@@ -51,11 +51,21 @@ class DamageInline(admin.TabularInline):
     extra = 0
     inlines = []
 
-class AppartmentAdmin(admin.ModelAdmin):
+class NestedReservationAppartmentInline(NestedTabularInline):
+    model = Reservation
+    fk_name = "appartment"
+    extra = 0
+    inlines = [
+        ReceiptInline,
+        ]
+
+class AppartmentAdmin(NestedModelAdmin):
     list_display = ('appartment', 'rooms', 'beds', 'category', )
     ordering = ('category', )
+    search_fields = ('area', 'no', )
     inlines = [
         DamageInline,
+        NestedReservationAppartmentInline,
         ]
 
 class NestedMilitaryPersonAdmin(NestedPersonAdmin):
