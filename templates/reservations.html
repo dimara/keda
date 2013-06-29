@@ -31,8 +31,11 @@
                     <option value="{{ s.0 }}"> {{ s.1 }}</option>
                     {% endfor %}
                 </select>
-        <input type="submit" class="btn" value="Search" style="float:right" />
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right" />
+    	        <button type="submit" class="btn" style="float:right"><i class="icon-search"></i> Search</button>
+      </div><br>
+      <div class="input-prepend form-row">
+        <span class="add-on"><i class="icon-search"></i></span>
+        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
       </div>
       <div class="form-row">
         <div class="alert alert-info">
