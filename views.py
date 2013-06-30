@@ -47,32 +47,26 @@ def id_from_request(qd, name):
 def check_period(avail, check_in, check_out):
     err = None
     ret = []
-    if (check_in and check_out):
-        if (check_out <= check_in):
+    if (check_out and check_out <= check_in):
             err = "ERROR: Check-out before Check-in!!!"
-        else:
-            for a in avail:
-                ok = True
-                for r in a.reservations.all():
-                    if r.status in ("CONFIRMED", "PENDING") and r.inside(check_in, check_out):
-                        ok = False
-                        break
-                if ok:
-                    ret.append(a)
-
-    ret = sorted(ret, key=lambda a: a.appartment)
+    else:
+        for a in avail:
+            ok = True
+            for r in a.reservations.all():
+                if r.status in ("CONFIRMED", "PENDING") and r.inside(check_in, check_out):
+                    ok = False
+                    break
+            if ok:
+                ret.append(a)
 
     return (ret, err)
 
 
 def availability(request):
-    qd = request.GET
-    check_in = qd.get("check_in")
-    check_out = qd.get("check_out")
-    area = qd.get("area")
-    category = id_from_request(qd, "category")
-    damaged = qd.get("damaged", False)
-    date = datetime.date.today()
+    period, start, end =  get_start_end(request)
+    area = request.GET.get("area")
+    category = id_from_request(request.GET, "category")
+    damaged = request.GET.get("damaged", False)
 
     avail = Appartment.objects.all()
     if area:
@@ -85,12 +79,14 @@ def availability(request):
         avail = avail.filter(category=category)
 
     date_errors = None
-    if (check_in and check_out):
-        avail, date_errors = check_period(avail, get_datetime(check_in), get_datetime(check_out))
+    avail, date_errors = check_period(avail, start, end)
+    avail = sorted(avail, key=lambda a: (a.area, int(a.no)))
 
     ctx =  {
-      "check_in": check_in,
-      "check_out": check_out,
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
       "date_errors": date_errors,
       "area": area,
       "areas": Appartment.AREAS,
@@ -98,13 +94,13 @@ def availability(request):
       "categories": Category.objects.values(),
       "damaged": damaged,
       "avail": avail,
-      "date": date,
       }
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
 
 def appartments(request):
     appartments = Appartment.objects.all()
+    appartments = sorted(appartments, key=lambda a: (a.area, int(a.no)))
 
     ctx = {
         "appartments": appartments,
@@ -128,40 +124,38 @@ def get_datetime(value):
     else:
       return datetime.date.today()
 
-def reservations(request):
-
-    date = request.GET.get("date", None)
+def get_start_end(request):
+    period = id_from_request(request.GET, "period")
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
+    if period:
+        period = Period.objects.get(id=period)
+        start = period.start
+        end = period.end
+    elif start and end:
+        start = get_datetime(start)
+        end = get_datetime(end)
+    else:
+        start = get_datetime(start)
+        end = start + datetime.timedelta(days=1)
+
+    return period, start, end
+
+def reservations(request):
+
+    period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
-    period = id_from_request(request.GET, "period")
-    p = None
-    #reservations = Reservation.objects.all().order_by("owner__surname")
     reservations = Reservation.objects.all().order_by("owner__surname")
     if rtype:
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
-    p = None
-    if period:
-        p = Period.objects.get(id=period)
-        reservations = [r for r in reservations if r.inside(p.start, p.end)]
-    elif start and end:
-        start = get_datetime(start)
-        end = get_datetime(end)
-        reservations = [r for r in reservations if r.inside(start, end)]
-    else:
-        date = get_datetime(date)
-        reservations = [r for r in reservations if r.active(date)]
-
-    #visitors = Visitor.objects.all()
+    reservations = [r for r in reservations if r.inside(start, end)]
     ctx = {
-      "date": date,
+      "period": period,
       "start": start,
       "end": end,
-      "period": p,
-      #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
       "rtype": rtype,
       "status": status,
       "rtypes": Reservation.RESERVATION_TYPES,
@@ -173,22 +167,17 @@ def reservations(request):
 
 def th(request):
 
-    period = id_from_request(request.GET, "period")
-    p = None
-    date = datetime.date.today()
-    #reservations = Reservation.objects.all().order_by("owner__surname")
-    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True).order_by("appartment")
-    if period:
-        p = Period.objects.get(id=period)
-        reservations = [r for r in reservations if r.inside(p.start, p.end)]
+    period, start, end = get_start_end(request)
+    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True)
+    reservations = [r for r in reservations if r.inside(start, end)]
+    reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
-    #visitors = Visitor.objects.all()
     ctx = {
-      "period": p,
-      #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
+      "period": period,
+      "start": start,
+      "end": end,
       "periods": Period.objects.all(),
       "reservations": reservations,
-      "date":date,
       }
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
@@ -205,38 +194,30 @@ def damages(request):
 
 def test(request):
 
-    date = request.GET.get("date", None)
-    start = request.GET.get("start", None)
-    end = request.GET.get("end", None)
+    period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
-    period = id_from_request(request.GET, "period")
-    p = None
-    #reservations = Reservation.objects.all().order_by("owner__surname")
-    reservations = Reservation.objects.all().order_by("owner__surname")
+    order = request.GET.get("order", None)
+
+    reservations = Reservation.objects.all()
+
     if rtype:
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
-    p = None
-    if period:
-        p = Period.objects.get(id=period)
-        reservations = [r for r in reservations if r.inside(p.start, p.end)]
-    elif start and end:
-        start = get_datetime(start)
-        end = get_datetime(end)
-        reservations = [r for r in reservations if r.inside(start, end)]
+
+    reservations = [r for r in reservations if r.inside(start, end)]
+
+    if order == "apartment":
+      reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
     else:
-        date = get_datetime(date)
-        reservations = [r for r in reservations if r.active(date)]
+      reservations = sorted(reservations, key=lambda r: r.owner.surname)
 
     #visitors = Visitor.objects.all()
     ctx = {
-      "date": date,
+      "period": period,
       "start": start,
       "end": end,
-      "period": p,
-      #"visitors": [v for v in visitors for r in v.reservations.all() if r.active(date)],
       "rtype": rtype,
       "status": status,
       "rtypes": Reservation.RESERVATION_TYPES,

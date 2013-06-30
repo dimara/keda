@@ -1,0 +1,10 @@
+<div class="form-row">
+    <select name="period">
+        <option value="">Period..</option>
+        {% for p in periods %}
+        <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
+        {% endfor %}
+    </select>
+    <input placeholder="From.." type="text" class="datepicker" name="start" />
+    <input placeholder="Until.." type="text" class="datepicker" name="end" />
+</div>

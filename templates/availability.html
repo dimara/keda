@@ -7,38 +7,12 @@
     <form action="/availability/" method="get">
         <div class="form-row">
                 {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
-                <input placeholder="Check In" type="text" class="datepicker" name="check_in" />
-                <input placeholder="Check Out" type="text" class="datepicker" name="check_out" />
         </div>
-        <div>
-                <select name="area" id="id_area">
-                    <option value="">Area (All)</option>
-                    {% for a in areas %}
-                    <option value="{{ a.0 }}"> {{ a.1 }} </option>
-                    {% endfor %}
-                </select>
-                <select name="category" id="id_category">
-                    <option value="">Category (All)</option>
-                    {% for c in categories %}
-                    <option value="{{ c.id }}"> {{ c.desc }} </option>
-                    {% endfor %}
-                </select>
-                <input id="input_damaged" type="checkbox" name="damaged"> Include Damaged
-    	<button type="submit" class="btn" style="float:right"><i class="icon-search"></i> Search</button>
-      </div><br>
-      <div class="input-prepend form-row">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
-      </div>
-        {% if check_in and check_out or area or category or damaged %}
-        <div class="alert alert-info">
-            {% if check_in and check_out %} From {{ check_in }} until {{ check_out }} {% endif %}
-            {% if area %} + area {{ area }} {% endif %}
-            {% if category %} + category {{ category }} {% endif %}
-            {% if damaged %} + DAMAGED {% endif %}
-        </div>
-        {% endif %}
+        {% include "includes/dates.html" %}
+        {% include "includes/apartment_filter.html" %}
+        {% include "includes/search_filter.html" %}
     </form>
+      {% include "includes/info.html" %}
       <table class="table table-hover" id="table">
         <tr id="titles">
           <th></th>

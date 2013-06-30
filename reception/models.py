@@ -304,10 +304,11 @@ class Reservation(models.Model):
             ret += u"%s" % self.check_out
         return ret
 
-    def active(self, date=None, include_canceled=True):
-        if not date:
-            date = datetime.date.today()
-        status = self.inside(date, None)
+    def active(self, start=None, include_canceled=True):
+        if not start:
+          start = datetime.date.today()
+        end = start + datetime.timedelta(days=1)
+        status = self.inside(start, end)
         if include_canceled:
             return status
         else:
@@ -322,9 +323,12 @@ class Reservation(models.Model):
           # cases that reservation is fully defined
           # [   ]
           if self.check_out:
-              # {   }
-              if end:
-                  return (
+              return (
+                # case of period start is between reservation dates
+                # [ { ] (})
+                (self.check_in <= start and self.check_out >= start) or
+                  # {   }
+                  (end and (
                     # case of period end is between reservation dates
                     # {  [  }  ]
                     (self.check_in <= end and self.check_out >= end) or
@@ -335,9 +339,8 @@ class Reservation(models.Model):
                     # [ {  } ]
                     (self.check_in <= start and self.check_out >= end)
                     )
-              # case of period start is between reservation dates
-              # [ { ] (})
-              return self.check_in <= start and self.check_out >= start
+                  )
+                )
           # case of partialy defined reservations
           # [
           else:
@@ -346,8 +349,8 @@ class Reservation(models.Model):
               # { [
               # { [ }
               return not end or self.check_in <= end
-        else:
-          return False
+
+        return False
 
 
     def save(self, force_insert=False, force_update=False):

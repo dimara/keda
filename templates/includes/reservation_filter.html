@@ -1,0 +1,14 @@
+      <div class="form-row">
+                <select name="rtype" >
+                    <option value="">Reservation Type (All)</option>
+                    {% for t in rtypes %}
+                    <option value="{{ t.0 }}"> {{ t.1 }}</option>
+                    {% endfor %}
+                </select>
+                <select name="status" >
+                    <option value="">Reservation Status (All)</option>
+                    {% for s in statuses %}
+                    <option value="{{ s.0 }}"> {{ s.1 }}</option>
+                    {% endfor %}
+                </select>
+      </div>

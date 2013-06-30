@@ -5,17 +5,11 @@
 {% block content %}
     <h3>Phone activations</h3> <br>
     <form action="/th/" method="GET">
-      <div class="form-row">
-                <select name="period" onchange="this.form.submit()" >
-                    <option value="">Select period</option>
-                    {% for p in periods %}
-                    <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
-                    {% endfor %}
-                </select>
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right"/>
-      </div>
+    {% include "includes/dates.html" %}
+    {% include "includes/search_filter.html" %}
     </form>
-    {% if period %}<div class="alert alert-info"> Period {{ period.name }}: ({{ period.start }} ... {{ period.end }})</div> {% endif %}
+    {% include "includes/info.html" %}
+
     <table class="table table-hover table-condensed" id="table">
       <tr id="titles">
         <th></th>

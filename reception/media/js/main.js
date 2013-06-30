@@ -28,6 +28,14 @@ $(document).ready(function () {
        $('#page-title').html('Παρουσιολόγιο');
     }
 
+        $("#showstatus").click(function() {
+            if($('#showstatus:checked').length) {
+                $(".label").show();
+            } else {
+                $(".label").hide();
+            }
+        });
+
         $(".rltvs").click(function() {
             if($('.rltvs:checked').length) {
                 $(".relatives").show();

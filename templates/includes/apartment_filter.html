@@ -1,0 +1,15 @@
+<div>
+        <select name="area" id="id_area">
+            <option value="">Area (All)</option>
+            {% for a in areas %}
+            <option value="{{ a.0 }}"> {{ a.1 }} </option>
+            {% endfor %}
+        </select>
+        <select name="category" id="id_category">
+            <option value="">Category (All)</option>
+            {% for c in categories %}
+            <option value="{{ c.id }}"> {{ c.desc }} </option>
+            {% endfor %}
+        </select>
+        <input id="input_damaged" type="checkbox" name="damaged">Include Damaged
+</div>

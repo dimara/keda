@@ -5,48 +5,11 @@
 {% block content %}
     <h3>Reservations</h3><br>
     <form action="/reservations/" method="GET">
-      <div class="form-row">
-          <input placeholder="From.." type="text" class="datepicker" name="start" />
-          <input placeholder="..until" type="text" class="datepicker" name="end" />
-          or
-          <input placeholder="at.." type="text" class="datepicker" name="date" />
-          or
-          <select name="period" >
-              <option value="">during..</option>
-              {% for p in periods %}
-              <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
-              {% endfor %}
-          </select>
-      </div>
-      <div class="form-row">
-                <select name="rtype" >
-                    <option value="">Reservation Type (All)</option>
-                    {% for t in rtypes %}
-                    <option value="{{ t.0 }}"> {{ t.1 }}</option>
-                    {% endfor %}
-                </select>
-                <select name="status" >
-                    <option value="">Reservation Status (All)</option>
-                    {% for s in statuses %}
-                    <option value="{{ s.0 }}"> {{ s.1 }}</option>
-                    {% endfor %}
-                </select>
-    	        <button type="submit" class="btn" style="float:right"><i class="icon-search"></i> Search</button>
-      </div><br>
-      <div class="input-prepend form-row">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
-      </div>
-      <div class="form-row">
-        <div class="alert alert-info">
-            {% if start and end %} From {{ start }} until {{ end }} {% endif %}
-            {% if period %} During period {{ period.name }}: ({{ period.start }} ... {{ period.end }}) {% endif %}
-            {% if date %} At {{ date }} {% endif %}
-            {% if rtype %} + type {{ rtype }} {% endif %}
-            {% if status %} + status {{ status }} {% endif %}
-        </div>
-      </div>
+      {% include "includes/dates.html" %}
+      {% include "includes/reservation_filter.html" %}
+      {% include "includes/search_filter.html" %}
     </form>
+    {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>

@@ -1,0 +1,12 @@
+        {% if period or start or end or area or category or rtype or status or damaged %}
+        <div class="alert alert-info">
+            {% if period %} Period {{ period.name }}, {% endif %}
+            {% if start %} Check IN @ {{ start }}, {% endif %}
+            {% if end %} Check OUT @ {{ end }}, {% endif %}
+            {% if area %}, Area {{ area }} {% endif %}
+            {% if category %}, Category {{ category }} {% endif %}
+            {% if rtype %}, Type {{ rtype }} {% endif %}
+            {% if status %}, Status {{ status }} {% endif %}
+            {% if damaged %}, +Damaged {% endif %}
+        </div>
+        {% endif %}

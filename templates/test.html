@@ -5,41 +5,19 @@
 {% block content %}
     <h3>Reservations</h3><br>
     <form action="/test/" method="GET">
-      <div class="form-row">
-          <input placeholder="From.." type="text" class="datepicker" name="start" />
-          <input placeholder="..until" type="text" class="datepicker" name="end" />
-          or
-          <input placeholder="at.." type="text" class="datepicker" name="date" />
-          or
-          <select name="period" >
-              <option value="">during..</option>
-              {% for p in periods %}
-              <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
-              {% endfor %}
-          </select>
-      </div>
-      <div class="form-row">
-                <select name="rtype" >
-                    <option value="">Reservation Type (All)</option>
-                    {% for t in rtypes %}
-                    <option value="{{ t.0 }}"> {{ t.1 }}</option>
-                    {% endfor %}
-                </select>
-                <select name="status" >
-                    <option value="">Reservation Status (All)</option>
-                    {% for s in statuses %}
-                    <option value="{{ s.0 }}"> {{ s.1 }}</option>
-                    {% endfor %}
-                </select>
-    	<button type="submit" class="btn" style="float:right"><i class="icon-search"></i> Search</button>
-      </div><br>
-      <div class="input-prepend form-row">
-        <span class="add-on"><i class="icon-search"></i></span>
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to search" />
-      </div>
+      {% include "includes/dates.html" %}
+      {% include "includes/reservation_filter.html" %}
+      {% include "includes/search_filter.html" %}
+      <select name="order" style="float:right">
+          <option value="">Order by</option>
+          <option value="name"> Name</option>
+          <option value="apartment"> Apartment</option>
+      </select>
     </form>
-      <input id="condensed" type="checkbox"> table-condensed
+    {% include "includes/info.html" %}
     <div>
+      <input id="condensed" type="checkbox" > Condensed
+      <input id="showstatus" type="checkbox" checked> Status
       <input class="rltvs" type="checkbox" checked> Relatives
       <input class="vhcls" type="checkbox" checked> Vehicles
       <input class="cntcts" type="checkbox" checked> Contacts
@@ -73,10 +51,12 @@
                 {% else %}
                     <a href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
                 {% endif %}
-
             {% else %}
                 <a href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
             {% endif %}
+              {% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}
+              {% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}
+
         </td>
         <td class="relatives">
         {% for rr in r.owner.relatives.all %}
