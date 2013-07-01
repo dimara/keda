@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
+from django.core.exceptions import ValidationError
 import datetime
 
 # Create your models here.
@@ -352,18 +353,19 @@ class Reservation(models.Model):
 
         return False
 
-
-    def save(self, force_insert=False, force_update=False):
+    def clean(self):
+        super(Reservation, self).clean()
         if self.appartment:
             all_res = self.appartment.reservations.all()
             if self.id:
                 all_res = all_res.exclude(id=self.id)
             for r in all_res:
                 if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
-                    raise Exception("FATAL: Appartment %s already booked by %s from %s until %s" %
-                                    (r.appartment, r.owner, r.check_in, r.check_out))
-        super(Reservation, self).save(force_insert, force_update)
+                    raise ReservationConflictError("FATAL: Appartment %s already booked by %s from %s until %s" %
+                                          (r.appartment, r.owner, r.check_in, r.check_out))
 
+class ReservationConflictError(ValidationError):
+    pass
 
 class Receipt(models.Model):
     RECEIPT_TYPES = (
