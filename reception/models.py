@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
-from django.core.exceptions import ValidationError
+from django.forms import ChoiceField
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from nested_inlines.forms import BaseNestedModelForm
 import datetime
 
 # Create your models here.
@@ -137,11 +139,6 @@ class Visitor(MilitaryPerson):
         if self.member:
             ret += u" (ΜΕΛΟΣ)"
         return ret
-
-
-class VisitorForm(ModelForm):
-    class Meta:
-            model = Visitor
 
 
 class Staff(MilitaryPerson):
@@ -359,12 +356,60 @@ class Reservation(models.Model):
             all_res = self.appartment.reservations.all()
             if self.id:
                 all_res = all_res.exclude(id=self.id)
+                res = Reservation.objects.get(id=self.id)
             for r in all_res:
                 if r.status != "CANCELED" and r.inside(self.check_in, self.check_out):
-                    raise ReservationConflictError("FATAL: Appartment %s already booked by %s from %s until %s" %
-                                          (r.appartment, r.owner, r.check_in, r.check_out))
+                    err = ReservationConflictError("Conflicting Reservation: %s" % r.info)
+                    err.conflicting_res_id = r.id
+                    err.wanted_res_id = self.id
+                    raise err
 
-class ReservationConflictError(ValidationError):
+
+class ReservationConflictError(Exception):
+    conflicting_res_id = None
+    wanted_res_id = None
+
+
+class ReservationForm(BaseNestedModelForm):
+    RESOLVE = (
+      ("", "-------"),
+      ("FORCE", "Force save"),
+      ("SWAP", "Swap Appartments"),
+      )
+
+    resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
+    class Meta:
+            model = Reservation
+
+    def resolve_conflict(self, e):
+        resolve = self.cleaned_data.get("resolve", None)
+        conflicting = Reservation.objects.get(id=e.conflicting_res_id)
+        print "resolving...."
+        if not resolve:
+          self._update_errors({
+            "resolve": ["Choose a way to resolve conflict!"],
+            NON_FIELD_ERRORS: [e],
+            })
+        if resolve == "FORCE":
+          pass
+        if resolve == "SWAP":
+          # TODO: find first available appartment
+          appartment = None
+          if e.wanted_res_id:
+            existing = Reservation.objects.get(id=e.wanted_res_id)
+            appartment = existing.appartment
+          conflicting.appartment = appartment
+          conflicting.save()
+        print(u"Conflict: %s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e, resolve, conflicting.info, self.instance.info))
+
+    def full_clean(self):
+        try:
+          super(ReservationForm, self).full_clean()
+        except Exception, e:
+          self.resolve_conflict(e)
+
+
+class InlineReservationForm(ReservationForm):
     pass
 
 class Receipt(models.Model):

@@ -28,6 +28,7 @@ class ReceiptInline(admin.TabularInline):
 
 class NestedReservationInline(NestedTabularInline):
     model = Reservation
+    form = InlineReservationForm
     fk_name = "owner"
     extra = 0
     inlines = [
@@ -53,6 +54,7 @@ class DamageInline(admin.TabularInline):
 
 class NestedReservationAppartmentInline(NestedTabularInline):
     model = Reservation
+    form = InlineReservationForm
     fk_name = "appartment"
     extra = 0
     inlines = [
@@ -91,9 +93,13 @@ class ReservationAdmin(admin.ModelAdmin):
     list_filter = ('telephone', )
     ordering = ('check_in', 'check_out', )
     search_fields = ('owner', 'appartment')
+    form = ReservationForm
     inlines = [
         ReceiptInline,
         ]
+
+    #def save_model(self, request, obj, form, change):
+        #obj.save()
 
 class ReceiptAdmin(admin.ModelAdmin):
     ordering = ('no', 'reservation', 'euro', 'rtype' )
