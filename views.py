@@ -165,6 +165,22 @@ def reservations(request):
       }
     return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
+def logistic(request):
+
+    period, start, end = get_start_end(request)
+    reservations = Reservation.objects.filter(status="CONFIRMED", res_type=u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)")
+    reservations = [r for r in reservations if r.inside(start, end)]
+    reservations = sorted(reservations, key=lambda r: r.receipt.no if r.receipt else None)
+
+    ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
+      "reservations": reservations,
+      }
+    return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
+
 def th(request):
 
     period, start, end = get_start_end(request)

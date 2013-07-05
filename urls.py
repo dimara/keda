@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^reservations/$', reservations),
     url(r'^th/$', th),
     url(r'^damages/$', damages),
+    url(r'^logistic/$', logistic),
 
 )
 

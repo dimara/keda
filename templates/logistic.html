@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}List for Logistic{% endblock %}
+
+{% block content %}
+    <h3>Period</h3> <br>
+    <form action="/logistic/" method="GET">
+    {% include "includes/dates.html" %}
+    {% include "includes/search_filter.html" %}
+    </form>
+    {% include "includes/info.html" %}
+
+    <table class="table table-hover table-condensed" id="table">
+      <tr id="titles">
+        <th></th>
+        <th>Visitor</th>
+        <th>Appartment</th>
+        <th>Receipt</th>
+        <th>Euro</th>
+      </tr>
+      {% for r in reservations %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
+        <td> {{ r.appartment }} </td>
+        <td> {{ r.receipt.no }} </td>
+        <td> {{ r.receipt.euro }} </td>
+      {% endfor %}
+    </table>
+{% endblock %}

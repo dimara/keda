@@ -365,6 +365,13 @@ class Reservation(models.Model):
                     raise err
 
 
+    @property
+    def receipt(self):
+        if self.receipts.all():
+            return self.receipts.all()[0]
+        else:
+            return None
+
 class ReservationConflictError(Exception):
     conflicting_res_id = None
     wanted_res_id = None
