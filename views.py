@@ -66,7 +66,7 @@ def availability(request):
     period, start, end =  get_start_end(request)
     area = request.GET.get("area")
     category = id_from_request(request.GET, "category")
-    damaged = request.GET.get("damaged", False)
+    damaged = request.GET.get("damaged", True)
 
     avail = Appartment.objects.all()
     if area:

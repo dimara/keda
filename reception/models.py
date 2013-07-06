@@ -359,7 +359,7 @@ class Reservation(models.Model):
                 all_res = all_res.exclude(id=self.id)
                 res = Reservation.objects.get(id=self.id)
             for r in all_res:
-                if r.status != "CANCELED" and self.status != "CANCELED" and r.inside(self.check_in, self.check_out):
+                if r.status in ("PENDING", "CONFIRMED") and self.status in ("PENDING", "CONFIRMED") and r.inside(self.check_in, self.check_out):
                     err = ReservationConflictError("Conflicting Reservation: %s" % r.info)
                     err.conflicting_res_id = r.id
                     err.wanted_res_id = self.id
