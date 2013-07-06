@@ -1,0 +1,4 @@
+
+              {% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}
+              {% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}
+              {% if r.status = "CHECKEDOUT" %}<span class="label label-info">Checked OUT</span>{% endif %}

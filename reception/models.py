@@ -269,6 +269,7 @@ class Reservation(models.Model):
       ("PENDING", "Pending Confirmation"),
       ("CONFIRMED", "Confirmed"),
       ("CANCELED", "Canceled"),
+      ("CHECKEDOUT", "Checked OUT"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)

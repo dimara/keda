@@ -36,8 +36,7 @@
             {% else %}
                 <a href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
             {% endif %}
-            {% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}
-            {% if r.status = "CANCELED" %}<span class="label label-important">Canceled</span>{% endif %}
+            {% include "includes/status.html" %}
         </td>
 
         <td>
