@@ -44,19 +44,7 @@
       {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td>
-            {% if r.owner.militaryperson %}
-                {% if r.owner.militaryperson.visitor %}
-                    <a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.visitor.info }}</a >
-                {% else %}
-                    <a href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
-                {% endif %}
-            {% else %}
-                <a href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
-            {% endif %}
-              {% include "includes/status.html" %}
-
-        </td>
+        <td> {% include "includes/person_display.html" %} </td>
         <td class="relatives">
         {% for rr in r.owner.relatives.all %}
           {{ rr }}<br>
@@ -83,7 +71,9 @@
         {% endfor %}
         </td>
         <td class="ea">
-          {% if not r.owner.militaryperson.active %} EA {% endif %}
+          {% if r.owner.militaryperson %}
+              {% if not r.owner.militaryperson.active %} EA {% endif %}
+          {% endif %}
         </td>
       {% endfor %}
     </table>

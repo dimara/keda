@@ -123,6 +123,8 @@ class MilitaryPerson(Person):
             ret = u"(%s) %s" % (self.speciality, ret)
         if self.rank:
             ret = u"%s %s" % (self.rank, ret)
+        if not self.active:
+            ret += u" (ΕΑ)"
         return ret
 
 class Visitor(MilitaryPerson):

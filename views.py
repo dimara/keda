@@ -99,11 +99,26 @@ def availability(request):
 
 
 def appartments(request):
+    area = request.GET.get("area")
+    category = id_from_request(request.GET, "category")
+    damaged = request.GET.get("damaged", True)
+
     appartments = Appartment.objects.all()
+    if area:
+        appartments = appartments.filter(area=area)
+
+    if not damaged:
+        appartmenst = appartments.exclude(damages__fixed=False)
+
+    if category:
+        appartments = appartments.filter(category=category)
+
     appartments = sorted(appartments, key=lambda a: (a.area, int(a.no)))
 
     ctx = {
-        "appartments": appartments,
+      "areas": Appartment.AREAS,
+      "categories": Category.objects.values(),
+      "appartments": appartments,
       }
     return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
 
@@ -168,16 +183,28 @@ def reservations(request):
 def logistic(request):
 
     period, start, end = get_start_end(request)
-    reservations = Reservation.objects.filter(status="CONFIRMED", res_type=u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)")
+    rtype = request.GET.get("rtype", u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)")
+    status = request.GET.get("status", None)
+    reservations = Reservation.objects.exclude(status="CANCELED")
+    if rtype:
+        reservations = reservations.filter(res_type=rtype)
+    if status:
+        reservations = reservations.filter(status=status)
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: r.receipt.no if r.receipt else None)
 
+    l = lambda x: [r.receipt.euro for r in x if r.receipt is not None]
     ctx = {
       "period": period,
       "start": start,
       "end": end,
+      "rtype": rtype,
+      "status": status,
+      "sum": sum(l(reservations)),
       "periods": Period.objects.all(),
       "reservations": reservations,
+      "rtypes": Reservation.RESERVATION_TYPES,
+      "statuses": Reservation.STATUSES,
       }
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 

@@ -1,34 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}Appartments{% endblock %}
+{% block title %}Apartments{% endblock %}
 
 {% block content %}
-    <b>Search for Appartments</b><br>
-    <input type="text" id="search" size="20" placeholder="Type to search" />
-    <table border="1" id="table">
-      <tr id="titles">
+    <h3>Apartmnets</h3><br>
+    <form action="/appartments/" method="get">
+        {% include "includes/apartment_filter.html" %}
+        {% include "includes/search_filter.html" %}
+    </form>
+    <table class="table table-hover" id="table">
+        <tr id="titles">
+        <th></th>
         <th>Appartment</th>
+        <th>Category</th>
+        <th>Beds</th>
         <th>Damages</th>
         <th>Reservations</th>
+        <th>Type</th>
       </tr>
       {% for a in appartments %}
       <tr>
-        <td>{{ a }}</td>
+        <td> {{ forloop.counter }}</td>
+        <td> <a href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
+        <td> {{ a.category }}</td>
+        <td> {{ a.beds }}</td>
+
         <td>
         {% for d in a.damages.all %}
           {% if not d.fixed %}
-            {{ d.info }}<br>
+            {{ d.tag }}<br>
           {% endif %}
         {% endfor %}
         </td>
         <td>
-        {% for res in a.reservations.all %}
-          {% if res.active %}
-            {{ res.owner }}<br>
+        {% for r in a.reservations.all %}
+          {% if r.active %}
+            {% include "includes/person_display.html" %}<br>
+          {% endif %}
+        {% endfor %}
+        </td>
+        <td>
+        {% for r in a.reservations.all %}
+          {% if r.active %}
+            {{ r.res_type }}<br>
           {% endif %}
         {% endfor %}
         </td>
       {% endfor %}
     </table>
-<script type="text/javascript" src="/media/js/filter.js"></script>
 {% endblock %}

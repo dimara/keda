@@ -26,16 +26,7 @@
       <tr>
         <td>{{ forloop.counter }}</td>
         <td>
-            {% if r.owner.militaryperson %}
-                {% if r.owner.militaryperson.visitor %}
-                    <a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.visitor.info }}</a >
-                {% else %}
-                    <a href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
-                {% endif %}
-
-            {% else %}
-                <a href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a >
-            {% endif %}
+            {% include "includes/person_display.html" %}
             {% include "includes/status.html" %}
         </td>
 

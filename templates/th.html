@@ -19,7 +19,7 @@
       {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/visitor/{{ r.owner.id }}/">{{ r.owner.militaryperson.info }}</a></td>
+        <td>{% include "includes/person_display.html" %}</td>
         <td>
             {{ r.appartment }}
         </td>
