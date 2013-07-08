@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
-from django.forms import ChoiceField
+from django.forms import ChoiceField, ModelChoiceField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from nested_inlines.forms import BaseNestedModelForm
 import datetime
@@ -375,6 +375,20 @@ class Reservation(models.Model):
         else:
             return None
 
+class Period(models.Model):
+    name = models.CharField("Period", max_length=10, null=True, blank=True)
+    start = models.DateField("Starting Date")
+    end = models.DateField("Ending Date")
+
+    def __unicode__(self):
+        r = u"%s" % (self.name)
+        if self.start:
+            r += " (%s .." % self.start
+        if self.end:
+            r += " %s)" % self.end
+
+        return r
+
 class ReservationConflictError(Exception):
     conflicting_res_id = None
     wanted_res_id = None
@@ -388,6 +402,8 @@ class ReservationForm(BaseNestedModelForm):
       )
 
     resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
+    period = ModelChoiceField(queryset=Period.objects.all(), required=False)
+
     class Meta:
             model = Reservation
 
@@ -411,6 +427,27 @@ class ReservationForm(BaseNestedModelForm):
           conflicting.appartment = appartment
           conflicting.save()
         print(u"Conflict: %s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e, resolve, conflicting.info, self.instance.info))
+
+
+    def clean(self):
+        super(ReservationForm, self).clean()
+        def get_datetime(value):
+            if value:
+              y, m, d = map(int, value.split("-"))
+              return datetime.date(y, m, d)
+
+        period = self.cleaned_data.get("period", None)
+        check_in = self.cleaned_data.get("check_in", None)
+        check_out = self.cleaned_data.get("check_out", None)
+        if period and (check_in or check_out):
+          self._update_errors({
+            "period": ["You must provide either period or dates!"],
+            })
+        if period:
+          self.cleaned_data["check_in"] = period.start
+          self.cleaned_data["check_out"] = period.end
+        return self.cleaned_data
+
 
     def full_clean(self):
         try:
@@ -439,16 +476,3 @@ class Receipt(models.Model):
                     (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
 
 
-class Period(models.Model):
-    name = models.CharField("Period", max_length=10, null=True, blank=True)
-    start = models.DateField("Starting Date")
-    end = models.DateField("Ending Date")
-
-    def __unicode__(self):
-        r = u"%s" % (self.name)
-        if self.start:
-            r += " (%s .." % self.start
-        if self.end:
-            r += " %s)" % self.end
-
-        return r
