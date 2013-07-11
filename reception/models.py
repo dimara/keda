@@ -348,11 +348,16 @@ class Reservation(models.Model):
                 all_res = all_res.exclude(id=self.id)
                 res = Reservation.objects.get(id=self.id)
             for r in all_res:
+                msg = "Conflicting Reservations:\n"
+                errors = []
                 if r.status in ("PENDING", "CONFIRMED") and self.status in ("PENDING", "CONFIRMED") and r.inside(self.check_in, self.check_out):
-                    err = ReservationConflictError("Conflicting Reservation: %s" % r.info)
+                    msg += "%s\n" % r.info
+                    err = ReservationConflictError(msg)
                     err.conflicting_res_id = r.id
                     err.wanted_res_id = self.id
-                    raise err
+                    errors.append(err)
+                if errors:
+                    raise errors[-1]
 
 
     @property
@@ -393,7 +398,7 @@ class ReservationForm(BaseNestedModelForm):
 
     class Meta:
             model = Reservation
-            fields = ["period", "check_in", "check_out", "persons", "appartment", "status", "resolve"]
+            fields = ["period", "check_in", "check_out", "owner", "appartment", "persons", "status", "resolve"]
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
@@ -414,7 +419,7 @@ class ReservationForm(BaseNestedModelForm):
             appartment = existing.appartment
           conflicting.appartment = appartment
           conflicting.save()
-        print(u"Conflict: %s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e, resolve, conflicting.info, self.instance.info))
+        print(u"%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e, resolve, conflicting.info, self.instance.info))
 
 
     def clean(self):
