@@ -477,3 +477,18 @@ class Receipt(models.Model):
                     (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
 
 
+class Keda(models.Model):
+    RESERVATION_TYPES = (
+      (u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)", "ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)"),
+      (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
+      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
+      (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
+      (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
+      )
+
+    info = models.TextField("Further Info", max_length=100, null=True, blank=True)
+    res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
+                                null=True, blank=True)
+    telephone = models.BooleanField("Telephone", default=False)
+    book_ref = models.IntegerField("No", null=True, blank=True)
+    reservation = models.ForeignKey(Reservation, related_name="keda")

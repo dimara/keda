@@ -26,12 +26,19 @@ class ReceiptInline(admin.TabularInline):
     extra = 0
     inlines = []
 
+class KedaInline(admin.TabularInline):
+    model = Keda
+    fk_name = "reservation"
+    extra = 0
+    inlines = []
+
 class NestedReservationInline(NestedTabularInline):
     model = Reservation
     form = InlineReservationForm
     fk_name = "owner"
     extra = 0
     inlines = [
+        KedaInline,
         ReceiptInline,
         ]
 
@@ -58,6 +65,7 @@ class NestedReservationAppartmentInline(NestedTabularInline):
     fk_name = "appartment"
     extra = 0
     inlines = [
+        KedaInline,
         ReceiptInline,
         ]
 
@@ -89,12 +97,12 @@ class DamageAdmin(admin.ModelAdmin):
 
 
 class ReservationAdmin(admin.ModelAdmin):
-    list_display = ('owner', 'check_in', 'check_out', 'appartment', 'res_type', 'telephone')
-    list_filter = ('telephone', )
+    list_display = ('owner', 'check_in', 'check_out', 'appartment')
     ordering = ('check_in', 'check_out', )
     search_fields = ('owner', 'appartment')
     form = ReservationForm
     inlines = [
+        KedaInline,
         ReceiptInline,
         ]
 
@@ -110,6 +118,7 @@ admin.site.register(Person, NestedPersonAdmin)
 admin.site.register(Rank)
 admin.site.register(Vehicle)
 admin.site.register(ContactInfo)
+admin.site.register(Keda)
 admin.site.register(Relative, NestedPersonAdmin)
 admin.site.register(MilitaryPerson, NestedMilitaryPersonAdmin)
 admin.site.register(Visitor, NestedMilitaryPersonAdmin)
