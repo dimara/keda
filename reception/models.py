@@ -490,7 +490,7 @@ class Keda(models.Model):
                                 null=True, blank=True)
     telephone = models.BooleanField("Telephone", default=False)
     book_ref = models.IntegerField("No", null=True, blank=True)
-    reservation = models.ForeignKey(Reservation, related_name="keda")
+    reservation = models.OneToOneField(Reservation, related_name="keda")
     info = models.CharField("Further Info", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
