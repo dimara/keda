@@ -163,7 +163,7 @@ def reservations(request):
     status = request.GET.get("status", None)
     reservations = Reservation.objects.all().order_by("owner__surname")
     if rtype:
-        reservations = reservations.filter(res_type=rtype)
+        reservations = reservations.filter(keda__res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
     reservations = [r for r in reservations if r.inside(start, end)]
@@ -173,7 +173,7 @@ def reservations(request):
       "end": end,
       "rtype": rtype,
       "status": status,
-      "rtypes": Reservation.RESERVATION_TYPES,
+      "rtypes": Keda.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,
@@ -187,7 +187,7 @@ def logistic(request):
     status = request.GET.get("status", None)
     reservations = Reservation.objects.exclude(status="CANCELED")
     if rtype:
-        reservations = reservations.filter(res_type=rtype)
+        reservations = reservations.filter(keda__res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
     reservations = [r for r in reservations if r.inside(start, end)]
@@ -203,7 +203,7 @@ def logistic(request):
       "sum": sum(l(reservations)),
       "periods": Period.objects.all(),
       "reservations": reservations,
-      "rtypes": Reservation.RESERVATION_TYPES,
+      "rtypes": Keda.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       }
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
@@ -211,7 +211,7 @@ def logistic(request):
 def th(request):
 
     period, start, end = get_start_end(request)
-    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True)
+    reservations = Reservation.objects.filter(status="CONFIRMED", keda__telephone=True)
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
@@ -245,7 +245,7 @@ def test(request):
     reservations = Reservation.objects.all()
 
     if rtype:
-        reservations = reservations.filter(res_type=rtype)
+        reservations = reservations.filter(keda__res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
 
@@ -263,7 +263,7 @@ def test(request):
       "end": end,
       "rtype": rtype,
       "status": status,
-      "rtypes": Reservation.RESERVATION_TYPES,
+      "rtypes": Keda.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,

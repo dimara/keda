@@ -42,7 +42,7 @@
         <td>
         {% for r in a.reservations.all %}
           {% if r.active %}
-            {{ r.res_type }}<br>
+            {{ r.keda.res_type }}<br>
           {% endif %}
         {% endfor %}
         </td>

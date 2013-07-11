@@ -64,7 +64,7 @@
         <td class="appartment">
             {{ r.appartment }}
         </td>
-        <td class="type">{{ r.res_type }}</td>
+        <td class="type">{{ r.keda.res_type }}</td>
         <td class="payed">
         {% for p in r.receipts.all %}
           {{ p.no }}<br>
