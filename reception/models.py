@@ -276,7 +276,7 @@ class Reservation(models.Model):
 
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
-    info = models.TextField("Further Info", max_length=200, null=True, blank=True)
+    info = models.CharField("Further Info", max_length=200, null=True, blank=True)
     owner = models.ForeignKey(Person, related_name="reservations")
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
@@ -402,7 +402,7 @@ class ReservationForm(BaseNestedModelForm):
       )
 
     resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
-    period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="period")
+    period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="Period")
 
     class Meta:
             model = Reservation
@@ -486,9 +486,13 @@ class Keda(models.Model):
       (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
       )
 
-    info = models.TextField("Further Info", max_length=100, null=True, blank=True)
     res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
                                 null=True, blank=True)
     telephone = models.BooleanField("Telephone", default=False)
     book_ref = models.IntegerField("No", null=True, blank=True)
     reservation = models.ForeignKey(Reservation, related_name="keda")
+    info = models.CharField("Further Info", max_length=200, null=True, blank=True)
+
+    def __unicode__(self):
+        return u"Reservation: %s, Type: %s, Telephone: %s, No: %s, Info: %s" % \
+               (self.reservation, self.res_type, self.telephone, self.book_ref, self.info)
