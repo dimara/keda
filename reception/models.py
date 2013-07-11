@@ -406,7 +406,7 @@ class ReservationForm(BaseNestedModelForm):
 
     class Meta:
             model = Reservation
-            fields = ["period", "check_in", "check_out", "persons", "appartment", "status", "res_type",  "telephone", "book_ref", "resolve"]
+            fields = ["period", "check_in", "check_out", "persons", "appartment", "status", "resolve"]
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
