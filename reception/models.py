@@ -282,8 +282,8 @@ class Reservation(models.Model):
 
     @property
     def info(self):
-        return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s" % \
-                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment)
+        return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s, Status: %s" % \
+                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.status)
 
     @property
     def period(self):
