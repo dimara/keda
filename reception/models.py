@@ -405,19 +405,25 @@ class ReservationForm(BaseNestedModelForm):
         msgs = [u"Conflicting Reservations:", ]
         if not resolve:
           self._update_errors({
-            "resolve": ["Choose a way to resolve first conflict!"],
+            "resolve": ["Choose a way to resolve conflict!"],
             NON_FIELD_ERRORS: msgs + e.args[0],
             })
         if resolve == "FORCE":
           pass
         if resolve == "SWAP":
-          # TODO: find first available appartment
-          appartment = None
-          if e.args[2]:
-            existing = Reservation.objects.get(id=e.args[2])
-            appartment = existing.appartment
-          conflicting.appartment = appartment
-          conflicting.save()
+          if len(e.args[1]) > 1:
+            self._update_errors({
+              "resolve": ["Swap is not supported for many conflicts!"],
+              NON_FIELD_ERRORS: msgs + e.args[0],
+              })
+          else:
+            # TODO: find first available appartment
+            appartment = None
+            if e.args[2]:
+              existing = Reservation.objects.get(id=e.args[2])
+              appartment = existing.appartment
+            conflicting.appartment = appartment
+            conflicting.save()
         print(u"%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e.args[0][0], resolve, conflicting.info, self.instance.info))
 
 
