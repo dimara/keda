@@ -348,10 +348,10 @@ class Reservation(models.Model):
                 all_res = all_res.exclude(id=self.id)
                 res = Reservation.objects.get(id=self.id)
             for r in all_res:
-                msg = "Conflicting Reservations:\n"
+                msg = u"Conflicting Reservations:"
                 errors = []
                 if r.status in ("PENDING", "CONFIRMED") and self.status in ("PENDING", "CONFIRMED") and r.inside(self.check_in, self.check_out):
-                    msg += "%s\n" % r.info
+                    msg += u"\n%s" % r.info
                     err = ReservationConflictError(msg)
                     err.conflicting_res_id = r.id
                     err.wanted_res_id = self.id
@@ -407,7 +407,7 @@ class ReservationForm(BaseNestedModelForm):
         if not resolve:
           self._update_errors({
             "resolve": ["Choose a way to resolve conflict!"],
-            NON_FIELD_ERRORS: [e],
+            NON_FIELD_ERRORS: e.message.split("\n"),
             })
         if resolve == "FORCE":
           pass
