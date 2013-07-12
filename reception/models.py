@@ -347,17 +347,16 @@ class Reservation(models.Model):
             if self.id:
                 all_res = all_res.exclude(id=self.id)
                 res = Reservation.objects.get(id=self.id)
+            messages = []
+            errors = []
+            conflicting_res_ids = []
             for r in all_res:
-                msg = u"Conflicting Reservations:"
-                errors = []
                 if r.status in ("PENDING", "CONFIRMED") and self.status in ("PENDING", "CONFIRMED") and r.inside(self.check_in, self.check_out):
-                    msg += u"\n%s" % r.info
-                    err = ReservationConflictError(msg)
-                    err.conflicting_res_id = r.id
-                    err.wanted_res_id = self.id
-                    errors.append(err)
-                if errors:
-                    raise errors[-1]
+                    messages.append(u"\n%s" % r.info)
+                    conflicting_res_ids.append(r.id)
+            if conflicting_res_ids:
+                err = ReservationConflictError(messages, conflicting_res_ids, self.id)
+                raise err
 
 
     @property
@@ -382,8 +381,7 @@ class Period(models.Model):
         return r
 
 class ReservationConflictError(Exception):
-    conflicting_res_id = None
-    wanted_res_id = None
+    pass
 
 
 class ReservationForm(BaseNestedModelForm):
@@ -402,24 +400,25 @@ class ReservationForm(BaseNestedModelForm):
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
-        conflicting = Reservation.objects.get(id=e.conflicting_res_id)
+        conflicting = Reservation.objects.get(id=e.args[1][0])
         print "resolving...."
+        msgs = [u"Conflicting Reservations:", ]
         if not resolve:
           self._update_errors({
-            "resolve": ["Choose a way to resolve conflict!"],
-            NON_FIELD_ERRORS: e.message.split("\n"),
+            "resolve": ["Choose a way to resolve first conflict!"],
+            NON_FIELD_ERRORS: msgs + e.args[0],
             })
         if resolve == "FORCE":
           pass
         if resolve == "SWAP":
           # TODO: find first available appartment
           appartment = None
-          if e.wanted_res_id:
-            existing = Reservation.objects.get(id=e.wanted_res_id)
+          if e.args[2]:
+            existing = Reservation.objects.get(id=e.args[2])
             appartment = existing.appartment
           conflicting.appartment = appartment
           conflicting.save()
-        print(u"%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e, resolve, conflicting.info, self.instance.info))
+        print(u"%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e.args[0][0], resolve, conflicting.info, self.instance.info))
 
 
     def clean(self):
