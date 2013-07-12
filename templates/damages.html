@@ -20,7 +20,7 @@
       {% for d in damages %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td><a href="/admin/reception/appartment/{{ d.appartment.id }}/">{{ d.appartment }}</a></td>
+        <td><a target="_blank" href="/admin/reception/appartment/{{ d.appartment.id }}/">{{ d.appartment }}</a></td>
         <td>{{ d.tag }}</td>
         <td>{{ d.info }}</td>
       {% endfor %}

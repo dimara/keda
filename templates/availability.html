@@ -25,7 +25,7 @@
         {% for a in avail %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td> <a href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
+          <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
           <td>{{ a.rooms }}</td>
           <td>{{ a.beds }}</td>
           <td>{{ a.category }}</td>

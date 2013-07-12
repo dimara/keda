@@ -1,0 +1,32 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Maps API Sample</title>
+    <script src="//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAuPsJpk3MBtDpJ4G8cqBnjRRaGTYH6UMl8mADNa0YKuWNNa8VNxQCzVBXTx2DYyXGsTOxpWhvIG7Djw" type="text/javascript"></script>
+    <script type="text/javascript">
+
+    function initialize() {
+      if (GBrowserIsCompatible()) {
+        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(640,640)});
+        map.setMapType(G_SATELLITE_MAP);
+        map.setCenter(new GLatLng(38.066583,23.998196), 17);
+        map.removeMapType(G_HYBRID_MAP);
+        var mapControl = new GMapTypeControl();
+        map.addControl(mapControl);
+        var myLayer = new GLayer("org.wikipedia.en");
+        map.addOverlay(myLayer);
+      }
+    }
+
+    </script>
+  </head>
+  <body onload="initialize()" onunload="GUnload()" style="font-family: Arial;border: 0 none;">
+    <div id="map_canvas" style="width: 500px; height: 300px"></div>
+  </body>
+</html>

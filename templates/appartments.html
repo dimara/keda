@@ -21,7 +21,7 @@
       {% for a in appartments %}
       <tr>
         <td> {{ forloop.counter }}</td>
-        <td> <a href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
+        <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
         <td> {{ a.category }}</td>
         <td> {{ a.beds }}</td>
 
