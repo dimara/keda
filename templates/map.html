@@ -22,15 +22,20 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         map.removeMapType(G_HYBRID_MAP);
         map.addControl(new GMapTypeControl());
         map.addControl(new GSmallMapControl());
-    // Creates a marker at the given point
-    // Clicking the marker will hide it
         function getIcon(color) {
             return MapIconMaker.createMarkerIcon({width: 20, height: 34, primaryColor: color, cornercolor:color});
         }
-        function createMarker(appartment, info) {
+        function createMarker(latlng, color, info) {
+            markerOptions = { icon:getIcon(color) };
+            var marker = new GMarker(latlng, markerOptions);
+            GEvent.addListener(marker, "click", function() {
+              var myHtml = info;
+              map.openInfoWindowHtml(latlng, myHtml);
+            });
+            return marker;
+        }
+        function createAppMarker(appartment, info) {
           var latlng = new GLatLng(info["lat"], info["lng"])
-          var whiteIcon = new GIcon(G_DEFAULT_ICON);
-          whiteIcon.image = "/media/mapicons/white/number_1.png";
 
           // Set up our GMarkerOptions object
           switch(info["status"]) {
@@ -43,26 +48,20 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
             default:
               color = "#0080000";
           }
-          markerOptions = { icon:getIcon(color) };
-          var marker = new GMarker(latlng, markerOptions);
-          marker.value = appartment;
-          GEvent.addListener(marker,"click", function() {
-            var myHtml = "<b>" + appartment + "</b><br>" + info["reservation"];
-            map.openInfoWindowHtml(latlng, myHtml);
-          });
-          return marker;
+          info = "<b>" + appartment + "</b><br>" + info["reservation"];
+          return createMarker(latlng, color, info)
         }
         GEvent.addListener(map,"click", function(overlay, latlng) {     
-              if (latlng) {   
-                map.addOverlay(createMarker(latlng, "test"));
-              }
+                var marker = new GMarker(latlng, markerOptions);
+                map.addOverlay(createMarker(latlng, "#FFFFFF", "Test: " + latlng));
             });
+
         $.getJSON("/media/latlng.json", function(json) {
-            console.log(json); // this will show the info it in firebug console 
+            console.log(json); // this will show the info it in firebug console
             for(var appartment in json){
                 if (json.hasOwnProperty(appartment)){
                   var info=json[appartment];
-                  map.addOverlay(createMarker(appartment, info))
+                  map.addOverlay(createAppMarker(appartment, info))
                   // work with key and value
                 }
             }
