@@ -3,6 +3,7 @@
 from django.http import *
 import datetime
 from django import template
+from django.utils import simplejson
 import settings
 from django.template.loader import get_template
 from django.template import Context, RequestContext
@@ -234,6 +235,25 @@ def damages(request):
       "date":date,
       }
     return render_to_response("damages.html", ctx, context_instance=RequestContext(request))
+
+
+def gmap(request):
+    f = open("latlng.json")
+    content = f.read()
+    info = simplejson.loads(content)
+    appartments = Appartment.objects.all()
+    for a in appartments:
+        if not info.get(a.appartment, None):
+           continue
+        for r in a.reservations.all():
+            if r.active():
+              info[a.appartment]["status"] = r.status
+              info[a.appartment]["reservation"] = r.info
+    fw = open("reception/media/latlng.json", "w")
+    fw.write(simplejson.dumps(info))
+    ctx = { }
+    return render_to_response("map.html", ctx, context_instance=RequestContext(request))
+
 
 def test(request):
 
