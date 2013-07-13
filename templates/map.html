@@ -46,7 +46,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           var marker = new GMarker(latlng, markerOptions);
           marker.value = appartment;
           GEvent.addListener(marker,"click", function() {
-            var myHtml = appartment + ": " + info["reservation"];
+            var myHtml = "<b>" + appartment + "</b><br>" + info["reservation"];
             map.openInfoWindowHtml(latlng, myHtml);
           });
           return marker;

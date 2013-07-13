@@ -248,7 +248,7 @@ def gmap(request):
         for r in a.reservations.all():
             if r.active():
               info[a.appartment]["status"] = r.status
-              info[a.appartment]["reservation"] = r.info
+              info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s" % (r.owner, r.period)
     fw = open("reception/media/latlng.json", "w")
     fw.write(simplejson.dumps(info))
     ctx = { }
