@@ -292,15 +292,15 @@ class Reservation(models.Model):
             ret += u"%s" % self.check_out
         return ret
 
-    def active(self, start=None, include_canceled=True):
+    def active(self, start=None, include_all=True):
         if not start:
           start = datetime.date.today()
         end = start + datetime.timedelta(days=1)
         status = self.inside(start, end)
-        if include_canceled:
+        if include_all:
             return status
         else:
-            return self.status == "CONFIRMED" and status
+            return self.status in ("CONFIRMED", "PENDING") and status
 
     def inside(self, start, end):
         #TODO: please make it simpler

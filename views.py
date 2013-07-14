@@ -241,30 +241,22 @@ def gmap(request):
     content = f.read()
     info = simplejson.loads(content)
     appartments = Appartment.objects.all()
-    free = {}
-    reserved = {}
-    for a, b in Appartment.AREAS:
-      free[a] = []
-      reserved[a] = []
     for a in appartments:
         fr = True
         for r in a.reservations.all():
-            if r.active():
+            if r.active(include_all=False):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
                 info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, r.keda.res_type)
-              reserved[a.area].append((a.appartment, r.status))
-        if fr:
-          free[a.area].append(a.appartment)
+              if info.get(a.area, None):
+                info[a.area]["reserved"].append((a.appartment, r.status))
+        if fr and info.get(a.area, None):
+          info[a.area]["free"].append(a.appartment)
     fw = open("reception/media/latlng.json", "w")
     fw.write(simplejson.dumps(info))
-    res_count = "%d/%d" % (len(reserved[u"Μ3"]), len(reserved[u"Μ3"]) + len(free[u"Μ3"]))
-    all_free = ", ".join(free[u"Μ3"])
     ctx = {
       "date": datetime.date.today(),
-      "cnt": res_count,
-      "free": all_free
       }
     return render_to_response("map.html", ctx, context_instance=RequestContext(request))
 

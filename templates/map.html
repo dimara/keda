@@ -9,7 +9,6 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
     {% include "includes/scripts.html" %}
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>Google Maps API Sample</title>
-    <script type="text/javascript" src="/media/js/jquery-1.10.1.min.js"></script>
     <script src="/media/js/mapiconmaker.js" type="text/javascript"></script>
     <script src="//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyAYmNkNGSndWm1gHvKw4xZCH6D0-duW6iQ" type="text/javascript"></script>
     <script type="text/javascript">
@@ -25,48 +24,45 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         function getIcon(color) {
             return MapIconMaker.createMarkerIcon({width: 20, height: 34, primaryColor: color, cornercolor:color});
         }
-        function createMarker(latlng, color, info) {
+        function createMarker(latlng, color, myHtml) {
             markerOptions = { icon:getIcon(color) };
             var marker = new GMarker(latlng, markerOptions);
             GEvent.addListener(marker, "click", function() {
-              var myHtml = info;
               map.openInfoWindowHtml(latlng, myHtml);
             });
             return marker;
         }
         function createAppMarker(appartment, info) {
-          var latlng = new GLatLng(info["lat"], info["lng"])
+          var latlng = new GLatLng(info["lat"], info["lng"]);
 
-          // Set up our GMarkerOptions object
-          switch(info["status"]) {
-            case "PENDING":
-              color = "#FFFF00";
-              break;
-            case "CONFIRMED":
-              color = "#FF0000";
-              break;
-            default:
-              color = "#0080000";
+          if (info.hasOwnProperty("free")) {
+            all = info["free"].length + info["reserved"].length ;
+            myHtml = "<b>M3</b><br>" + "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"] ;
+            color = "#0080000";
           }
-          info = "<b>" + appartment + "</b><br>" + info["reservation"];
-          return createMarker(latlng, color, info)
+          if (info.hasOwnProperty("status")) {
+            // Set up our GMarkerOptions object
+            var status=info["status"];
+            switch(status) {
+              case "PENDING":
+                color = "#FFFF00";
+                break;
+              case "CONFIRMED":
+                color = "#FF0000";
+                break;
+              default:
+                color = "#0080000";
+            }
+            myHtml = "<b>" + appartment + "</b><br>" + info["reservation"];
+          }
+          return createMarker(latlng, color, myHtml)
         }
         GEvent.addListener(map,"click", function(overlay, latlng) {     
                 var marker = new GMarker(latlng, markerOptions);
                 map.addOverlay(createMarker(latlng, "#FFFFFF", "Test: " + latlng));
             });
 
-        $.getJSON("/media/latlng.json", function(json) {
-            console.log(json); // this will show the info it in firebug console
-            for(var appartment in json){
-                if (json.hasOwnProperty(appartment)){
-                  var info=json[appartment];
-                  map.addOverlay(createAppMarker(appartment, info))
-                  // work with key and value
-                }
-            }
-        });
-        var polygon = new GPolygon([
+        var m3 = new GPolygon([
           new GLatLng(38.068067856065845, 23.998070061206),
           new GLatLng(38.067968608624355, 23.99816930294037),
           new GLatLng(38.068080525942314, 23.998370468616486),
@@ -82,13 +78,31 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           new GLatLng(38.068395160503826, 23.998086154460907),
           new GLatLng(38.06819033144638, 23.998260498046875),
           new GLatLng(38.068067856065845, 23.998070061206),
-        ], "#f33f00", 5, 1, "#ff0000", 0.2);
-        GEvent.addListener(polygon, "click", function() {
-                myHtml = "<b>M3" + " {{ cnt }}" + " reserved:</b><br>" + "{{ free }}" + " free"
-                map.openInfoWindowHtml(new GLatLng(38.06823045264712, 23.99854749441147), myHtml);
-            });
-        map.addOverlay(polygon);
-      }
+        ], "#f33f00", 1, 1, "#ff0000", 0.2);
+        map.addOverlay(m3);
+        var m2 = new GPolygon([
+          new GLatLng(38.06771309863415, 23.99952381849289),
+          new GLatLng(38.06774477347478, 23.99965524673462),
+          new GLatLng(38.06800239500254, 23.999564051628113),
+          new GLatLng(38.06797916686922, 23.999459445476532),
+          new GLatLng(38.068270573825885, 23.999346792697906),
+          new GLatLng(38.068247345777706, 23.999242186546326),
+          new GLatLng(38.06792637562968, 23.999368250370026),
+          new GLatLng(38.06793904553065, 23.999440670013428),
+          new GLatLng(38.06771309863415, 23.99952381849289),
+        ], "#f33f00", 1, 1, "#ff0000", 0.2);
+        map.addOverlay(m2);
+        $.getJSON("/media/latlng.json", function(json) {
+            console.log(json); // this will show the info it in firebug console
+            for(var appartment in json){
+                if (json.hasOwnProperty(appartment)){
+                  var info=json[appartment];
+                  map.addOverlay(createAppMarker(appartment, info))
+                  // work with key and value
+                }
+            }
+        });
+      }
     }
 
     </script>
