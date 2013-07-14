@@ -253,6 +253,9 @@ def gmap(request):
                 info[a.area]["reserved"].append((a.appartment, r.status))
         if fr and info.get(a.area, None):
           info[a.area]["free"].append(a.appartment)
+        if fr and info.get(a.appartment, None):
+          info[a.appartment]["status"] = "FREE"
+          info[a.appartment]["reservation"] = "Free!!"
     fw = open("reception/media/latlng.json", "w")
     fw.write(simplejson.dumps(info))
     ctx = {

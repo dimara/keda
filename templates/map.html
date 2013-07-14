@@ -35,10 +35,11 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         function createAppMarker(appartment, info) {
           var latlng = new GLatLng(info["lat"], info["lng"]);
 
+          myHtml = "<b>" + appartment + "</b><br>";
           if (info.hasOwnProperty("free")) {
             all = info["free"].length + info["reserved"].length ;
-            myHtml = "<b>M3</b><br>" + "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"] ;
-            color = "#0080000";
+            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"] ;
+            color = "#0000FF";
           }
           if (info.hasOwnProperty("status")) {
             // Set up our GMarkerOptions object
@@ -51,9 +52,9 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
                 color = "#FF0000";
                 break;
               default:
-                color = "#0080000";
+                color = "#008000";
             }
-            myHtml = "<b>" + appartment + "</b><br>" + info["reservation"];
+            myHtml += info["reservation"];
           }
           return createMarker(latlng, color, myHtml)
         }
