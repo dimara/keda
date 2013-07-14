@@ -186,24 +186,23 @@ def logistic(request):
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)")
     status = request.GET.get("status", None)
-    reservations = Reservation.objects.exclude(status="CANCELED")
+    receipts = Receipt.objects.all().order_by("no")
     if rtype:
-        reservations = reservations.filter(keda__res_type=rtype)
+        receipts = receipts.filter(reservation__keda__res_type=rtype)
     if status:
-        reservations = reservations.filter(status=status)
-    reservations = [r for r in reservations if r.inside(start, end)]
-    reservations = sorted(reservations, key=lambda r: r.receipt.no if r.receipt else None)
+        receipts = receipts.filter(reservation__status=status)
+    receipts = [r for r in receipts if r.reservation.inside(start, end)]
 
-    l = lambda x: [r.receipt.euro for r in x if r.receipt is not None]
+    l = lambda x: [r.euro for r in x]
     ctx = {
       "period": period,
       "start": start,
       "end": end,
       "rtype": rtype,
       "status": status,
-      "sum": sum(l(reservations)),
+      "sum": sum(l(receipts)),
       "periods": Period.objects.all(),
-      "reservations": reservations,
+      "receipts": receipts,
       "rtypes": Keda.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       }

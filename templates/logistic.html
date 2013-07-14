@@ -19,13 +19,15 @@
         <th>Receipt</th>
         <th>Euro</th>
       </tr>
-      {% for r in reservations %}
+      {% for r in receipts %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td> {% include "includes/person_display.html" %} </td>
-        <td> {{ r.appartment }} </td>
-        <td> {{ r.receipt.no }} </td>
-        <td> {{ r.receipt.euro }} </td>
+        {% with r.reservation as r %}
+          <td>{% include "includes/person_display.html" %}</td>
+          <td> {{ r.appartment }} </td>
+        {% endwith %}
+        <td> {{ r.no }} </td>
+        <td> {{ r.euro }} </td>
       {% endfor %}
       <tr>
         <td></td>
