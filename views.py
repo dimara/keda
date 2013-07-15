@@ -237,6 +237,7 @@ def damages(request):
 
 
 def gmap(request):
+    period, start, end = get_start_end(request)
     f = open("latlng.json")
     content = f.read()
     info = simplejson.loads(content)
@@ -244,13 +245,13 @@ def gmap(request):
     for a in appartments:
         fr = True
         for r in a.reservations.all():
-            if r.active(include_all=False):
+            if r.status in ("CONFIRMED", "PENDING") and r.inside(start, end):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
                 info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, r.keda.res_type)
               if info.get(a.area, None):
-                info[a.area]["reserved"].append((a.appartment, r.status))
+                info[a.area]["reserved"].append([a.appartment, r.status])
         if fr and info.get(a.area, None):
           info[a.area]["free"].append(a.appartment)
         if fr and info.get(a.appartment, None):
@@ -260,6 +261,10 @@ def gmap(request):
     fw.write(simplejson.dumps(info))
     ctx = {
       "date": datetime.date.today(),
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
       }
     return render_to_response("map.html", ctx, context_instance=RequestContext(request))
 

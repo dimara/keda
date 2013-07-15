@@ -38,7 +38,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           myHtml = "<b>" + appartment + "</b><br>";
           if (info.hasOwnProperty("free")) {
             all = info["free"].length + info["reserved"].length ;
-            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"] ;
+            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"].join("<br>") ;
             color = "#0000FF";
           }
           if (info.hasOwnProperty("status")) {
@@ -110,6 +110,11 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
   </head>
   <body onload="initialize()" onunload="GUnload()" style="font-family: Arial;border: 0 none;">
   {% include "includes/menu.html" %}
+    <form action="/gmap/" method="GET">
+    {% include "includes/dates.html" %}
+    {% include "includes/search_filter.html" %}
+    </form>
+    {% include "includes/info.html" %}
     <div id="map_canvas" style="width: 500px; height: 300px"></div>
   </body>
 </html>
