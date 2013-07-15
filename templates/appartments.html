@@ -5,6 +5,7 @@
 {% block content %}
     <h3>Apartmnets</h3><br>
     <form action="/appartments/" method="get">
+        {% include "includes/dates.html" %}
         {% include "includes/apartment_filter.html" %}
         {% include "includes/search_filter.html" %}
     </form>
@@ -18,34 +19,24 @@
         <th>Reservations</th>
         <th>Type</th>
       </tr>
-      {% for a in appartments %}
+      {% for ar in appres %}
       <tr>
         <td> {{ forloop.counter }}</td>
-        <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
-        <td> {{ a.category }}</td>
-        <td> {{ a.beds }}</td>
+        <td> <a target="_blank" href="/admin/reception/appartment/{{ ar.0.id }}/">{{ ar.0 }}</a> </td>
+        <td> {{ ar.0.category }}</td>
+        <td> {{ ar.0.beds }}</td>
 
         <td>
-        {% for d in a.damages.all %}
+        {% for d in ar.0.damages.all %}
           {% if not d.fixed %}
             {{ d.tag }}<br>
           {% endif %}
         {% endfor %}
         </td>
-        <td>
-        {% for r in a.reservations.all %}
-          {% if r.active %}
-            {% include "includes/person_display.html" %}<br>
-          {% endif %}
-        {% endfor %}
-        </td>
-        <td>
-        {% for r in a.reservations.all %}
-          {% if r.active %}
-            {{ r.keda.res_type }}<br>
-          {% endif %}
-        {% endfor %}
-        </td>
+        {% with ar.1 as r %}
+          <td> {% include "includes/person_display.html" %}<br> </td>
+          <td> {{ r.keda.res_type }} </td>
+        {% endwith %}
       {% endfor %}
     </table>
 {% endblock %}

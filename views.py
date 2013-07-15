@@ -100,6 +100,7 @@ def availability(request):
 
 
 def appartments(request):
+    period, start, end =  get_start_end(request)
     area = request.GET.get("area")
     category = id_from_request(request.GET, "category")
     damaged = request.GET.get("damaged", True)
@@ -109,17 +110,31 @@ def appartments(request):
         appartments = appartments.filter(area=area)
 
     if not damaged:
-        appartmenst = appartments.exclude(damages__fixed=False)
+        appartments = appartments.exclude(damages__fixed=False)
 
     if category:
         appartments = appartments.filter(category=category)
 
     appartments = sorted(appartments, key=lambda a: (a.area, int(a.no)))
+    appres = []
+    for a in appartments:
+        reserved = False
+        for r in a.reservations.all():
+            if r.status in ("CONFIRMED", "PENDING") and r.inside(start, end):
+                reserved = True
+                appres.append((a, r))
+        if not reserved:
+          appres.append((a, None))
 
     ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
       "areas": Appartment.AREAS,
       "categories": Category.objects.values(),
       "appartments": appartments,
+      "appres": appres,
       }
     return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
 
