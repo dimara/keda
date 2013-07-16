@@ -15,9 +15,9 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
 
     function initialize() {
       if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(640,640)});
+        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(800,640)});
         map.setMapType(G_SATELLITE_MAP);
-        map.setCenter(new GLatLng(38.066583,23.998196), 17);
+        map.setCenter(new GLatLng(38.066583,23.99712324142456), 17);
         map.removeMapType(G_HYBRID_MAP);
         map.addControl(new GMapTypeControl());
         map.addControl(new GSmallMapControl());
@@ -96,6 +96,6 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
     {% include "includes/search_filter.html" %}
     </form>
     {% include "includes/info.html" %}
-    <div id="map_canvas" style="width: 500px; height: 300px"></div>
+    <div id="map_canvas" style="width: 800px; height: 300px"></div>
   </body>
 </html>
