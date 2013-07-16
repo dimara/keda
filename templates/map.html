@@ -15,7 +15,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
 
     function initialize() {
       if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(800,640)});
+        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(1024,640)});
         map.setMapType(G_SATELLITE_MAP);
         map.setCenter(new GLatLng(38.066583,23.99712324142456), 17);
         map.removeMapType(G_HYBRID_MAP);
