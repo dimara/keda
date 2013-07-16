@@ -24,8 +24,14 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         function getIcon(color) {
             return MapIconMaker.createMarkerIcon({width: 20, height: 34, primaryColor: color, cornercolor:color});
         }
-        function createMarker(latlng, color, myHtml) {
-            markerOptions = { icon:getIcon(color) };
+        function createMarker(latlng, color, myHtml, appartment) {
+            var no = appartment.split('-')
+            if (no.length > 1) { label=no[1] } else { label=no[0]; };
+            var url = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + label + '|' + color + '|000000' ;
+            gicon = new GIcon(G_DEFAULT_ICON)
+            gicon.image = url
+            gicon.iconSize = new GSize(20, 34)
+            markerOptions = { icon:gicon };
             var marker = new GMarker(latlng, markerOptions);
             GEvent.addListener(marker, "click", function() {
               map.openInfoWindowHtml(latlng, myHtml);
@@ -39,20 +45,20 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           if (info.hasOwnProperty("free")) {
             all = info["free"].length + info["reserved"].length ;
             myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"].join("<br>") ;
-            color = "#0000FF";
+            color = "0000FF";
           }
           if (info.hasOwnProperty("status")) {
             // Set up our GMarkerOptions object
             var status=info["status"];
             switch(status) {
               case "PENDING":
-                color = "#FFFF00";
+                color = "FFFF00";
                 break;
               case "CONFIRMED":
-                color = "#FF0000";
+                color = "FF0000";
                 break;
               default:
-                color = "#008000";
+                color = "008000";
             }
             myHtml += info["reservation"];
           }
@@ -68,11 +74,11 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
             var polygon = new GPolygon(latlngs, "#f33f00", 1, 1, "#ff0000", 0.2);
             map.addOverlay(polygon);
           }
-          return createMarker(latlng, color, myHtml)
+          return createMarker(latlng, color, myHtml, appartment)
         }
         GEvent.addListener(map,"click", function(overlay, latlng) {     
                 var marker = new GMarker(latlng, markerOptions);
-                map.addOverlay(createMarker(latlng, "#FFFFFF", "Test: " + latlng));
+                map.addOverlay(createMarker(latlng, "FFFFFF", "Test: " + latlng, "test"));
             });
 
         $.getJSON("/media/latlng.json", function(json) {
