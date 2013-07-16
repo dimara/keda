@@ -1,0 +1,10 @@
+<div class="form-row">
+<select name="receipt_type" >
+    <option value="">Receipt Type (All)</option>
+    {% for t in receipt_types %}
+    <option value="{{ t.0 }}"> {{ t.1 }}</option>
+    {% endfor %}
+</select>
+    <input placeholder="First.." type="text" name="first" />
+    <input placeholder="Last.." type="text" name="last" />
+</div>

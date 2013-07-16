@@ -6,6 +6,7 @@
     <h3>Period Logistic</h3> <br>
     <form action="/logistic/" method="GET">
     {% include "includes/dates.html" %}
+    {% include "includes/receipt_filter.html" %}
     {% include "includes/reservation_filter.html" %}
     {% include "includes/search_filter.html" %}
     </form>
@@ -27,14 +28,14 @@
           <td> {{ r.appartment }} </td>
         {% endwith %}
         <td> {{ r.no }} </td>
-        <td> {{ r.euro }} </td>
+        <td> {{ r.euro|floatformat:2 }} </td>
       {% endfor %}
       <tr>
         <td></td>
         <td></td>
         <td></td>
         <td>Sum:</td>
-        <td>{{ sum }}</td>
+        <td>{{ sum|floatformat:2 }}</td>
       </tr>
     </table>
 {% endblock %}

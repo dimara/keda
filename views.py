@@ -199,14 +199,19 @@ def reservations(request):
 def logistic(request):
 
     period, start, end = get_start_end(request)
-    rtype = request.GET.get("rtype", u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)")
+    rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
+    receipt_type = request.GET.get("receipt", None)
+    first = request.GET.get("first", None)
+    last = request.GET.get("last", None)
     receipts = Receipt.objects.all().order_by("no")
     if rtype:
         receipts = receipts.filter(reservation__keda__res_type=rtype)
+    if receipt_type:
+        receipts = receipts.filter(rtype=receipt_type)
     if status:
         receipts = receipts.filter(reservation__status=status)
-    receipts = [r for r in receipts if r.reservation.inside(start, end)]
+    receipts = [r for r in receipts if r.inside(first, last) and r.reservation.inside(start, end)]
 
     l = lambda x: [r.euro for r in x]
     ctx = {
@@ -220,6 +225,7 @@ def logistic(request):
       "receipts": receipts,
       "rtypes": Keda.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
+      "receipt_types": Receipt.RECEIPT_TYPES,
       }
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 

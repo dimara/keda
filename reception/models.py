@@ -473,6 +473,17 @@ class Receipt(models.Model):
         return u"Type: %s, No: %s, Euro: %0.2f, Name: %s, Reservation: %s" % \
                     (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
 
+    def inside(self, first, last):
+       if first:
+	 if last:
+           return self.no >= first and self.no <= last
+         else:
+           return self.no >= first
+       else:
+         if last:
+           return self.no <= last
+         else:
+           return True
 
 class Keda(models.Model):
     RESERVATION_TYPES = (
