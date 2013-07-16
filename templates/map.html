@@ -56,6 +56,18 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
             }
             myHtml += info["reservation"];
           }
+          if (info.hasOwnProperty("points")) {
+            latlngs = []
+            var points=info["points"]
+            console.log(points)
+            for(var p in points){
+              lat = points[p][0]
+              lng = points[p][1]
+              latlngs.push(new GLatLng(lat, lng))
+            }
+            var polygon = new GPolygon(latlngs, "#f33f00", 1, 1, "#ff0000", 0.2);
+            map.addOverlay(polygon);
+          }
           return createMarker(latlng, color, myHtml)
         }
         GEvent.addListener(map,"click", function(overlay, latlng) {     
@@ -63,38 +75,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
                 map.addOverlay(createMarker(latlng, "#FFFFFF", "Test: " + latlng));
             });
 
-        var m3 = new GPolygon([
-          new GLatLng(38.068067856065845, 23.998070061206),
-          new GLatLng(38.067968608624355, 23.99816930294037),
-          new GLatLng(38.068080525942314, 23.998370468616486),
-          new GLatLng(38.068034069717896, 23.99841606616974),
-          new GLatLng(38.06821778279664, 23.998721837997437),
-          new GLatLng(38.068308583343345, 23.998633325099945),
-          new GLatLng(38.06848384919617, 23.998933732509613),
-          new GLatLng(38.06859365409484, 23.998818397521973),
-          new GLatLng(38.06842050014119, 23.998517990112305),
-          new GLatLng(38.06834659284104, 23.998576998710632),
-          new GLatLng(38.068243122495424, 23.998391926288605),
-          new GLatLng(38.068462732850605, 23.998188078403473),
-          new GLatLng(38.068395160503826, 23.998086154460907),
-          new GLatLng(38.06819033144638, 23.998260498046875),
-          new GLatLng(38.068067856065845, 23.998070061206),
-        ], "#f33f00", 1, 1, "#ff0000", 0.2);
-        map.addOverlay(m3);
-        var m2 = new GPolygon([
-          new GLatLng(38.06771309863415, 23.99952381849289),
-          new GLatLng(38.06774477347478, 23.99965524673462),
-          new GLatLng(38.06800239500254, 23.999564051628113),
-          new GLatLng(38.06797916686922, 23.999459445476532),
-          new GLatLng(38.068270573825885, 23.999346792697906),
-          new GLatLng(38.068247345777706, 23.999242186546326),
-          new GLatLng(38.06792637562968, 23.999368250370026),
-          new GLatLng(38.06793904553065, 23.999440670013428),
-          new GLatLng(38.06771309863415, 23.99952381849289),
-        ], "#f33f00", 1, 1, "#ff0000", 0.2);
-        map.addOverlay(m2);
         $.getJSON("/media/latlng.json", function(json) {
-            console.log(json); // this will show the info it in firebug console
             for(var appartment in json){
                 if (json.hasOwnProperty(appartment)){
                   var info=json[appartment];
