@@ -298,6 +298,7 @@ def test(request):
     order = request.GET.get("order", None)
 
     reservations = Reservation.objects.all()
+    #app = Appartment.objects.all()
 
     if rtype:
         reservations = reservations.filter(keda__res_type=rtype)
@@ -322,5 +323,6 @@ def test(request):
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,
+      "app": app,
       }
     return render_to_response("test.html", ctx, context_instance=RequestContext(request))

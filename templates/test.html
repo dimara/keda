@@ -62,7 +62,8 @@
         </td>
         <td class="period"><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
         <td class="appartment">
-            {{ r.appartment }}
+            <span rel="tooltip" title="Rooms:{{ r.appartment.rooms }}  |
+  Beds:{{ r.appartment.beds }}">{{ r.appartment }}</span>
         </td>
         <td class="type">{{ r.keda.res_type }}</td>
         <td class="payed">
@@ -79,6 +80,6 @@
     </table>
 
 <script type="text/javascript">
-
+$('[rel=tooltip]').tooltip();
 </script>
 {% endblock %}
