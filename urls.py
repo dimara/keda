@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^damages/$', damages),
     url(r'^logistic/$', logistic),
     url(r'^gmap/$', gmap),
+    url(r'^gmap_data/$', gmap_data),
     url(r'^info/$', info),
 
 )

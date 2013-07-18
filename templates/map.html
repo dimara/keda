@@ -81,7 +81,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
                 map.addOverlay(createMarker(latlng, "FFFFFF", "Test: " + latlng, "test"));
             });
 
-        $.getJSON("/media/latlng.json", function(json) {
+        $.getJSON("/gmap_data/", function(json) {
             for(var appartment in json){
                 if (json.hasOwnProperty(appartment)){
                   var info=json[appartment];
