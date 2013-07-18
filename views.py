@@ -319,7 +319,7 @@ def gmap(request):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
-                info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, r.keda.res_type)
+                info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, r.keda.get_res_type_display())
               if info.get(a.area, None):
                 info[a.area]["reserved"].append([a.appartment, r.status])
         if fr and info.get(a.area, None):

@@ -506,7 +506,7 @@ class Receipt(models.Model):
 
 class Keda(models.Model):
     RESERVATION_TYPES = (
-      (u"ΠΑΡ/ΣΤΗΣ (ΤΑΚΤ)", "ΤΑΚΤΙΚΟΣ"),
+      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
       (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
       (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
       (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),

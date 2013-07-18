@@ -35,7 +35,7 @@
         </td>
         {% with ar.1 as r %}
           <td> {% include "includes/person_display.html" %}<br> </td>
-          <td> {{ r.keda.res_type }} </td>
+          <td> {{ r.keda.get_res_type_display }} </td>
         {% endwith %}
       {% endfor %}
     </table>
