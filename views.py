@@ -331,7 +331,6 @@ def gmap_data(request):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
-                keda = ""
                 try:
                   keda = r.keda.get_res_type_display()
                 except:
