@@ -14,6 +14,7 @@ from reception.models import *
 from django.db.models import Q
 from django.core.context_processors import csrf
 from django import forms
+from itertools import chain
 
 
 def home(request):
@@ -172,17 +173,65 @@ def get_start_end(request):
 
     return period, start, end
 
+def info(request):
+    period, start, end = get_start_end(request)
+    rtype = request.GET.get("rtype", None)
+    status = request.GET.get("status", None)
+    reservations = Reservation.objects.all()
+    if rtype:
+        reservations = reservations.filter(keda__res_type=rtype)
+    if status:
+        reservations = reservations.filter(status=status)
+    mres = reservations.prefetch_related("owner__militaryperson__visitor__rank",
+                                         "owner__militaryperson__staff__rank",
+                                         "owner__militaryperson__rank",
+                                         "owner__militaryperson",
+                                         "owner__relatives",
+                                         "owner__contacts",
+                                         "owner__vehicles",
+                                         "appartment",
+                                         "receipts",
+                                         "keda").filter(owner__militaryperson__isnull=False).all()
+    pres = reservations.prefetch_related("owner__relatives",
+                                         "owner__contacts",
+                                         "owner__vehicles",
+                                         "owner",
+                                         "appartment",
+                                         "receipts",
+                                         "keda").filter(owner__militaryperson__isnull=True).all()
+
+    reservations = list(chain(mres, pres))
+    reservations = [r for r in reservations if r.inside(start, end)]
+    reservations = sorted(reservations, key=lambda x: x.owner.surname)
+    ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "rtype": rtype,
+      "status": status,
+      "rtypes": Keda.RESERVATION_TYPES,
+      "statuses": Reservation.STATUSES,
+      "periods": Period.objects.all(),
+      "reservations": reservations,
+      }
+    return render_to_response("info.html", ctx, context_instance=RequestContext(request))
+
 def reservations(request):
 
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
-    reservations = Reservation.objects.all().order_by("owner__surname")
+    reservations = Reservation.objects.all().prefetch_related("owner",
+                                                              "appartment",
+                                                              "receipts",
+                                                              "keda")
     if rtype:
         reservations = reservations.filter(keda__res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
+
     reservations = [r for r in reservations if r.inside(start, end)]
+    reservations = sorted(reservations, key=lambda x: x.owner.surname)
     ctx = {
       "period": period,
       "start": start,

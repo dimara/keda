@@ -4,7 +4,7 @@
 
 {% block content %}
     <h3>Reservations</h3><br>
-    <form action="/reservations/" method="GET">
+    <form action="/info/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
       {% include "includes/search_filter.html" %}
@@ -14,6 +14,9 @@
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
+        <th>Relatives</th>
+        <th>Vehicles</th>
+        <th>Contacts</th>
         <th>Period</th>
         <th>Appartment</th>
         <th>Type</th>
@@ -23,14 +26,32 @@
       <tr>
         <td>{{ forloop.counter }}</td>
         <td>
-            <a target="_blank" href="/admin/reception/person/{{ r.owner.id }}/">{{ r.owner.info }}</a>
+            {% include "includes/person_display.html" %}
             {% include "includes/status.html" %}
         </td>
 
+        <td>
+        {% for rr in r.owner.relatives.all %}
+          {{ rr }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for v in r.owner.vehicles.all %}
+          {{ v.plate }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for c in r.owner.contacts.all %}
+          {{ c.mobile }}<br>
+        {% endfor %}
+        </td>
         <td><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
         <td> <a href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a> </td>
         <td>{{ r.keda.res_type }}</td>
-        <td>{{ r.receipt.no }}</td>
+        <td>
+        {% for p in r.receipts.all %}
+          {{ p.no }}<br>
+        {% endfor %}
         </td>
       {% endfor %}
     </table>

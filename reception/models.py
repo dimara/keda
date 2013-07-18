@@ -49,6 +49,11 @@ class Person(models.Model):
     class Meta:
         unique_together = ('name', 'surname',)
 
+    def info(self):
+        ret = u"%s" % self.surname
+        if self.name:
+          ret += u" %s" %self.name
+        return ret
 
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
@@ -60,11 +65,11 @@ class Vehicle(models.Model):
     def __unicode__(self):
         ret = u"%s" % self.plate
         if self.brand:
-            ret += self.brand
+            ret += u",%s" % self.brand
         if self.model:
-            ret += self.model
+            ret += u",%s" % self.model
         if self.color:
-            ret += "(%s)" % self.color
+            ret += u" (%s)" % self.color
         return ret
 
 
@@ -77,11 +82,11 @@ class ContactInfo(models.Model):
     def __unicode__(self):
         ret = u""
         if self.mobile:
-          ret += "Mobile: %s" % self.mobile
+          ret += u"Mobile: %s" % self.mobile
         if self.telephone:
-          ret += " Tel: %s, " % self.telephone
+          ret += u" Tel: %s, " % self.telephone
         if self.address:
-          ret += " Address: %s, " % self.address
+          ret += u" Address: %s, " % self.address
 
         return ret
 
@@ -108,7 +113,7 @@ class Relative(Person):
     def __unicode__(self):
         ret = super(Relative, self).__unicode__()
         if self.relationship:
-            ret += " - %s" % self.relationship
+            ret += u" - %s" % self.relationship
         return ret
 
 
@@ -118,11 +123,11 @@ class MilitaryPerson(Person):
     speciality = models.CharField("Speciality", max_length=20, null=True, blank=True)
 
     def info(self):
-        ret = super(MilitaryPerson, self).__unicode__()
+        ret = super(MilitaryPerson, self).info()
         if self.speciality:
             ret = u"(%s) %s" % (self.speciality, ret)
         if self.rank:
-            ret = u"%s %s" % (self.rank, ret)
+            ret = u"%s %s" % (self.rank.short, ret)
         if not self.active:
             ret += u" (ΕΑ)"
         return ret
@@ -279,6 +284,20 @@ class Reservation(models.Model):
         if self.receipts.all():
             ret += "(PAYED)"
         return ret
+
+    def owner_info(self):
+        try:
+          if self.owner.militaryperson:
+            try:
+              return ("visitor", self.owner.militaryperson.visitor.info())
+            except:
+              try:
+                return ("staff", self.owner.militaryperson.staff.info())
+              except:
+                return ("militaryperson", self.owner.militaryperson.info())
+        except:
+          return ("person", self.owner.info())
+
 
     @property
     def info(self):

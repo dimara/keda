@@ -29,6 +29,7 @@ DATABASES = {
         'NAME': 'db.sqlite3',                      # Or path to database file if using sqlite3.
     }
 }
+DATABASE_ENGINE = 'django.db.backends.sqlite3'
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
@@ -84,6 +85,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    #'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -112,8 +114,11 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'reception',
     'south',
+    #'debug_toolbar',
 )
 
 USER_DEFINED_AREAS = (
     ("I", "I"),
     )
+
+INTERNAL_IPS = ('127.0.0.1', )
