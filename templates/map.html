@@ -41,10 +41,11 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
         function createAppMarker(appartment, info) {
           var latlng = new GLatLng(info["lat"], info["lng"]);
 
-          myHtml = "<b>" + appartment + "</b><br>";
+          myHtml = '<b><a target="_blank" href=' + info['url'] + '>' + appartment + '</a></b><br>';
+          myHtml = "<a href=" + info['aurl'] + ">" + myHtml + "</a>"
           if (info.hasOwnProperty("free")) {
             all = info["free"].length + info["reserved"].length ;
-            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free: "+ info["free"].join("<br>") ;
+            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free:<br>"+ info["free"].join("<br>&tbsp") ;
             color = "0000FF";
           }
           if (info.hasOwnProperty("status")) {

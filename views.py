@@ -340,13 +340,16 @@ def gmap_data(request):
                 except:
                   keda = ""
                 info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, keda)
+                info[a.appartment]["url"] = "/admin/reception/appartment/%s/" % a.id
               if info.get(a.area, None):
                 info[a.area]["reserved"].append([a.appartment, r.status])
         if fr and info.get(a.area, None):
           info[a.area]["free"].append(a.appartment)
+          info[a.area]["url"] = "/appartments/?period=&start=&end=&area=%s&category=&damaged=on" % a.area
         if fr and info.get(a.appartment, None):
           info[a.appartment]["status"] = "FREE"
           info[a.appartment]["reservation"] = "Free!!"
+          info[a.appartment]["url"] = "/admin/reception/appartment/%s/" % a.id
     return HttpResponse(simplejson.dumps(info))
 
 def test(request):
