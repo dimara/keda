@@ -312,11 +312,21 @@ def damages(request):
 
 def gmap(request):
     period, start, end = get_start_end(request)
+    url = "/gmap_data/?period="
+    if period:
+      url += str(period.id)
+    url += "&start="
+    if start:
+      url += start.isoformat()
+    url += "&end="
+    if end:
+      url += end.isoformat()
     ctx = {
       "date": datetime.date.today(),
       "period": period,
       "start": start,
       "end": end,
+      "url": url,
       "periods": Period.objects.all(),
       }
     return render_to_response("map.html", ctx, context_instance=RequestContext(request))
