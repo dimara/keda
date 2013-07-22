@@ -49,11 +49,10 @@ class NestedReservationInline(NestedTabularInline):
         ]
 
 class NestedPersonAdmin(NestedModelAdmin):
-    list_display = ('surname', 'name')
-    search_fields = ('surname', )
+    list_display = ('surname', 'name', )
+    search_fields = ('surname', 'name', )
     ordering = ('surname', )
     inlines = [
-        RelativeInline,
         ContactInfoInline,
         VehicleInline,
         NestedReservationInline,
@@ -135,14 +134,20 @@ class ContactInfoAdmin(admin.ModelAdmin):
     list_display = ('mobile', 'telephone', 'address', 'person', )
     search_fields = ('mobile', 'telephone', 'person', )
 
+class RankAdmin(admin.ModelAdmin):
+    ordering = ('level', )
+    list_display = ('rank', 'short', 'level', )
+
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ('plate', 'owner', )
+    search_fields = ('plate', )
+
 admin.site.register(Period, PeriodAdmin)
 admin.site.register(Person, NestedPersonAdmin)
-admin.site.register(Rank)
-admin.site.register(Vehicle)
+admin.site.register(Rank, RankAdmin)
+admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(ContactInfo, ContactInfoAdmin)
-admin.site.register(Keda)
 admin.site.register(Relative, NestedPersonAdmin)
-admin.site.register(MilitaryPerson, NestedMilitaryPersonAdmin)
 admin.site.register(Visitor, NestedMilitaryPersonAdmin)
 admin.site.register(Staff, NestedStaffAdmin)
 admin.site.register(Category, CategoryAdmin)
