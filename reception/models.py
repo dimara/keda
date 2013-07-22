@@ -269,6 +269,7 @@ class Reservation(models.Model):
       ("CONFIRMED", "Confirmed"),
       ("CANCELED", "Canceled"),
       ("CHECKEDOUT", "Checked OUT"),
+      ("UNKNOWN", "Unknown"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
@@ -317,7 +318,7 @@ class Reservation(models.Model):
         if include_all:
             return status
         else:
-            return self.status in ("CONFIRMED", "PENDING") and status
+            return self.status in ("CONFIRMED", "PENDING", "UNKNOWN") and status
 
     def inside(self, start, end):
         #TODO: please make it simpler
@@ -368,7 +369,9 @@ class Reservation(models.Model):
             errors = []
             conflicting_res_ids = []
             for r in all_res:
-                if r.status in ("PENDING", "CONFIRMED") and self.status in ("PENDING", "CONFIRMED") and r.inside(self.check_in, self.check_out):
+                if (r.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
+                    self.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
+                    r.inside(self.check_in, self.check_out)):
                     messages.append(u"\n%s" % r.info)
                     conflicting_res_ids.append(r.id)
             if conflicting_res_ids:

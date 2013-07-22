@@ -55,7 +55,7 @@ def check_period(avail, check_in, check_out):
         for a in avail:
             ok = True
             for r in a.reservations.all():
-                if r.status in ("CONFIRMED", "PENDING") and r.inside(check_in, check_out):
+                if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(check_in, check_out):
                     ok = False
                     break
             if ok:
@@ -121,7 +121,7 @@ def appartments(request):
     for a in appartments:
         reserved = False
         for r in a.reservations.all():
-            if r.status in ("CONFIRMED", "PENDING") and r.inside(start, end):
+            if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(start, end):
                 reserved = True
                 appres.append((a, r))
         if not reserved:
@@ -346,7 +346,7 @@ def gmap_data(request):
         except:
           print "Cannot add url for " + a.appartment
         for r in a.reservations.all():
-            if r.status in ("CONFIRMED", "PENDING") and r.inside(start, end):
+            if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(start, end):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
