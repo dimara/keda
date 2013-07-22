@@ -280,10 +280,8 @@ class Reservation(models.Model):
     status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
 
     def __unicode__(self):
-        ret =  u"Από %s έως %s -> %s" % (self.check_in, self.check_out, self.appartment)
-        if self.receipts.all():
-            ret += "(PAYED)"
-        return ret
+        return  u"Από %s έως %s, Όνομα: %s, Άτομα: %s, Δωμάτιο: %s, Status: %s" % \
+                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.get_status_display())
 
     def owner_info(self):
         try:

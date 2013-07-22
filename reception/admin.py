@@ -118,7 +118,7 @@ class ReservationAdmin(admin.ModelAdmin):
 
 class ReceiptAdmin(admin.ModelAdmin):
     ordering = ('no', 'rtype', )
-    list_display = ('no', 'reservation', 'euro', 'rtype', )
+    list_display = ('no', 'rtype', 'reservation', 'euro', )
     search_fields = ('no', )
     list_filter = ('rtype', )
 
