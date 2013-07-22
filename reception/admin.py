@@ -26,6 +26,12 @@ class ReceiptInline(admin.TabularInline):
     extra = 0
     inlines = []
 
+class ReservationAppartmentInline(admin.TabularInline):
+    model = Reservation
+    fk_name = "appartment"
+    extra = 0
+    inlines = []
+
 class KedaInline(admin.TabularInline):
     model = Keda
     fk_name = "reservation"
@@ -69,13 +75,14 @@ class NestedReservationAppartmentInline(NestedTabularInline):
         ReceiptInline,
         ]
 
-class AppartmentAdmin(NestedModelAdmin):
+class AppartmentAdmin(admin.ModelAdmin):
     list_display = ('appartment', 'rooms', 'beds', 'category', )
-    ordering = ('category', )
+    ordering = ('area', 'no', 'category', )
+    list_filter = ('area', 'category', )
     search_fields = ('area', 'no', )
     inlines = [
         DamageInline,
-        NestedReservationAppartmentInline,
+        ReservationAppartmentInline,
         ]
 
 class NestedMilitaryPersonAdmin(NestedPersonAdmin):
