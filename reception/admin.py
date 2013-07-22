@@ -117,20 +117,35 @@ class ReservationAdmin(admin.ModelAdmin):
         #obj.save()
 
 class ReceiptAdmin(admin.ModelAdmin):
-    ordering = ('no', 'reservation', 'euro', 'rtype' )
-    list_display = ('no', 'reservation', 'euro', 'rtype')
+    ordering = ('no', 'rtype', )
+    list_display = ('no', 'reservation', 'euro', 'rtype', )
+    search_fields = ('no', )
+    list_filter = ('rtype', )
 
-admin.site.register(Period)
+class PeriodAdmin(admin.ModelAdmin):
+    ordering = ('name', 'start', )
+    list_display = ('name', 'start', 'end', )
+
+class CategoryAdmin(admin.ModelAdmin):
+    ordering = ('desc', 'ranking', )
+    list_display = ('desc', 'ranking', )
+
+class ContactInfoAdmin(admin.ModelAdmin):
+    ordering = ('person', )
+    list_display = ('mobile', 'telephone', 'address', 'person', )
+    search_fields = ('mobile', 'telephone', 'person', )
+
+admin.site.register(Period, PeriodAdmin)
 admin.site.register(Person, NestedPersonAdmin)
 admin.site.register(Rank)
 admin.site.register(Vehicle)
-admin.site.register(ContactInfo)
+admin.site.register(ContactInfo, ContactInfoAdmin)
 admin.site.register(Keda)
 admin.site.register(Relative, NestedPersonAdmin)
 admin.site.register(MilitaryPerson, NestedMilitaryPersonAdmin)
 admin.site.register(Visitor, NestedMilitaryPersonAdmin)
 admin.site.register(Staff, NestedStaffAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(Appartment, AppartmentAdmin)
 admin.site.register(Unit)
 admin.site.register(Receipt, ReceiptAdmin)
