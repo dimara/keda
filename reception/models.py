@@ -272,6 +272,14 @@ class Reservation(models.Model):
       ("UNKNOWN", "Unknown"),
       )
 
+    RESERVATION_TYPES = (
+      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
+      (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
+      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
+      (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
+      (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
+      )
+
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     owner = models.ForeignKey(Person, related_name="reservations")
@@ -279,6 +287,11 @@ class Reservation(models.Model):
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations", null=True, blank=True)
     status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
+    res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
+                                null=True, blank=True)
+    telephone = models.BooleanField("Telephone", default=False)
+    book_ref = models.IntegerField("No", null=True, blank=True)
+    notes = models.CharField("Notes", max_length=200, null=True, blank=True)
 
     def __unicode__(self):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %s, Δωμάτιο: %s, Status: %s" % \
@@ -416,7 +429,8 @@ class ReservationForm(BaseNestedModelForm):
 
     class Meta:
             model = Reservation
-            fields = ["period", "check_in", "check_out", "owner", "appartment", "persons", "status", "resolve"]
+            fields = ["res_type", "period", "check_in", "check_out", "owner", "appartment",
+                      "persons", "status", "telephone", "book_ref", "resolve"]
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
@@ -495,7 +509,7 @@ class Receipt(models.Model):
 
     def inside(self, first, last):
        if first:
-	 if last:
+         if last:
            return self.no >= first and self.no <= last
          else:
            return self.no >= first
