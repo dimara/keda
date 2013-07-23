@@ -32,19 +32,12 @@ class ReservationAppartmentInline(admin.TabularInline):
     extra = 0
     inlines = []
 
-class KedaInline(admin.TabularInline):
-    model = Keda
-    fk_name = "reservation"
-    extra = 0
-    inlines = []
-
 class NestedReservationInline(NestedTabularInline):
     model = Reservation
     form = InlineReservationForm
     fk_name = "owner"
     extra = 0
     inlines = [
-        KedaInline,
         ReceiptInline,
         ]
 
@@ -70,7 +63,6 @@ class NestedReservationAppartmentInline(NestedTabularInline):
     fk_name = "appartment"
     extra = 0
     inlines = [
-        KedaInline,
         ReceiptInline,
         ]
 
@@ -108,7 +100,6 @@ class ReservationAdmin(admin.ModelAdmin):
     search_fields = ('owner', 'appartment')
     form = ReservationForm
     inlines = [
-        KedaInline,
         ReceiptInline,
         ]
 

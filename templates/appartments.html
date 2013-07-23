@@ -3,7 +3,7 @@
 {% block title %}Apartments{% endblock %}
 
 {% block content %}
-    <h3>Apartmnets</h3><br>
+    <h3>Apartments</h3><br>
     <form action="/appartments/" method="get">
         {% include "includes/dates.html" %}
         {% include "includes/apartment_filter.html" %}
@@ -35,7 +35,7 @@
         </td>
         {% with ar.1 as r %}
           <td> {% include "includes/person_display.html" %}<br> </td>
-          <td> {{ r.keda.get_res_type_display }} </td>
+          <td> {{ r.get_res_type_display }} </td>
         {% endwith %}
       {% endfor %}
     </table>

@@ -47,7 +47,7 @@
         </td>
         <td><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
         <td> <a href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a> </td>
-        <td>{{ r.keda.get_res_type_display }}</td>
+        <td>{{ r.get_res_type_display }}</td>
         <td>
         {% for p in r.receipts.all %}
           {{ p.no }}<br>

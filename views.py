@@ -179,7 +179,7 @@ def info(request):
     status = request.GET.get("status", None)
     reservations = Reservation.objects.all()
     if rtype:
-        reservations = reservations.filter(keda__res_type=rtype)
+        reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
     mres = reservations.prefetch_related("owner__militaryperson__visitor__rank",
@@ -190,15 +190,13 @@ def info(request):
                                          "owner__contacts",
                                          "owner__vehicles",
                                          "appartment",
-                                         "receipts",
-                                         "keda").filter(owner__militaryperson__isnull=False).all()
+                                         "receipts").filter(owner__militaryperson__isnull=False).all()
     pres = reservations.prefetch_related("owner__relatives",
                                          "owner__contacts",
                                          "owner__vehicles",
                                          "owner",
                                          "appartment",
-                                         "receipts",
-                                         "keda").filter(owner__militaryperson__isnull=True).all()
+                                         "receipts").filter(owner__militaryperson__isnull=True).all()
 
     reservations = list(chain(mres, pres))
     reservations = [r for r in reservations if r.inside(start, end)]
@@ -209,7 +207,7 @@ def info(request):
       "end": end,
       "rtype": rtype,
       "status": status,
-      "rtypes": Keda.RESERVATION_TYPES,
+      "rtypes": Reservation.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,
@@ -223,10 +221,9 @@ def reservations(request):
     status = request.GET.get("status", None)
     reservations = Reservation.objects.all().prefetch_related("owner",
                                                               "appartment",
-                                                              "receipts",
-                                                              "keda")
+                                                              "receipts")
     if rtype:
-        reservations = reservations.filter(keda__res_type=rtype)
+        reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
 
@@ -238,7 +235,7 @@ def reservations(request):
       "end": end,
       "rtype": rtype,
       "status": status,
-      "rtypes": Keda.RESERVATION_TYPES,
+      "rtypes": Reservation.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,
@@ -255,7 +252,7 @@ def logistic(request):
     last = request.GET.get("last", None)
     receipts = Receipt.objects.all().order_by("no")
     if rtype:
-        receipts = receipts.filter(reservation__keda__res_type=rtype)
+        receipts = receipts.filter(reservation__res_type=rtype)
     if receipt_type:
         receipts = receipts.filter(rtype=receipt_type)
     if status:
@@ -275,7 +272,7 @@ def logistic(request):
       "sum": sum(l(receipts)),
       "periods": Period.objects.all(),
       "receipts": receipts,
-      "rtypes": Keda.RESERVATION_TYPES,
+      "rtypes": Reservation.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "receipt_types": Receipt.RECEIPT_TYPES,
       "receipt_type": receipt_type,
@@ -285,7 +282,7 @@ def logistic(request):
 def th(request):
 
     period, start, end = get_start_end(request)
-    reservations = Reservation.objects.filter(status="CONFIRMED", keda__telephone=True)
+    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True)
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
@@ -350,11 +347,7 @@ def gmap_data(request):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
-                try:
-                  keda = r.keda.get_res_type_display()
-                except:
-                  keda = ""
-                info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, keda)
+                info[a.appartment]["reservation"] = u"Όνομα: %s<br>Period: %s<br>Type:%s" % (r.owner, r.period, r.get_res_type_display())
               if info.get(a.area, None):
                 info[a.area]["reserved"].append([a.appartment, r.status])
         if fr and info.get(a.area, None):
@@ -374,7 +367,7 @@ def test(request):
     reservations = Reservation.objects.all()
 
     if rtype:
-        reservations = reservations.filter(keda__res_type=rtype)
+        reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
 
@@ -392,7 +385,7 @@ def test(request):
       "end": end,
       "rtype": rtype,
       "status": status,
-      "rtypes": Keda.RESERVATION_TYPES,
+      "rtypes": Reservation.RESERVATION_TYPES,
       "statuses": Reservation.STATUSES,
       "periods": Period.objects.all(),
       "reservations": reservations,

@@ -430,7 +430,7 @@ class ReservationForm(BaseNestedModelForm):
     class Meta:
             model = Reservation
             fields = ["res_type", "period", "check_in", "check_out", "owner", "appartment",
-                      "persons", "status", "telephone", "book_ref", "resolve"]
+                      "status", "resolve", "persons", "book_ref", "telephone"]
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
@@ -518,23 +518,3 @@ class Receipt(models.Model):
            return self.no <= last
          else:
            return True
-
-class Keda(models.Model):
-    RESERVATION_TYPES = (
-      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
-      (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
-      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
-      (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
-      (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
-      )
-
-    res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
-                                null=True, blank=True)
-    telephone = models.BooleanField("Telephone", default=False)
-    book_ref = models.IntegerField("No", null=True, blank=True)
-    reservation = models.OneToOneField(Reservation, related_name="keda")
-    info = models.CharField("Further Info", max_length=200, null=True, blank=True)
-
-    def __unicode__(self):
-        return u"Reservation: %s, Type: %s, Telephone: %s, No: %s, Info: %s" % \
-               (self.reservation, self.res_type, self.telephone, self.book_ref, self.info)
