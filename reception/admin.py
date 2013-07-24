@@ -29,6 +29,7 @@ class ReceiptInline(admin.TabularInline):
 class ReservationAppartmentInline(admin.TabularInline):
     model = Reservation
     fk_name = "appartment"
+    form = InlineReservationForm
     extra = 0
     inlines = []
 
