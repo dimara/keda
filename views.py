@@ -182,7 +182,9 @@ def info(request):
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
-    mres = reservations.prefetch_related("owner__militaryperson__visitor__rank",
+    reservations = filter(lambda x: x.inside(start, end), reservations)
+    reservations = Reservation.objects.filter(id__in=[r.id for r in reservations])
+    mres = reservations.filter(owner__militaryperson__isnull=False).all().prefetch_related("owner__militaryperson__visitor__rank",
                                          "owner__militaryperson__staff__rank",
                                          "owner__militaryperson__rank",
                                          "owner__militaryperson",
@@ -190,16 +192,15 @@ def info(request):
                                          "owner__contacts",
                                          "owner__vehicles",
                                          "appartment",
-                                         "receipts").filter(owner__militaryperson__isnull=False).all()
-    pres = reservations.prefetch_related("owner__relatives",
+                                         "receipts")
+    pres = reservations.filter(owner__militaryperson__isnull=True).all().prefetch_related("owner__relatives",
                                          "owner__contacts",
                                          "owner__vehicles",
                                          "owner",
                                          "appartment",
-                                         "receipts").filter(owner__militaryperson__isnull=True).all()
+                                         "receipts")
 
     reservations = list(chain(mres, pres))
-    reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda x: x.owner.surname)
     ctx = {
       "period": period,
