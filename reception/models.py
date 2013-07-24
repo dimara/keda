@@ -447,7 +447,7 @@ class PersonForm(BaseNestedModelForm):
         name = self.cleaned_data.get("name", None)
         surname = self.cleaned_data.get("surname", None)
         conflicting = Person.objects.filter(name=name, surname=surname).exclude(id=self.instance.id)
-        if conflicting:
+        if conflicting and not self.instance.id:
           msgs = [u"Conflicting Person:", ]
           for c in conflicting:
             msgs.append("%s %s" % (c.info(), c.identify()))
