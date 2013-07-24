@@ -35,6 +35,9 @@ class Rank(models.Model):
             return 2
         return 3
 
+class PersonConflictError(Exception):
+    pass
+
 
 class Person(models.Model):
     name = models.CharField("First Name", max_length=30, blank=True, null=True)
@@ -46,14 +49,21 @@ class Person(models.Model):
           ret += self.name
         return ret
 
-    class Meta:
-        unique_together = ('name', 'surname',)
-
     def info(self):
         ret = u"%s" % self.surname
         if self.name:
           ret += u" %s" %self.name
         return ret
+
+    def clean(self):
+        print "inside Person.clean()"
+        super(Person, self).clean()
+        raise PersonConflictError("asdfadsf")
+
+    def identify(self):
+        mobiles = ",".join([c.mobile for c in self.contacts.all()])
+        plates = ",".join([v.plate for v in self.vehicles.all()])
+        return u"Mobiles: %s, Plates: %s" % (mobiles, plates)
 
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
@@ -415,6 +425,50 @@ class Period(models.Model):
 
 class ReservationConflictError(Exception):
     pass
+
+
+class PersonForm(BaseNestedModelForm):
+    RESOLVE = (
+      ("", "-------"),
+      ("NEW", "Create New"),
+      ("USE", "Use Existing"),
+      )
+
+    resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
+    existing = ModelChoiceField(queryset=Person.objects.all(), required=False, label="Existing")
+
+    class Meta:
+        model = Person
+        fields = ['name', 'surname', 'resolve', 'existing']
+
+    def resolve_conflict(self, e):
+        resolve = self.cleaned_data.get("resolve", None)
+        existing = self.cleaned_data.get("existing", None)
+        name = self.cleaned_data.get("name", None)
+        surname = self.cleaned_data.get("surname", None)
+        conflicting = Person.objects.filter(name=name, surname=surname)
+        msgs = [u"Conflicting Person:", ]
+        for c in conflicting:
+          msgs.append("%s %s" % (c.info(), c.identify()))
+          self.fields['existing'] = ModelChoiceField(queryset=conflicting)
+        if not resolve:
+          # modify
+          if not self.instance.id:
+            self._update_errors({
+              "resolve": ["Choose a way to resolve conflict!"],
+              NON_FIELD_ERRORS: msgs,
+              })
+        elif resolve == "NEW":
+          pass
+        else:
+          self.instance = existing
+        print self.fields, self.fields['resolve'].choices, self.instance
+
+    def full_clean(self):
+        try:
+          super(PersonForm, self).full_clean()
+        except Exception, e:
+          self.resolve_conflict(e)
 
 
 class ReservationForm(BaseNestedModelForm):

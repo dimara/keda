@@ -42,10 +42,18 @@ class NestedReservationInline(NestedTabularInline):
         ReceiptInline,
         ]
 
+class ReservationInline(admin.TabularInline):
+    model = Reservation
+    form = InlineReservationForm
+    fk_name = "owner"
+    extra = 0
+    inlines = []
+
 class NestedPersonAdmin(NestedModelAdmin):
     list_display = ('surname', 'name', )
     search_fields = ('surname', 'name', )
     ordering = ('surname', )
+    form = PersonForm
     inlines = [
         ContactInfoInline,
         VehicleInline,
