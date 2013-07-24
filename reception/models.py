@@ -446,23 +446,28 @@ class PersonForm(BaseNestedModelForm):
         existing = self.cleaned_data.get("existing", None)
         name = self.cleaned_data.get("name", None)
         surname = self.cleaned_data.get("surname", None)
-        conflicting = Person.objects.filter(name=name, surname=surname)
-        msgs = [u"Conflicting Person:", ]
-        for c in conflicting:
-          msgs.append("%s %s" % (c.info(), c.identify()))
-          self.fields['existing'] = ModelChoiceField(queryset=conflicting)
-        if not resolve:
-          # modify
-          if not self.instance.id:
+        conflicting = Person.objects.filter(name=name, surname=surname).exclude(id=self.instance.id)
+        if conflicting:
+          msgs = [u"Conflicting Person:", ]
+          for c in conflicting:
+            msgs.append("%s %s" % (c.info(), c.identify()))
+            self.fields['existing'] = ModelChoiceField(queryset=conflicting)
+          if not resolve:
+            # modify
             self._update_errors({
               "resolve": ["Choose a way to resolve conflict!"],
               NON_FIELD_ERRORS: msgs,
               })
-        elif resolve == "NEW":
-          pass
-        else:
-          self.instance = existing
-        print self.fields, self.fields['resolve'].choices, self.instance
+          elif resolve == "NEW":
+            pass
+          elif resolve == "USE":
+            if not existing:
+              self._update_errors({
+                "existing": ["Choose an existing entry!"],
+                NON_FIELD_ERRORS: msgs,
+                })
+            else:
+              self.instance = existing
 
     def full_clean(self):
         try:
