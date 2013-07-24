@@ -20,7 +20,7 @@
         {% for s in staff %}
         <tr id="{{ s.id }}">
             <td id="idx" style="text-align:center;">{{ forloop.counter }}</td>
-            <td>{{ s.info }} {% if s.extra %} ({{ s.extra }}) {% endif %}</td>
+            <td> <a href=/admin/reception/staff/{{ s.id }}/>{{ s.info }} {% if s.extra %} ({{ s.extra }}) {% endif %}</a></td>
             <td style="text-align:center;">
                 <input type="checkbox" name="paron"
                        class="p{{ s.rank.category }}">
