@@ -53,16 +53,6 @@ class NestedPersonAdmin(NestedModelAdmin):
     list_display = ('surname', 'name', )
     search_fields = ('surname', 'name', )
     ordering = ('surname', )
-    inlines = [
-        ContactInfoInline,
-        VehicleInline,
-        NestedReservationInline,
-        ]
-
-class NestedPersonAdmin2(NestedModelAdmin):
-    list_display = ('surname', 'name', )
-    search_fields = ('surname', 'name', )
-    ordering = ('surname', )
     form = PersonForm
     inlines = [
         ContactInfoInline,
@@ -152,7 +142,7 @@ class VehicleAdmin(admin.ModelAdmin):
     search_fields = ('plate', )
 
 admin.site.register(Period, PeriodAdmin)
-admin.site.register(Person, NestedPersonAdmin2)
+admin.site.register(Person, NestedPersonAdmin)
 admin.site.register(Rank, RankAdmin)
 admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(ContactInfo, ContactInfoAdmin)

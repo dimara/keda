@@ -439,7 +439,6 @@ class PersonForm(BaseNestedModelForm):
 
     class Meta:
         model = Person
-        fields = ['name', 'surname', 'resolve', 'existing']
 
     def resolve_conflict(self, e):
         resolve = self.cleaned_data.get("resolve", None)
