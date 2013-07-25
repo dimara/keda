@@ -434,8 +434,8 @@ class PersonForm(BaseNestedModelForm):
       ("USE", "Use Existing"),
       )
 
-    resolve = Field(label="", required=False, widget=HiddenInput())
-    existing = Field(label="", required=False, widget=HiddenInput())
+    resolve = Field(required=False, widget=HiddenInput())
+    existing = Field(required=False, widget=HiddenInput())
 
     class Meta:
         model = Person
@@ -483,16 +483,16 @@ class ReservationForm(BaseNestedModelForm):
       ("SWAP", "Swap Appartments"),
       )
 
-    resolve = Field(label="", required=False, widget=HiddenInput())
+    resolve = Field(label="Resolve", required=False, widget=HiddenInput())
     period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="Period")
 
     class Meta:
             model = Reservation
             fields = ["res_type", "period", "check_in", "check_out", "owner", "appartment",
-                      "status", "resolve", "persons", "book_ref", "telephone"]
+                      "status", "persons", "book_ref", "telephone"]
 
     def resolve_conflict(self, e):
-        self.fields["resolve"] = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
+        self.fields["resolve"] = ChoiceField(choices=ReservationForm.RESOLVE, required=False, label="Resolve")
         resolve = self.cleaned_data.get("resolve", None)
         conflicting = Reservation.objects.get(id=e.args[1][0])
         print "resolving...."
