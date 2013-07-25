@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
-from django.forms import ChoiceField, ModelChoiceField
+from django.forms import ChoiceField, ModelChoiceField, Field, HiddenInput
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from nested_inlines.forms import BaseNestedModelForm
 import datetime
@@ -434,8 +434,8 @@ class PersonForm(BaseNestedModelForm):
       ("USE", "Use Existing"),
       )
 
-    resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
-    existing = ModelChoiceField(queryset=Person.objects.all(), required=False, label="Existing")
+    resolve = Field(label="", required=False, widget=HiddenInput())
+    existing = Field(label="", required=False, widget=HiddenInput())
 
     class Meta:
         model = Person
@@ -447,10 +447,11 @@ class PersonForm(BaseNestedModelForm):
         surname = self.cleaned_data.get("surname", None)
         conflicting = Person.objects.filter(name=name, surname=surname).exclude(id=self.instance.id)
         if conflicting and not self.instance.id:
+          self.fields["resolve"] = ChoiceField(choices=PersonForm.RESOLVE, required=False, label="Resolve")
+          self.fields["existing"] = ModelChoiceField(queryset=conflicting, required=False, label="Existing")
           msgs = [u"Conflicting Person:", ]
           for c in conflicting:
             msgs.append("%s %s" % (c.info(), c.identify()))
-            self.fields['existing'] = ModelChoiceField(queryset=conflicting)
           if not resolve:
             # modify
             self._update_errors({
@@ -482,7 +483,7 @@ class ReservationForm(BaseNestedModelForm):
       ("SWAP", "Swap Appartments"),
       )
 
-    resolve = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
+    resolve = Field(label="", required=False, widget=HiddenInput())
     period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="Period")
 
     class Meta:
@@ -491,6 +492,7 @@ class ReservationForm(BaseNestedModelForm):
                       "status", "resolve", "persons", "book_ref", "telephone"]
 
     def resolve_conflict(self, e):
+        self.fields["resolve"] = ChoiceField(choices=RESOLVE, required=False, label="Resolve")
         resolve = self.cleaned_data.get("resolve", None)
         conflicting = Reservation.objects.get(id=e.args[1][0])
         print "resolving...."
