@@ -68,13 +68,13 @@ def availability(request):
     period, start, end =  get_start_end(request)
     area = request.GET.get("area")
     category = id_from_request(request.GET, "category")
-    damaged = request.GET.get("damaged", None)
+    damaged = request.GET.get("damaged", False)
 
     avail = Appartment.objects.all()
     if area:
         avail = avail.filter(area=area)
 
-    if not damaged:
+    if damaged:
         avail = avail.exclude(damages__fixed=False)
 
     if category:
@@ -104,13 +104,13 @@ def appartments(request):
     period, start, end =  get_start_end(request)
     area = request.GET.get("area")
     category = id_from_request(request.GET, "category")
-    damaged = request.GET.get("damaged", True)
+    damaged = request.GET.get("damaged", False)
 
     appartments = Appartment.objects.all()
     if area:
         appartments = appartments.filter(area=area)
 
-    if not damaged:
+    if damaged:
         appartments = appartments.exclude(damages__fixed=False)
 
     if category:
@@ -339,7 +339,7 @@ def gmap_data(request):
     for a in appartments:
         fr = True
         try:
-          info[a.area]["url"] = "/appartments/?period=&start=&end=&area=%s&category=&damaged=on" % a.area
+          info[a.area]["url"] = "/appartments/?period=&start=&end=&area=%s&category=" % a.area
           info[a.appartment]["url"] = "/admin/reception/appartment/%s/" % a.id
         except:
           print "Cannot add url for " + a.appartment
