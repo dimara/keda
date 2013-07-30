@@ -471,7 +471,7 @@ class PersonForm(BaseNestedModelForm):
                 NON_FIELD_ERRORS: msgs,
                 })
             else:
-              self.instance = existing
+              self.instance.id = existing
 
     def full_clean(self):
         try:
