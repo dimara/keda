@@ -45,7 +45,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
           myHtml = "<a href=" + info['aurl'] + ">" + myHtml + "</a>"
           if (info.hasOwnProperty("free")) {
             all = info["free"].length + info["reserved"].length ;
-            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free:<br>"+ info["free"].join("<br>&tbsp") ;
+            myHtml += "Reserved: " + info["reserved"].length + "/" + all + "<br>Free:<br>&nbsp;&nbsp;&nbsp;"+ info["free"].join("<br>&nbsp;&nbsp;&nbsp;") ;
             color = "0000FF";
           }
           if (info.hasOwnProperty("status")) {
