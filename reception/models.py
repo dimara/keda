@@ -65,6 +65,20 @@ class Person(models.Model):
         plates = ",".join([v.plate for v in self.vehicles.all()])
         return u"Mobiles: %s, Plates: %s" % (mobiles, plates)
 
+    def person_info(self):
+        try:
+          if self.militaryperson:
+            try:
+              return ("visitor", self.militaryperson.visitor.info())
+            except:
+              try:
+                return ("staff", self.militaryperson.staff.info())
+              except:
+                return ("militaryperson", self.militaryperson.info())
+        except:
+          return ("person", self.info())
+
+
 class Vehicle(models.Model):
     plate = models.CharField("Plate", max_length=10, blank=True, null=True)
     color = models.CharField("Color", max_length=20, blank=True, null=True)
@@ -307,25 +321,15 @@ class Reservation(models.Model):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %s, Δωμάτιο: %s, Status: %s" % \
                   (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.get_status_display())
 
-    def owner_info(self):
-        try:
-          if self.owner.militaryperson:
-            try:
-              return ("visitor", self.owner.militaryperson.visitor.info())
-            except:
-              try:
-                return ("staff", self.owner.militaryperson.staff.info())
-              except:
-                return ("militaryperson", self.owner.militaryperson.info())
-        except:
-          return ("person", self.owner.info())
-
-
     @property
     def info(self):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s, Status: %s" % \
                   (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.status)
 
+    @property
+    def details(self):
+        return  u"Από %s έως %s, Δωμάτιο: %s, Status: %s" % \
+                  (self.check_in, self.check_out, self.appartment, self.status)
     @property
     def period(self):
         ret = u"%s..." % self.check_in

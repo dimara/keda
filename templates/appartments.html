@@ -34,7 +34,11 @@
         {% endfor %}
         </td>
         {% with ar.1 as r %}
-          <td> {% include "includes/person_display.html" %}<br> </td>
+          <td>
+          {% with r.owner as person %}
+            {% include "includes/person_display.html" %}
+          {% endwith %}
+          </td>
           <td> {{ r.get_res_type_display }} </td>
         {% endwith %}
       {% endfor %}

@@ -44,7 +44,9 @@
       {% for r in reservations %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        <td> {% include "includes/person_display.html" %} {% include "includes/status.html" %} </td>
+            {% with r.owner as person %}
+            <td> {% include "includes/person_display.html" %} {% include "includes/status.html" %} </td>
+            {% endwith %}
         <td class="relatives">
         {% for rr in r.owner.relatives.all %}
           {{ rr }}<br>

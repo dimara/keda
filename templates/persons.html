@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Persons{% endblock %}
+
+{% block content %}
+    <h3>Persons</h3><br>
+    <form action="/persons/" method="get">
+        {% include "includes/dates.html" %}
+        {% include "includes/search_filter.html" %}
+    </form>
+        {% include "includes/info.html" %}
+
+    <table class="table table-hover" id="table">
+        <tr id="titles">
+        <th></th>
+        <th>Person</th>
+        <th>Contacts</th>
+        <th>Reservations</th>
+      </tr>
+      {% for p in persons %}
+      <tr>
+        <td> {{ forloop.counter }}</td>
+        {% with p as person %}
+          <td> {% include "includes/person_display.html" %} </td>
+        {% endwith %}
+        <td>
+        {% for c in p.contacts.all %}
+            {{ c.mobile }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for r in p.reservations.all %}
+            {{ r.details }}<br>
+        {% endfor %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+{% endblock %}

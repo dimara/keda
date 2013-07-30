@@ -358,6 +358,24 @@ def gmap_data(request):
           info[a.appartment]["reservation"] = "Free!!"
     return HttpResponse(simplejson.dumps(info))
 
+def persons(request):
+    period, start, end = get_start_end(request)
+    persons = Person.objects.all()
+    persons = filter(lambda p: [p for r in p.reservations.all() if r.inside(start, end)], persons)
+    persons = Person.objects.filter(id__in=[p.id for p in persons])
+    persons = persons.all().prefetch_related("reservations", "contacts")
+    persons = sorted(persons, key=lambda p: p.surname)
+    ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
+      "persons": persons,
+      }
+    return render_to_response("persons.html", ctx, context_instance=RequestContext(request))
+
+
+
 def test(request):
 
     period, start, end = get_start_end(request)

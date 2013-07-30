@@ -23,9 +23,11 @@
       {% for r in receipts %}
       <tr>
         <td>{{ forloop.counter }}</td>
-        {% with r.reservation as r %}
-          <td>{% include "includes/person_display.html" %}</td>
-          <td> {{ r.appartment }} </td>
+        {% with r.reservation as res %}
+            {% with res.owner as person %}
+            <td> {% include "includes/person_display.html" %} </td>
+            {% endwith %}
+          <td> {{ res.appartment }} </td>
         {% endwith %}
         <td> {{ r.no }} </td>
         <td> {{ r.euro|floatformat:2 }} </td>
