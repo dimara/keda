@@ -35,10 +35,6 @@ class Rank(models.Model):
             return 2
         return 3
 
-class PersonConflictError(Exception):
-    pass
-
-
 class Person(models.Model):
     name = models.CharField("First Name", max_length=30, blank=True, null=True)
     surname = models.CharField("Last Name", max_length=30)
@@ -380,27 +376,6 @@ class Reservation(models.Model):
 
         return False
 
-    def clean(self):
-        super(Reservation, self).clean()
-        if self.appartment:
-            all_res = self.appartment.reservations.all()
-            if self.id:
-                all_res = all_res.exclude(id=self.id)
-                res = Reservation.objects.get(id=self.id)
-            messages = []
-            errors = []
-            conflicting_res_ids = []
-            for r in all_res:
-                if (r.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
-                    self.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
-                    r.inside(self.check_in, self.check_out)):
-                    messages.append(u"\n%s" % r.info)
-                    conflicting_res_ids.append(r.id)
-            if conflicting_res_ids:
-                err = ReservationConflictError(messages, conflicting_res_ids, self.id)
-                raise err
-
-
     @property
     def receipt(self):
         if self.receipts.all():
@@ -421,10 +396,6 @@ class Period(models.Model):
             r += " %s)" % self.end
 
         return r
-
-class ReservationConflictError(Exception):
-    pass
-
 
 class PersonForm(BaseNestedModelForm):
     RESOLVE = (
@@ -485,38 +456,10 @@ class ReservationForm(BaseNestedModelForm):
             fields = ["res_type", "period", "check_in", "check_out", "owner", "appartment",
                       "status", "persons", "book_ref", "telephone"]
 
-    def resolve_conflict(self, e):
-        self.fields["resolve"] = ChoiceField(choices=ReservationForm.RESOLVE, required=False, label="Resolve")
-        resolve = self.cleaned_data.get("resolve", None)
-        conflicting = Reservation.objects.get(id=e.args[1][0])
-        print "resolving...."
-        msgs = [u"Conflicting Reservations:", ]
-        if not resolve:
-          self._update_errors({
-            "resolve": ["Choose a way to resolve conflict!"],
-            NON_FIELD_ERRORS: msgs + e.args[0],
-            })
-        if resolve == "FORCE":
-          pass
-        if resolve == "SWAP":
-          if len(e.args[1]) > 1:
-            self._update_errors({
-              "resolve": ["Swap is not supported for many conflicts!"],
-              NON_FIELD_ERRORS: msgs + e.args[0],
-              })
-          else:
-            # TODO: find first available appartment
-            appartment = None
-            if e.args[2]:
-              existing = Reservation.objects.get(id=e.args[2])
-              appartment = existing.appartment
-            conflicting.appartment = appartment
-            conflicting.save()
-        print(u"%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" % (e.args[0][0], resolve, conflicting.info, self.instance.info))
-
 
     def clean(self):
         super(ReservationForm, self).clean()
+        print "in clean()", self.cleaned_data
         def get_datetime(value):
             if value:
               y, m, d = map(int, value.split("-"))
@@ -536,10 +479,44 @@ class ReservationForm(BaseNestedModelForm):
 
 
     def full_clean(self):
-        try:
-          super(ReservationForm, self).full_clean()
-        except Exception, e:
-          self.resolve_conflict(e)
+        self.cleaned_data = {}
+        super(ReservationForm, self).full_clean()
+        if self.instance.appartment:
+            reservations = self.instance.appartment.reservations.filter(status__in=["PENDING", "CONFIRMED", "UNKNOWN"]).exclude(id=self.instance.id)
+            conflicting = []
+            for r in reservations:
+                if (self.instance.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
+                    r.inside(self.instance.check_in, self.instance.check_out)):
+                    conflicting.append(r)
+            if conflicting:
+                self.fields["resolve"] = ChoiceField(choices=ReservationForm.RESOLVE, required=False, label="Resolve")
+                resolve = self.cleaned_data.get("resolve", None)
+                print "resolving...."
+                msgs = [u"Conflicting Reservations:", ]
+                if not resolve:
+                  self._update_errors({
+                    "resolve": ["Choose a way to resolve conflict!"],
+                    NON_FIELD_ERRORS: msgs + [r.info for r in conflicting],
+                    })
+                if resolve == "FORCE":
+                  pass
+                if resolve == "SWAP":
+                  if len(conflicting) > 1:
+                    self._update_errors({
+                      "resolve": ["Swap is not supported for many conflicts!"],
+                      NON_FIELD_ERRORS: msgs + [r.info for r in conflicting],
+                      })
+                  else:
+                    # TODO: find first available appartment
+                    appartment = None
+                    if self.instance.id:
+                      existing = Reservation.objects.get(id=self.instance.id)
+                      appartment = existing.appartment
+                    conflicting[0].appartment = appartment
+                    conflicting[0].save()
+                print(u"Conflicting Reservations:\n%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" %
+                      ("\n".join([c.info for c in conflicting]), resolve, conflicting[0].info, self.instance.info))
+
 
 
 class InlineReservationForm(ReservationForm):
