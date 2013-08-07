@@ -411,6 +411,7 @@ class PersonForm(BaseNestedModelForm):
         model = Person
 
     def full_clean(self):
+        self.cleaned_data = {}
         super(PersonForm, self).full_clean()
         resolve = self.cleaned_data.get("resolve", None)
         existing = self.cleaned_data.get("existing", None)
