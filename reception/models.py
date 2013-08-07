@@ -400,7 +400,7 @@ class Period(models.Model):
 class PersonForm(BaseNestedModelForm):
     RESOLVE = (
       ("", "-------"),
-      ("NEW", "Create New"),
+      ("IGNORE", "Ignore"),
       ("USE", "Use Existing"),
       )
 
@@ -430,7 +430,7 @@ class PersonForm(BaseNestedModelForm):
               "resolve": ["Choose a way to resolve conflict!"],
               NON_FIELD_ERRORS: msgs,
               })
-          elif resolve == "NEW":
+          elif resolve == "IGNORE":
             pass
           elif resolve == "USE":
             if not existing:
