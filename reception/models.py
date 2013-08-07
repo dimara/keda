@@ -55,11 +55,6 @@ class Person(models.Model):
           ret += u" %s" %self.name
         return ret
 
-    def clean(self):
-        print "inside Person.clean()"
-        super(Person, self).clean()
-        raise PersonConflictError("asdfadsf")
-
     def identify(self):
         mobiles = ",".join([c.mobile for c in self.contacts.all()])
         plates = ",".join([v.plate for v in self.vehicles.all()])
@@ -444,7 +439,8 @@ class PersonForm(BaseNestedModelForm):
     class Meta:
         model = Person
 
-    def resolve_conflict(self, e):
+    def full_clean(self):
+        super(PersonForm, self).full_clean()
         resolve = self.cleaned_data.get("resolve", None)
         existing = self.cleaned_data.get("existing", None)
         name = self.cleaned_data.get("name", None)
@@ -472,12 +468,6 @@ class PersonForm(BaseNestedModelForm):
                 })
             else:
               self.instance.id = existing
-
-    def full_clean(self):
-        try:
-          super(PersonForm, self).full_clean()
-        except Exception, e:
-          self.resolve_conflict(e)
 
 
 class ReservationForm(BaseNestedModelForm):
