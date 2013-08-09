@@ -451,6 +451,7 @@ class ReservationForm(BaseNestedModelForm):
 
     resolve = Field(label="Resolve", required=False, widget=HiddenInput())
     period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="Period")
+    owner = ModelChoiceField(queryset=Person.objects.all().order_by("surname", "name"), required=True, label="Owner")
 
     class Meta:
             model = Reservation
