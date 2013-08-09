@@ -279,6 +279,15 @@ class Reservation(models.Model):
       (6, "Six"),
     )
 
+    AGENTS = (
+      (u"ΓΕΑ/Β3", "ΓΕΑ/Β3"),
+      (u"Μ.Υ.", "Μ.Υ"),
+      (u"ΕΑ", "ΕΑ"),
+      (u"ΔΚΤΗΣ", "ΔΚΤΗΣ"),
+      (u"ΥΔΚΤΗΣ", "ΥΔΚΤΗΣ"),
+      (u"ΑΣΦΑΛΕΙΑ", "ΑΣΦΑΛΕΙΑ"),
+      )
+
     STATUSES = (
       ("PENDING", "Pending Confirmation"),
       ("CONFIRMED", "Confirmed"),
@@ -298,6 +307,7 @@ class Reservation(models.Model):
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     owner = models.ForeignKey(Person, related_name="reservations")
+    agent = models.CharField("Agent", choices=AGENTS, max_length=20, null=True, blank=True)
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations", null=True, blank=True)
@@ -458,7 +468,7 @@ class ReservationForm(BaseNestedModelForm):
 
     class Meta:
             model = Reservation
-            fields = ["res_type", "period", "check_in", "check_out", "owner", "appartment",
+            fields = ["res_type", "agent", "period", "check_in", "check_out", "owner", "appartment",
                       "status", "persons", "book_ref", "telephone"]
 
 
