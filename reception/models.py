@@ -417,7 +417,7 @@ class PersonForm(BaseNestedModelForm):
         existing = self.cleaned_data.get("existing", None)
         name = self.cleaned_data.get("name", None)
         surname = self.cleaned_data.get("surname", None)
-        conflicting = Person.objects.filter(name=name, surname=surname).exclude(id=self.instance.id)
+        conflicting = Person.objects.filter(surname=surname).exclude(id=self.instance.id)
         if conflicting and not self.instance.id:
           self.fields["resolve"] = ChoiceField(choices=PersonForm.RESOLVE, required=False, label="Resolve")
           self.fields["existing"] = ModelChoiceField(queryset=conflicting, required=False, label="Existing")
@@ -451,7 +451,10 @@ class ReservationForm(BaseNestedModelForm):
 
     resolve = Field(label="Resolve", required=False, widget=HiddenInput())
     period = ModelChoiceField(queryset=Period.objects.all(), required=False, label="Period")
-    owner = ModelChoiceField(queryset=Person.objects.all().order_by("surname", "name"), required=True, label="Owner")
+
+    def __init__(self, *args, **kwargs):
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        self.fields["owner"].queryset = Person.objects.all().order_by("surname", "name")
 
     class Meta:
             model = Reservation
@@ -461,7 +464,6 @@ class ReservationForm(BaseNestedModelForm):
 
     def clean(self):
         super(ReservationForm, self).clean()
-        print "in clean()", self.cleaned_data
         def get_datetime(value):
             if value:
               y, m, d = map(int, value.split("-"))
