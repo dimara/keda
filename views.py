@@ -350,10 +350,10 @@ def gmap_data(request):
 
 def persons(request):
     period, start, end = get_start_end(request)
-    persons = Person.objects.all()
+    persons = MilitaryPerson.objects.all()
     persons = filter(lambda p: [p for r in p.reservations.all() if r.inside(start, end)], persons)
-    persons = Person.objects.filter(id__in=[p.id for p in persons])
-    persons = persons.all().prefetch_related("reservations", "contacts")
+    persons = MilitaryPerson.objects.filter(id__in=[p.id for p in persons])
+    persons = persons.all().prefetch_related("reservations", "contacts", "rank")
     persons = sorted(persons, key=lambda p: p.surname)
     ctx = {
       "period": period,
