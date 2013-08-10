@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.forms import ModelForm
-from django.forms import ChoiceField, ModelChoiceField, Field, HiddenInput
+from django.forms import ChoiceField, ModelChoiceField, Field, HiddenInput, BooleanField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from nested_inlines.forms import BaseNestedModelForm
 import datetime
@@ -38,6 +38,7 @@ class Rank(models.Model):
 class Person(models.Model):
     name = models.CharField("First Name", max_length=30, blank=True, null=True)
     surname = models.CharField("Last Name", max_length=30)
+    ident = models.CharField("ID", max_length=30, blank=True, null=True)
 
     def __unicode__(self):
         ret = u"%s " % (self.surname)
@@ -49,6 +50,8 @@ class Person(models.Model):
         ret = u"%s" % self.surname
         if self.name:
           ret += u" %s" %self.name
+        if self.ident:
+          ret += u" %s" % self.ident
         return ret
 
     def identify(self):
@@ -306,7 +309,7 @@ class Reservation(models.Model):
 
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
-    owner = models.ForeignKey(Person, related_name="reservations")
+    owner = models.ForeignKey(MilitaryPerson, related_name="reservations")
     agent = models.CharField("Agent", choices=AGENTS, max_length=20, null=True, blank=True)
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
@@ -416,6 +419,7 @@ class PersonForm(BaseNestedModelForm):
 
     resolve = Field(required=False, widget=HiddenInput())
     existing = Field(required=False, widget=HiddenInput())
+
 
     class Meta:
         model = Person
