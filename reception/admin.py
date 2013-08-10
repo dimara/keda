@@ -57,7 +57,6 @@ class NestedPersonAdmin(NestedModelAdmin):
     inlines = [
         ContactInfoInline,
         VehicleInline,
-        NestedReservationInline,
         ]
 
 class DamageInline(admin.TabularInline):
@@ -89,6 +88,9 @@ class NestedMilitaryPersonAdmin(NestedPersonAdmin):
     list_display = NestedPersonAdmin.list_display + ('rank', 'speciality')
     list_filter = ('active', )
     ordering = ('rank', )
+    inlines = NestedPersonAdmin.inlines + [
+      NestedReservationInline,
+      ]
 
 
 class NestedStaffAdmin(NestedMilitaryPersonAdmin):

@@ -8,23 +8,27 @@ from django.db import models
 class Migration(DataMigration):
 
     def forwards(self, orm):
-        # Adding field 'Reservation.agent'
+
+        # Changing field 'Reservation.owner'
         for r in orm.Reservation.objects.all():
-          if r.res_type == u"ΤΑΚΤΙΚΟΣ":
             try:
-              if r.owner.militaryperson.active:
-                r.agent = u"ΓΕΑ/Β3"
-              else:
-                r.agent = u"ΕΑ"
+              m = r.owner.militaryperson
             except:
-              print "Owner %s is a Person with id %d" % (r.owner.surname, r.owner.id)
-
-          r.save()
-
+              print "Owner of reservation %d is a Person: %d. Creating a Visitor.." % (r.id, r.owner.id)
+              d = r.owner.__dict__
+              del d["_state"]
+              v = orm.Visitor(**d)
+              v.save()
+              r.owner = v
+              r.save()
 
     def backwards(self, orm):
-        # Deleting field 'Reservation.agent'
-        pass
+
+        # Changing field 'Reservation.owner'
+        for r in orm.Reservation.objects.all():
+            p = orm.Person.objects.get(id=r.owner.id)
+            r.owner = p
+            r.save()
 
 
     models = {
