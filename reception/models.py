@@ -150,6 +150,16 @@ class MilitaryPerson(Person):
             ret += u" (ΕΑ)"
         return ret
 
+    def person_info(self):
+            try:
+              return ("visitor", self.visitor.info())
+            except:
+              try:
+                return ("staff", self.staff.info())
+              except:
+                return ("militaryperson", self.info())
+
+
 class Visitor(MilitaryPerson):
     member = models.BooleanField("Member", default=False)
 
@@ -165,6 +175,9 @@ class Visitor(MilitaryPerson):
             ret += u" (ΜΕΛΟΣ)"
         return ret
 
+    def person_info(self):
+              return ("visitor", self.info())
+
 
 class Staff(MilitaryPerson):
     CATEGORIES = (
@@ -174,6 +187,9 @@ class Staff(MilitaryPerson):
 
     category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
     extra = models.CharField("Extra Info", max_length=25, null=True, blank=True)
+
+    def person_info(self):
+              return ("staff", self.info())
 
 
 class Category(models.Model):
@@ -468,7 +484,7 @@ class ReservationForm(BaseNestedModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReservationForm, self).__init__(*args, **kwargs)
-        self.fields["owner"].queryset = Person.objects.all().order_by("surname", "name")
+        self.fields["owner"].queryset = MilitaryPerson.objects.all().order_by("surname", "name")
 
     class Meta:
             model = Reservation

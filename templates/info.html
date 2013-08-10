@@ -27,7 +27,7 @@
         <td>{{ forloop.counter }}</td>
         <td>
             {% with r.owner as person %}
-            {% include "includes/person_display.html" %}
+              {% include "includes/person_display.html" %}
             {% endwith %}
             {% include "includes/status.html" %}
         </td>
