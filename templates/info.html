@@ -14,6 +14,7 @@
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
+        <th>Agent</th>
         <th>Relatives</th>
         <th>Vehicles</th>
         <th>Contacts</th>
@@ -31,6 +32,7 @@
             {% endwith %}
             {% include "includes/status.html" %}
         </td>
+        <td> {{ r.agent }} </td>
 
         <td>
         {% for rr in r.owner.relatives.all %}
