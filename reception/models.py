@@ -433,6 +433,7 @@ class PersonForm(BaseNestedModelForm):
       ("USE", "Use Existing"),
       )
 
+    check = BooleanField(required=False)
     resolve = Field(required=False, widget=HiddenInput())
     existing = Field(required=False, widget=HiddenInput())
 
@@ -443,12 +444,13 @@ class PersonForm(BaseNestedModelForm):
     def full_clean(self):
         self.cleaned_data = {}
         super(PersonForm, self).full_clean()
+        check = self.cleaned_data.get("check", None)
         resolve = self.cleaned_data.get("resolve", None)
         existing = self.cleaned_data.get("existing", None)
         name = self.cleaned_data.get("name", None)
         surname = self.cleaned_data.get("surname", None)
         conflicting = Person.objects.filter(surname=surname).exclude(id=self.instance.id)
-        if conflicting and not self.instance.id:
+        if conflicting and (check or not self.instance.id):
           self.fields["resolve"] = ChoiceField(choices=PersonForm.RESOLVE, required=False, label="Resolve")
           self.fields["existing"] = ModelChoiceField(queryset=conflicting, required=False, label="Existing")
           msgs = [u"Conflicting Person:", ]
