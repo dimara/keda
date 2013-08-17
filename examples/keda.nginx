@@ -6,9 +6,6 @@ server {
 
     #rewrite ^/admin(.*) https://83.212.117.60/admin$1 permanent;
 
-    location /static {
-        root /usr/share/pyshared/django/contrib/admin;
-    }
     location /media {
         root /root/keda/reception;
     }
