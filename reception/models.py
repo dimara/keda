@@ -575,13 +575,20 @@ class Receipt(models.Model):
                     (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
 
     def inside(self, first, last):
+       try:
+         no = int(self.no)
+       except:
+         return False
        if first:
+         first = int(first)
          if last:
-           return self.no >= first and self.no <= last
+           last = int(last)
+           return no >= first and no <= last
          else:
-           return self.no >= first
+           return no >= first
        else:
          if last:
-           return self.no <= last
+           last = int(last)
+           return no <= last
          else:
            return True
