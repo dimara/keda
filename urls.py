@@ -1,14 +1,12 @@
 from django.conf.urls.defaults import *
 from django.views.generic import list_detail
-from keda.views import *
-import settings
+from reception.views import *
+from django.conf import settings
 
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-from keda.reception import *
 
 
 urlpatterns = patterns('',

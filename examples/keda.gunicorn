@@ -1,0 +1,19 @@
+CONFIG = {
+    'mode': 'django',
+    'environment': {
+        'PYTHONPATH': '/root/',
+        'DJANGO_SETTINGS_MODULE': 'keda.settings',
+    },
+    'working_dir': '/root/keda/',
+    'user': 'root',
+    'group': 'root',
+    'args': (
+        '--bind=127.0.0.1:8888',
+        '--workers=1',
+        # '--worker-class=egg:gunicorn#sync',
+        # '--timeout=30',
+        '--debug',
+        '--log-level=debug',
+    ),
+}
+
