@@ -367,6 +367,29 @@ class Reservation(models.Model):
         else:
             return self.status in ("CONFIRMED", "PENDING", "UNKNOWN") and status
 
+    @property
+    def errors(self):
+      today = datetime.date.today()
+      errors = []
+      if self.check_in < today and self.status == "PENDING":
+        errors.append("Booking period started but not arrived!")
+      if self.check_out and self.check_out < today:
+        if self.status == "CONFIRMED":
+          errors.append("Booking period over but still staying!")
+        if self.status == "PENDING":
+          errors.append("Booking period over but never arrived!")
+      return errors
+
+    @property
+    def warnings(self):
+      warnings = []
+      if self.res_type == u"ΤΑΚΤΙΚΟΣ":
+        if self.agent not in (u"ΓΕΑ/Β3", u"Μ.Υ.", u"ΕΑ"):
+          warnings.append("Regular visitor without agent!")
+        if not self.book_ref and self.status != "CANCELED":
+          warnings.append("Regular visitor without book reference!")
+      return warnings
+
     def inside(self, start, end):
         #TODO: please make it simpler
         # case that period or reservation are defined
