@@ -332,7 +332,8 @@ def gmap_data(request):
           info[a.area]["url"] = "/appartments/?period=&start=&end=&area=%s&category=" % a.area
           info[a.appartment]["url"] = "/admin/reception/appartment/%s/" % a.id
         except:
-          print "Cannot add url for " + a.appartment
+          msg = u"Cannot add url for " + a.appartment
+          print msg.encode("utf-8")
         for r in a.reservations.all():
             if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(start, end):
               fr = False

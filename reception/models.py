@@ -550,8 +550,9 @@ class ReservationForm(BaseNestedModelForm):
                       appartment = existing.appartment
                     conflicting[0].appartment = appartment
                     conflicting[0].save()
-                print(u"Conflicting Reservations:\n%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" %
-                      ("\n".join([c.info for c in conflicting]), resolve, conflicting[0].info, self.instance.info))
+                msg = (u"Conflicting Reservations:\n%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" %
+                       ("\n".join([c.info for c in conflicting]), resolve, conflicting[0].info, self.instance.info))
+                print msg.encode("utf-8")
 
 
 
