@@ -117,10 +117,9 @@ class ReservationAdmin(admin.ModelAdmin):
         #obj.save()
 
 class ReceiptAdmin(admin.ModelAdmin):
-    ordering = ('no', 'rtype', )
-    list_display = ('no', 'rtype', 'reservation', 'euro', )
+    ordering = ('date', )
+    list_display = ('date', 'no', 'reservation', 'euro', )
     search_fields = ('no', )
-    list_filter = ('rtype', )
 
 class PeriodAdmin(admin.ModelAdmin):
     ordering = ('name', 'start', )

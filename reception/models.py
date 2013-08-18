@@ -388,6 +388,9 @@ class Reservation(models.Model):
           warnings.append("Regular visitor without agent!")
         if not self.book_ref and self.status != "CANCELED":
           warnings.append("Regular visitor without book reference!")
+      if self.res_type in (u"ΤΑΚΤΙΚΟΣ", u"ΠΑΡ/ΣΤΗΣ") and self.status == "CHECKEDOUT":
+        if not self.receipt or self.receipt.pending:
+          warnings.append("Left without paying!")
       return warnings
 
     def inside(self, start, end):
@@ -583,36 +586,21 @@ class InlineReservationForm(ReservationForm):
     pass
 
 class Receipt(models.Model):
-    RECEIPT_TYPES = (
-      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
-      (u"ΗΜ.ΑΠΟΖ", "ΗΜ.ΑΠΟΖ."),
-      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
-      )
-    rtype = models.CharField("Type", choices=RECEIPT_TYPES, max_length=20,
-                                null=True, blank=True)
+    date = models.DateTimeField("Date", null=True, blank=True)
     no = models.CharField("No", max_length=10)
     reservation = models.ForeignKey(Reservation, related_name="receipts")
     euro = models.DecimalField("Euro", decimal_places=2, max_digits=10 )
+    pending = models.BooleanField("Pending", default=False)
 
     def __unicode__(self):
-        return u"Type: %s, No: %s, Euro: %0.2f, Name: %s, Reservation: %s" % \
-                    (self.rtype, self.no, self.euro, self.reservation.owner, self.reservation)
+        return u"No: %s, Euro: %0.2f, Name: %s, Reservation: %s" % \
+                    (self.no, self.euro, self.reservation.owner, self.reservation)
 
-    def inside(self, first, last):
-       try:
-         no = int(self.no)
-       except:
-         return False
-       if first:
-         first = int(first)
-         if last:
-           last = int(last)
-           return no >= first and no <= last
-         else:
-           return no >= first
-       else:
-         if last:
-           last = int(last)
-           return no <= last
-         else:
-           return True
+    def inside(self, start, end):
+       if self.date:
+           if start:
+              if end:
+                  return self.date.date() >= start and self.date.date() <= end
+              else:
+                  return self.date.date() > start
+       return False
