@@ -352,9 +352,9 @@ class Reservation(models.Model):
                   (self.check_in, self.check_out, self.appartment, self.status)
     @property
     def period(self):
-        ret = u"%s..." % self.check_in
+        ret = u"%s..." % self.check_in.strftime("%d %b")
         if self.check_out:
-            ret += u"%s" % self.check_out
+            ret += u"%s" % self.check_out.strftime("%d %b")
         return ret
 
     def active(self, start=None, include_all=True):
@@ -443,9 +443,9 @@ class Period(models.Model):
     def __unicode__(self):
         r = u"%s" % (self.name)
         if self.start:
-            r += " (%s .." % self.start
+            r += " (%s .." % self.start.strftime("%d %b")
         if self.end:
-            r += " %s)" % self.end
+            r += " %s)" % self.end.strftime("%d %b")
 
         return r
 
