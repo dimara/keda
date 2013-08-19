@@ -548,6 +548,7 @@ class ReservationForm(BaseNestedModelForm):
             conflicting = []
             for r in reservations:
                 if (self.instance.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
+                    r.owner.id != self.instance.owner.id and
                     r.inside(self.instance.check_in, self.instance.check_out)):
                     conflicting.append(r)
             if conflicting:
