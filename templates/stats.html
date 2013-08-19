@@ -32,7 +32,6 @@
         <th>Type</th>
         <th>Payed</th>
         <th></th>
-        <th></th>
       </tr>
       {% for r in reservations %}
         <tr>
@@ -45,23 +44,16 @@
             </td>
             <td> {{ r.agent }} </td>
             <td>
-                    <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a>
+                    {{ r.period }}
             </td>
             <td>
-                <span rel="tooltip" title="Rooms:{{ r.appartment.rooms }}  | Beds:{{ r.appartment.beds }}">
-                    <a href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a>
-                </span>
+                    {{ r.appartment }}
             </td>
             <td> {{ r.get_res_type_display }} </td>
             <td> {{ r.receipt.no }} </td>
             <td>
               {% if r.errors %}
                   <span rel="tooltip" title="{{ r.errors|join:", " }}"> <span class="label label-important">E</span> </span>
-              {% endif %}
-            </td>
-            <td>
-              {% if r.warnings %}
-                  <span rel="tooltip" title="{{ r.warnings|join:", " }}"> <span class="label label-warning">W</span> </span>
               {% endif %}
             </td>
         </tr>
