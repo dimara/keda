@@ -356,6 +356,46 @@ def persons(request):
     return render_to_response("persons.html", ctx, context_instance=RequestContext(request))
 
 
+def stats(request):
+
+    period, start, end = get_start_end(request)
+    live = request.GET.get("live", False)
+    show = request.GET.get("show", False)
+    reservations = Reservation.objects.all()
+    reservations = filter(lambda x: x.inside(start, end), reservations)
+    if live:
+      reservations = filter(lambda x: x.status == "CONFIRMED", reservations)
+    else:
+      reservations = filter(lambda x: x.status != "CANCELED", reservations)
+    l = lambda x: [r.persons for r in x if r.persons]
+    persons = sum(l(reservations))
+    regular = filter(lambda x: x.res_type == u"ΤΑΚΤΙΚΟΣ", reservations)
+    b3 = filter(lambda x: x.agent == u"ΓΕΑ/Β3", regular)
+    ea = filter(lambda x: x.agent == u"ΕΑ", regular)
+    my = filter(lambda x: x.agent == u"Μ.Υ.", regular)
+    osseay = filter(lambda x: x.res_type == u"ΟΣΣΕΑΥ", reservations)
+    paratheristes = filter(lambda x: x.res_type == u"ΠΑΡ/ΣΤΗΣ", reservations)
+    monada = filter(lambda x: x.res_type == u"ΜΟΝΑΔΑ", reservations)
+
+    ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
+      "show": show,
+      "live": live,
+      "reservations": reservations,
+      "total": len(reservations),
+      "persons": persons,
+      "regular": len(regular),
+      "b3": len(b3),
+      "ea": len(ea),
+      "my": len(my),
+      "osseay": len(osseay),
+      "paratheristes": len(paratheristes),
+      "monada": len(monada),
+      }
+    return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
 def test(request):
 

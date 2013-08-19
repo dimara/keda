@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}Stats{% endblock %}
+
+{% block content %}
+    <h3>Stats</h3><br>
+    <form action="/stats/" method="get">
+        {% include "includes/dates.html" %}
+        {% include "includes/search_filter.html" %}
+        <input type="checkbox" name="live">Live
+        <input type="checkbox" name="show">Show
+    </form>
+        {% include "includes/info.html" %}
+
+    <b>Reservations:</b> {{ total }} ({{ persons }} persons)<br>
+    |__<b>ΤΑΚΤΙΚΟΙ:</b> {{ regular }} <br>
+    |____<b>ΓΕΑ/Β3:</b> {{ b3 }} <br>
+    |____<b>Ε.Α.:</b> {{ ea }} <br>
+    |____<b>M.Y.:</b> {{ my }} <br>
+    |__<b>ΠΑΡ/ΣΤΕΣ:</b> {{ paratheristes }} <br>
+    |__<b>ΜΟΝΑΔΑ:</b> {{ monada }} <br>
+    |__<b>ΟΣΣΕΑΥ:</b> {{ osseay }} <br>
+    {% if show %}
+
+    <table  id="table" class="table table-hover">
+      <tr id="titles">
+        <th></th>
+        <th>Visitor</th>
+        <th>Agent</th>
+        <th>Period</th>
+        <th>Appartment</th>
+        <th>Type</th>
+        <th>Payed</th>
+        <th></th>
+        <th></th>
+      </tr>
+      {% for r in reservations %}
+        <tr>
+            <td {% if r.errors %} style="background:#FF0102" {% endif %}>
+              {{ forloop.counter }}
+            </td>
+            <td>
+                    <a target="_blank" href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.info }}</a>
+                    {% include "includes/status.html" %}
+            </td>
+            <td> {{ r.agent }} </td>
+            <td>
+                    <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a>
+            </td>
+            <td>
+                <span rel="tooltip" title="Rooms:{{ r.appartment.rooms }}  | Beds:{{ r.appartment.beds }}">
+                    <a href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a>
+                </span>
+            </td>
+            <td> {{ r.get_res_type_display }} </td>
+            <td> {{ r.receipt.no }} </td>
+            <td>
+              {% if r.errors %}
+                  <span rel="tooltip" title="{{ r.errors|join:", " }}"> <span class="label label-important">E</span> </span>
+              {% endif %}
+            </td>
+            <td>
+              {% if r.warnings %}
+                  <span rel="tooltip" title="{{ r.warnings|join:", " }}"> <span class="label label-warning">W</span> </span>
+              {% endif %}
+            </td>
+        </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+<script type="text/javascript"> $('[rel=tooltip]').tooltip(); </script>
+
+{% endblock %}
