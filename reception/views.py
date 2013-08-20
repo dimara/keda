@@ -369,6 +369,9 @@ def stats(request):
       reservations = filter(lambda x: x.status != "CANCELED", reservations)
     l = lambda x: [r.persons for r in x if r.persons]
     persons = sum(l(reservations))
+    l = lambda x: [r.receipt.euro for r in x if r.receipt]
+    euros = sum(l(reservations))
+    print euros
     regular = filter(lambda x: x.res_type == u"ΤΑΚΤΙΚΟΣ", reservations)
     b3 = filter(lambda x: x.agent == u"ΓΕΑ/Β3", regular)
     ea = filter(lambda x: x.agent == u"ΕΑ", regular)
@@ -387,6 +390,7 @@ def stats(request):
       "reservations": reservations,
       "total": len(reservations),
       "persons": persons,
+      "euros": euros,
       "regular": len(regular),
       "b3": len(b3),
       "ea": len(ea),
