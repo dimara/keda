@@ -39,8 +39,7 @@
         </tr>
     </table>
 
-
-        {% if show %}
+    {% if show %}
 
     <table  id="table" class="table table-hover">
       <tr id="titles">
@@ -54,8 +53,8 @@
         <th></th>
       </tr>
       {% for r in reservations %}
-        <tr>
-            <td {% if r.errors %} style="background:#FF0102" {% endif %}>
+        <tr {% if r.errors %} class="error" {% endif %}>
+            <td >
               {{ forloop.counter }}
             </td>
             <td>
@@ -73,7 +72,7 @@
             <td> {{ r.receipt.no }} </td>
             <td>
               {% if r.errors %}
-                  <span rel="tooltip" title="{{ r.errors|join:", " }}"> <span class="label label-important">E</span> </span>
+                  <span rel="tooltip" title="{{ r.errors|join:", " }}"> <span class="badge badge-important">E</span> </span>
               {% endif %}
             </td>
         </tr>
