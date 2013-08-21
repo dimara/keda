@@ -12,15 +12,35 @@
     </form>
         {% include "includes/info.html" %}
 
-    <b>Reservations:</b> {{ total }} ({{ persons }} persons, {{ euros }} euros)<br>
-    |__<b>ΤΑΚΤΙΚΟΙ:</b> {{ regular }} <br>
-    |____<b>ΓΕΑ/Β3:</b> {{ b3 }} <br>
-    |____<b>Ε.Α.:</b> {{ ea }} <br>
-    |____<b>M.Y.:</b> {{ my }} <br>
-    |__<b>ΠΑΡ/ΣΤΕΣ:</b> {{ paratheristes }} <br>
-    |__<b>ΜΟΝΑΔΑ:</b> {{ monada }} <br>
-    |__<b>ΟΣΣΕΑΥ:</b> {{ osseay }} <br>
-    {% if show %}
+    <table class="table table-bordered table-condensed" style="width: 25%">
+    <tr><th>Reservations</th><td>{{ total }}</td></tr>
+    <tr><th>Persons</th><td>{{ persons }}</td></tr>
+    <tr><th>Euros</th><td>{{ euros }}</td></tr>
+    </table>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>ΤΑΚΤΙΚΟΙ</th>   
+            <th>ΓΕΑ/Β3</th> 
+            <th>Ε.Α.</th>   
+            <th>M.Y.</th>   
+            <th>ΠΑΡ/ΣΤΕΣ</th>   
+            <th>ΜΟΝΑΔΑ</th> 
+            <th>ΟΣΣΕΑΥ</th> 
+        </tr>
+        <tr>
+            <td>{{ regular }}</td>
+            <td>{{ b3 }}</td>
+            <td>{{ ea }}</td>
+            <td>{{ my }}</td>
+            <td>{{ paratheristes }}</td>
+            <td>{{ monada }}</td>
+            <td>{{ osseay }}</td>
+        </tr>
+    </table>
+
+
+        {% if show %}
 
     <table  id="table" class="table table-hover">
       <tr id="titles">
