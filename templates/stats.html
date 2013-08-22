@@ -7,37 +7,41 @@
     <form action="/stats/" method="get">
         {% include "includes/dates.html" %}
         {% include "includes/search_filter.html" %}
-        <input type="checkbox" name="live">Live
-        <input type="checkbox" name="show">Show
+        <span rel="tooltip" title="Visitors with CONFIRMED status"><input type="checkbox" name="live">Live</span>
+        <span rel="tooltip" title="Show list of visitors"><input type="checkbox" name="show">Show</span>
     </form>
         {% include "includes/info.html" %}
 
-    <table class="table table-bordered table-condensed" style="width: 25%">
-    <tr><th>Reservations</th><td>{{ total }}</td></tr>
-    <tr><th>Persons</th><td>{{ persons }}</td></tr>
-    <tr><th>Euros</th><td>{{ euros }}</td></tr>
-    </table>
+<table class="table table-bordered" style="width: 37%">
+<tbody>
+                <tr>
+                  <td><b>Reservations:</b></td>
+                  <td>{{ total }}(persons {{ persons }},euros {{ euros }})</td>
 
-    <table class="table table-bordered">
-        <tr>
-            <th>ΤΑΚΤΙΚΟΙ</th>   
-            <th>ΓΕΑ/Β3</th> 
-            <th>Ε.Α.</th>   
-            <th>M.Y.</th>   
-            <th>ΠΑΡ/ΣΤΕΣ</th>   
-            <th>ΜΟΝΑΔΑ</th> 
-            <th>ΟΣΣΕΑΥ</th> 
-        </tr>
-        <tr>
-            <td>{{ regular }}</td>
-            <td>{{ b3 }}</td>
-            <td>{{ ea }}</td>
-            <td>{{ my }}</td>
-            <td>{{ paratheristes }}</td>
-            <td>{{ monada }}</td>
-            <td>{{ osseay }}</td>
-        </tr>
-    </table>
+                </tr>
+                <tr>
+                  <td>ΤΑΚΤΙΚΟΙ:</td>
+                  <td>{{ regular }}</td>
+
+                </tr>
+                <tr>
+                  <td ><i class="icon-chevron-right"></i> ΓΕΑ/Β3:<br><i class="icon-chevron-right"></i> Ε.Α.:<br><i class="icon-chevron-right"></i> M.Y.:</td>
+                  <td>{{ b3 }}<br>{{ ea }}<br>{{ my }}</td>
+
+
+                </tr>
+                <tr>
+                  <td>ΜΟΝΑΔΑ</td>
+                  <td>{{ monada }}</td>
+                </tr>
+                <tr>
+                  <td>ΟΣΣΕΑΥ</td>
+                  <td>{{ osseay }}</td>
+                </tr>
+              </tbody>
+</table>
+
+   
 
     {% if show %}
 
