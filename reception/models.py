@@ -296,6 +296,8 @@ class Reservation(models.Model):
       (4, "Four"),
       (5, "Five"),
       (6, "Six"),
+      (7, "Seven"),
+      (8, "Eight"),
     )
 
     AGENTS = (
