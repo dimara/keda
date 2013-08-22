@@ -7,8 +7,8 @@
     <form action="/stats/" method="get">
         {% include "includes/dates.html" %}
         {% include "includes/search_filter.html" %}
-        <span rel="tooltip" title="Visitors with CONFIRMED status"><input type="checkbox" name="live">Live</span>
-        <span rel="tooltip" title="Show list of visitors"><input type="checkbox" name="show">Show</span>
+        <span rel="tooltip" title="Visitors with CONFIRMED status" data-placement="bottom"><input type="checkbox" name="live">Live</span>
+        <span rel="tooltip" title="Show list of visitors" data-placement="right"><input type="checkbox" name="show">Show</span>
     </form>
         {% include "includes/info.html" %}
 

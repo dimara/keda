@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Reservations{% endblock %}
+{% block title %}Info{% endblock %}
 
 {% block content %}
-    <h3>Reservations</h3><br>
+    <h3>Reservations Info</h3><br>
     <form action="/info/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
