@@ -252,3 +252,15 @@ input[type="checkbox"] {
 #search{
 	margin-right: 4px;
 }
+
+.scrollup{
+    width:40px;
+    height:40px;
+    opacity:0.3;
+    position:fixed;
+    bottom:40px;
+    right:65px;
+    display:none;
+    text-indent:-9999px;
+    background: url('/media/img/icon_top.png') no-repeat;
+}
