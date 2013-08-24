@@ -37,6 +37,7 @@
           <td>
           {% with r.owner as person %}
             {% include "includes/person_display.html" %}
+            {% include "includes/status.html" %}
           {% endwith %}
           </td>
           <td> {{ r.get_res_type_display }} </td>

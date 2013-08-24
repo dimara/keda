@@ -15,7 +15,6 @@
         <th></th>
         <th>Visitor</th>
         <th>Agent</th>
-        <th>Relatives</th>
         <th>Vehicles</th>
         <th>Contacts</th>
         <th>Period</th>
@@ -34,11 +33,6 @@
         </td>
         <td> {{ r.agent }} </td>
 
-        <td>
-        {% for rr in r.owner.relatives.all %}
-          {{ rr }}<br>
-        {% endfor %}
-        </td>
         <td>
         {% for v in r.owner.vehicles.all %}
           {{ v.plate }}<br>

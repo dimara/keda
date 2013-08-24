@@ -210,6 +210,7 @@ def reservations(request):
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
+    order = request.GET.get("order", None)
     reservations = Reservation.objects.all()
     if rtype:
         reservations = reservations.filter(res_type=rtype)
@@ -219,7 +220,10 @@ def reservations(request):
     reservations = filter(lambda x: x.inside(start, end), reservations)
     reservations = Reservation.objects.filter(id__in=[r.id for r in reservations])
     reservations = reservations.prefetch_related("owner", "appartment", "receipts")
-    reservations = sorted(reservations, key=lambda x: x.owner.surname)
+    if order == "apartment":
+      reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
+    else:
+      reservations = sorted(reservations, key=lambda r: r.owner.surname)
     ctx = {
       "period": period,
       "start": start,
