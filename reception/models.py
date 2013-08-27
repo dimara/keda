@@ -324,6 +324,7 @@ class Reservation(models.Model):
       (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
       (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
       (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
+      ("CLIMS", "CLIMS"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
