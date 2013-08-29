@@ -66,6 +66,7 @@ def check_period(avail, check_in, check_out):
     return (ret, err)
 
 
+@login_required(login_url='/accounts/login/')
 def availability(request):
     period, start, end =  get_start_end(request)
     area = request.GET.get("area")
@@ -102,6 +103,7 @@ def availability(request):
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/accounts/login/')
 def appartments(request):
     period, start, end =  get_start_end(request)
     area = request.GET.get("area")
@@ -175,6 +177,7 @@ def get_start_end(request):
 
     return period, start, end
 
+@login_required(login_url='/accounts/login/')
 def info(request):
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
@@ -207,6 +210,7 @@ def info(request):
       }
     return render_to_response("info.html", ctx, context_instance=RequestContext(request))
 
+@login_required(login_url='/accounts/login/')
 def reservations(request):
 
     period, start, end = get_start_end(request)
@@ -239,6 +243,7 @@ def reservations(request):
       }
     return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
+@login_required(login_url='/accounts/login/')
 def logistic(request):
 
     period, start, end = get_start_end(request)
@@ -266,6 +271,7 @@ def logistic(request):
       }
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 
+@login_required(login_url='/accounts/login/')
 def th(request):
 
     period, start, end = get_start_end(request)
@@ -294,6 +300,7 @@ def damages(request):
     return render_to_response("damages.html", ctx, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/accounts/login/')
 def gmap(request):
     period, start, end = get_start_end(request)
     url = "/gmap_data/?period="
@@ -316,6 +323,7 @@ def gmap(request):
     return render_to_response("map.html", ctx, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/accounts/login/')
 def gmap_data(request):
     period, start, end = get_start_end(request)
     f = open("latlng.json")
@@ -345,6 +353,7 @@ def gmap_data(request):
           info[a.appartment]["reservation"] = "Free!!"
     return HttpResponse(simplejson.dumps(info))
 
+@login_required(login_url='/accounts/login/')
 def persons(request):
     period, start, end = get_start_end(request)
     persons = MilitaryPerson.objects.all()
@@ -362,6 +371,7 @@ def persons(request):
     return render_to_response("persons.html", ctx, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/accounts/login/')
 def stats(request):
 
     period, start, end = get_start_end(request)
@@ -407,6 +417,7 @@ def stats(request):
       }
     return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
+@login_required(login_url='/accounts/login/')
 def test(request):
 
     period, start, end = get_start_end(request)
