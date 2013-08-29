@@ -15,8 +15,10 @@ from django.db.models import Q
 from django.core.context_processors import csrf
 from django import forms
 from itertools import chain
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='/accounts/login/')
 def home(request):
     date = datetime.date.today()
     now = datetime.datetime.now()

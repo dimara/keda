@@ -1,8 +1,8 @@
 CONFIG = {
     'mode': 'django',
     'environment': {
-        'PYTHONPATH': '/root/',
-        'DJANGO_SETTINGS_MODULE': 'keda.settings',
+        'PYTHONPATH': '/root/keda',
+        'DJANGO_SETTINGS_MODULE': 'settings',
     },
     'working_dir': '/root/keda/',
     'user': 'root',

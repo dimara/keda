@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # (r'^admin/', include(admin.site.urls)),
+    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^$', home),
     (r'^admin/', include(admin.site.urls)),
     url(r'^test/$', test),

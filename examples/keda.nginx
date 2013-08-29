@@ -1,25 +1,8 @@
 server {
-    listen  80;
-    server_name 83.212.117.60;
-    root /root/keda/;
-    access_log /var/log/nginx/domain-access.log;
-
-    #rewrite ^/admin(.*) https://83.212.117.60/admin$1 permanent;
-
-    location /media {
-        root /root/keda/reception;
-    }
-    location / {
-        proxy_pass_header Server;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
-        proxy_set_header X-Forwarded-For  $remote_addr;
-        proxy_set_header X-Scheme $scheme;
-        proxy_connect_timeout 10;
-        proxy_read_timeout 10;
-        proxy_pass http://127.0.0.1:8888/;
-    }
-
+    listen       80;
+    server_name  83.212.117.60;
+    rewrite ^ https://83.212.117.60$request_uri? permanent;
+#    rewrite ^ https://mysite.com$uri permanent; # also works
 }
 server {
     listen   443;
@@ -35,9 +18,21 @@ server {
     ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv3:+EXP;
     ssl_prefer_server_ciphers   on;
 
+    location /media {
+        root /root/keda/reception;
+    }
+    location /static {
+        root /root/keda;
+    }
     location / {
-        root   html;
-        index  index.html index.htm;
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Forwarded-For  $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 10;
+        proxy_read_timeout 10;
+        proxy_pass http://127.0.0.1:8888/;
     }
 }
 
