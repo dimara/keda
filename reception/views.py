@@ -22,7 +22,11 @@ from django.contrib.auth.decorators import login_required
 def home(request):
     date = datetime.date.today()
     now = datetime.datetime.now()
-    return render_to_response("welcome.html", {"now" : now,"date": date}, context_instance=RequestContext(request))
+    if request.user.is_authenticated():
+      # Do something for authenticated users.
+      username = request.user.username
+
+    return render_to_response("welcome.html", {"now" : now,"date": date, "username": username}, context_instance=RequestContext(request))
 
 
 def display_meta(request):
