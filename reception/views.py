@@ -292,6 +292,7 @@ def th(request):
       }
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
+@login_required(login_url='/accounts/login/')
 def damages(request):
 
     date = datetime.date.today()
