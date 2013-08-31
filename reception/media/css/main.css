@@ -284,3 +284,12 @@ margin-left: auto;
 .loginform input{
 	width: 117px;
 }
+
+.brand:hover{
+/*text-shadow: 1px 1px 1px rgba(185,74,72,0.3), 3px 3px 5px rgba(185,74,72,0.3);*/
+color:rgba(185,74,72,0.9);
+}
+
+.navbar .brand{
+	font-size: 16px!important;
+}

@@ -33,11 +33,11 @@
     <h2 style="text-align:center;">Welcome to the new KEDA/Z site, {{ username }}!</h2>
 <br>
     <h6 style="text-align:center;">{{ now }}</h6>
-
-    <div id="loginform">
-	{% if form.errors %}
-	<p>Your username and password didn't match. Please try again.</p>
+    {% if form.errors %}
+	<p class="text-error" style="text-align: center;">Your username and password didn't match. Please try again.</p><br>
 	{% endif %}
+    <div id="loginform">
+	
 
 	<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
 	{% csrf_token %}
