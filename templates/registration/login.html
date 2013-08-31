@@ -1,28 +1,61 @@
-{% extends "base.html" %}
 {% load url from future %}
 
-{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+            {% include "includes/scripts.html" %}
+          	<style type="text/css">
+			img {
+			  -webkit-transition: all 0.5s ease;
+			     -moz-transition: all 0.5s ease;
+			       -o-transition: all 0.5s ease;
+			      -ms-transition: all 0.5s ease;
+			          transition: all 0.5s ease;
+			}
+			 
+			img:hover {
+			  -webkit-transform: rotateY(180deg);
+			     -moz-transform: rotateY(180deg);
+			       -o-transform: rotateY(180deg);
+			      -ms-transform: rotateY(180deg);
+			          transform: rotateY(180deg);
+			}
+			</style>
+        
+    </head>
+<body>
+  <div class="container-fluid">
+    <img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="display:block;margin-left:auto;margin-right:auto;width:130px;padding-top:20px;">
+    <br>
+    <h2 style="text-align:center;">Welcome to the new KEDA/Z site, {{ username }}!</h2>
+<br>
+    <h6 style="text-align:center;">{{ now }}</h6>
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+    <div id="loginform">
+	{% if form.errors %}
+	<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
 
-<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
+	<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	<table>
+	<tr>
+	    <td class= "loginform">{{ form.username.label_tag }}</td>
+	    <td class= "loginform">{{ form.username }}</td>
+	</tr>
+	<tr>
+	    <td class= "loginform">{{ form.password.label_tag }}</td>
+	    <td class= "loginform">{{ form.password }}</td>
+	</tr>
+	</table>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
+	<input class="btn btn-block" type="submit" value="Login" style="width:202px;"/>
+	<input type="hidden" name="next" value="{{ next }}" />
+	</form>
+	</div>
+</div>
 
-{% endblock %}
-
+</body>

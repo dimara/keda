@@ -1,11 +1,39 @@
-{% extends "base.html" %}
 {% load url from future %}
 
-{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}{% endblock %}</title>
+            {% include "includes/scripts.html" %}
+          	<style type="text/css">
+			img {
+			  -webkit-transition: all 0.5s ease;
+			     -moz-transition: all 0.5s ease;
+			       -o-transition: all 0.5s ease;
+			      -ms-transition: all 0.5s ease;
+			          transition: all 0.5s ease;
+			}
+			 
+			img:hover {
+			  -webkit-transform: rotateY(180deg);
+			     -moz-transform: rotateY(180deg);
+			       -o-transform: rotateY(180deg);
+			      -ms-transform: rotateY(180deg);
+			          transform: rotateY(180deg);
+			}
+			</style>
+        
+    </head>
+<body>
+  <div class="container-fluid">
+    <img src="{{ MEDIA_URL }}/keda_z.jpg" alt="keda" style="display:block;margin-left:auto;margin-right:auto;width:130px;padding-top:20px;">
+    <br><br>
+    <h3 style="text-align:center;">You have been successfully logged out from the KEDA/Z site!</h3>
+    <br>
+    <a class="btn btn-large" href="/accounts/login/?next=/" style="display:block;margin-left:auto;margin-right:auto;width:200px;">Login</a>
 
+</div>
 
-
-logged out!!
-
-{% endblock %}
-
+</body>

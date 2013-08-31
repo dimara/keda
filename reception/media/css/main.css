@@ -26,10 +26,6 @@
 
 }
 
-body{
-	padding-top: 41px;
-}
-
 #logout{
 	float: right;
 }
@@ -263,4 +259,28 @@ input[type="checkbox"] {
     display:none;
     text-indent:-9999px;
     background: url('/media/img/icon_top.png') no-repeat;
+}
+
+.container {
+padding-top: 41px;
+}
+
+/*.login-container{
+margin-right: auto;
+margin-left: auto;
+}*/
+
+#loginform{
+/*	width:500px;
+	margin-left:auto;
+	margin-right:auto;*/
+	display:block;margin-left:auto;margin-right:auto;width:203px;
+}
+
+.loginform {
+	padding-right: 5px;
+}
+
+.loginform input{
+	width: 117px;
 }
