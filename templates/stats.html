@@ -3,15 +3,15 @@
 {% block title %}Stats{% endblock %}
 
 {% block content %}
-    <h3>Stats</h3><br>
+    <h3>Stats {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/stats/" method="get">
         {% include "includes/dates.html" %}
         {% include "includes/search_filter.html" %}
         <span rel="tooltip" title="Visitors with CONFIRMED status" data-placement="bottom"><input type="checkbox" name="live">Live</span>
         <span rel="tooltip" title="Show list of visitors" data-placement="right"><input type="checkbox" name="show">Show</span>
     </form>
-        {% include "includes/info.html" %}
-
+    <style type="text/css">#info{float: none;font-weight: bold;}h4 small{font-weight: bold;line-height: 2;color: black;text-decoration: underline;}</style>
+{% include "includes/info.html" %}
 <table class="table table-bordered" style="width: 37%">
 <tbody>
                 <tr>

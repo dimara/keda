@@ -1,5 +1,6 @@
         {% if period or start or end or area or category or rtype or status or damaged %}
-        <div class="alert alert-info">
+        <div id="info">
+            <h4><small>
             {% if period %} Period {{ period.name }}: {% endif %}
             {% if start %} IN @ {{ start }} ... {% endif %}
             {% if end %} OUT @ {{ end }} {% endif %}
@@ -8,6 +9,7 @@
             {% if rtype %}, Type {{ rtype }} {% endif %}
             {% if status %}, Status {{ status }} {% endif %}
             {% if damaged %}, + Damaged {% endif %}
+            </small></h4>
         </div>
         <a href="#" class="scrollup">Scroll</a>
         {% endif %}

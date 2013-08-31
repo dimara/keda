@@ -3,12 +3,12 @@
 {% block title %}Reservations{% endblock %}
 
 {% block content %}
-    <h3>Reservations</h3><br>
+    <h3>Reservations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/reservations/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
       {% include "includes/search_filter.html" %}
-      <select name="order" style="float:right">
+      <select name="order" style="margin-left: 132px;">
           <option value="">Order by</option>
           <option value="name"> Name</option>
           <option value="apartment"> Apartment</option>

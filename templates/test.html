@@ -3,18 +3,18 @@
 {% block title %}Test Page{% endblock %}
 
 {% block content %}
-    <h3>Reservations</h3><br>
+    <h3>Reservations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/test/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
       {% include "includes/search_filter.html" %}
-      <select name="order" style="float:right">
+      <select name="order" style="margin-left: 132px;">
           <option value="">Order by</option>
           <option value="name"> Name</option>
           <option value="apartment"> Apartment</option>
       </select>
     </form>
-    {% include "includes/info.html" %}
+    
     <div id="checkboxes">
       <input id="condensed" type="checkbox" > Condensed
       <input id="showstatus" type="checkbox" checked> Status
@@ -28,6 +28,7 @@
       <input class="actv" type="checkbox" checked> EA
     </div>
     <br>
+    {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>
