@@ -258,7 +258,7 @@ input[type="checkbox"] {
     right:65px;
     display:none;
     text-indent:-9999px;
-    background: url('/media/img/icon_top.png') no-repeat;
+    background: url('/static/reception/img/icon_top.png') no-repeat;
 }
 
 .container {
