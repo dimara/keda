@@ -168,6 +168,7 @@ def get_start_end(request):
     period = id_from_request(request.GET, "period")
     start = request.GET.get("start", None)
     end = request.GET.get("end", None)
+    exact = request.GET.get("exact", None)
     if period:
         period = Period.objects.get(id=period)
         start = period.start
@@ -175,6 +176,11 @@ def get_start_end(request):
     elif start and end:
         start = get_datetime(start)
         end = get_datetime(end)
+    elif exact:
+        if start:
+          start = get_datetime(start)
+        if end:
+          end = get_datetime(end)
     else:
         start = get_datetime(start)
         end = start + datetime.timedelta(days=1)
@@ -221,15 +227,15 @@ def reservations(request):
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
     order = request.GET.get("order", None)
-    today = request.GET.get("today", None)
+    exact = request.GET.get("exact", None)
     reservations = Reservation.objects.all()
     if rtype:
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
 
-    if today:
-        reservations = filter(lambda x: x.on(datetime.date.today()), reservations)
+    if exact:
+        reservations = filter(lambda x: x.on(start, end), reservations)
     else:
         reservations = filter(lambda x: x.inside(start, end), reservations)
     reservations = Reservation.objects.filter(id__in=[r.id for r in reservations])

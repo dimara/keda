@@ -397,11 +397,13 @@ class Reservation(models.Model):
           warnings.append("Left without paying!")
       return warnings
 
-    def on(self, date):
-      if self.check_in == date:
-          return True
-      if self.check_out == date:
-          return True
+    def on(self, start, end):
+      if start and end:
+          return self.check_in == start and self.check_out == end
+      if start:
+          return self.check_in == start
+      if end:
+          return self.check_out == end
       return False
 
     def inside(self, start, end):
