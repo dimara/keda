@@ -397,6 +397,13 @@ class Reservation(models.Model):
           warnings.append("Left without paying!")
       return warnings
 
+    def on(self, date):
+      if self.check_in == date:
+          return True
+      if self.check_out == date:
+          return True
+      return False
+
     def inside(self, start, end):
         #TODO: please make it simpler
         # case that period or reservation are defined

@@ -221,13 +221,17 @@ def reservations(request):
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
     order = request.GET.get("order", None)
+    today = request.GET.get("today", None)
     reservations = Reservation.objects.all()
     if rtype:
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
 
-    reservations = filter(lambda x: x.inside(start, end), reservations)
+    if today:
+        reservations = filter(lambda x: x.on(datetime.date.today()), reservations)
+    else:
+        reservations = filter(lambda x: x.inside(start, end), reservations)
     reservations = Reservation.objects.filter(id__in=[r.id for r in reservations])
     reservations = reservations.prefetch_related("owner", "appartment", "receipts")
     if order == "apartment":
