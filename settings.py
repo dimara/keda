@@ -99,6 +99,8 @@ TEMPLATE_DIRS = (
     ROOT_DIR + '/reception/templates/',
 )
 
+TIME_ZONE = 'Europe/Athens'
+
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
