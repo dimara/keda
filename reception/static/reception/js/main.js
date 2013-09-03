@@ -108,6 +108,39 @@ $(document).ready(function () {
             }
         });
 
+        $("#warnings").click(function() {
+            if($('#warnings:checked').length) {
+                    $(".ok").hide();
+                    $(".error").hide();
+                    $(".warnings").show();
+                    $( "#errors" ).prop( "checked", false );
+                }
+                else{
+                    $(".ok").show();
+                    $(".error").show();
+                    }
+        });
+
+        $("#errors").click(function() {
+            if($('#errors:checked').length) {
+                    $(".ok").hide();
+                    $(".warnings").hide();
+                    $(".error").show();
+                    $( "#warnings" ).prop( "checked", false );
+                }
+                else{
+                    $(".ok").show();
+                    $(".warnings").show();
+                    }
+        });
+
+        $("#warnings,#errors").click(function() {
+            if($('#errors:checked').length && $('#warnings:checked').length)
+                $(".ok").hide();
+            else
+                $(".ok").sgow();
+        });
+
 
     $(function() {
         $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });

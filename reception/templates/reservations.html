@@ -14,6 +14,8 @@
           <option value="apartment"> Apartment</option>
       </select>
     </form>
+    <input id="warnings" type="checkbox" name="warnings"> Warnings
+    <input id="errors" type="checkbox" name="errors"> Errors
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
@@ -28,7 +30,7 @@
         <th></th>
       </tr>
       {% for r in reservations %}
-        <tr{% if r.errors %} class="error" {% endif %}>
+        <tr {% if r.errors and r.warnings %} class="error warnings" {% elif r.errors %} class="error" {% elif r.warnings %} class="warnings" {% else %} class="ok" {% endif %}>
             <td>
               {{ forloop.counter }}
             </td>
