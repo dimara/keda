@@ -308,6 +308,7 @@ class Reservation(models.Model):
       (u"ΥΔΚΤΗΣ", "ΥΔΚΤΗΣ"),
       (u"ΑΣΦΑΛΕΙΑ", "ΑΣΦΑΛΕΙΑ"),
       ("RECEPTION", "RECEPTION"),
+      ("ΓΕΕΘΑ", "ΓΕΕΘΑ"),
       )
 
     STATUSES = (
