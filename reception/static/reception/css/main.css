@@ -301,3 +301,7 @@ color:rgba(185,74,72,0.9);
 #info{
 	float: right;
 }
+
+#container{
+	padding-top: 6em;
+}

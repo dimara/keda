@@ -298,6 +298,7 @@ class Reservation(models.Model):
       (6, "Six"),
       (7, "Seven"),
       (8, "Eight"),
+      (9, "Nine"),
     )
 
     AGENTS = (
@@ -307,8 +308,8 @@ class Reservation(models.Model):
       (u"ΔΚΤΗΣ", "ΔΚΤΗΣ"),
       (u"ΥΔΚΤΗΣ", "ΥΔΚΤΗΣ"),
       (u"ΑΣΦΑΛΕΙΑ", "ΑΣΦΑΛΕΙΑ"),
-      ("RECEPTION", "RECEPTION"),
-      ("ΓΕΕΘΑ", "ΓΕΕΘΑ"),
+      (u"RECEPTION", "RECEPTION"),
+      (u"ΓΕΕΘΑ", "ΓΕΕΘΑ"),
       )
 
     STATUSES = (
