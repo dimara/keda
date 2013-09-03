@@ -44,7 +44,7 @@
         {% endfor %}
         </td>
         <td><a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a></td>
-        <td> <a href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a> </td>
+        <td> <a target="_blank" href="/admin/reception/appartment/{{ r.appartment.id }}/">{{ r.appartment }}</a> </td>
         <td>{{ r.get_res_type_display }}</td>
         <td>
         {% for p in r.receipts.all %}
