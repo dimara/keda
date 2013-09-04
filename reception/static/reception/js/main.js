@@ -134,14 +134,6 @@ $(document).ready(function () {
                     }
         });
 
-        $("#warnings,#errors").click(function() {
-            if($('#errors:checked').length && $('#warnings:checked').length)
-                $(".ok").hide();
-            else
-                $(".ok").sgow();
-        });
-
-
     $(function() {
         $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
     });
