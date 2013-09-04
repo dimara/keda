@@ -1,11 +1,19 @@
-<div class="form-row">
-    <select name="period">
+<div class="form-group">
+    <select class="form-control" name="period">
         <option value="">Period..</option>
         {% for p in periods %}
         <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
         {% endfor %}
     </select>
-    <input placeholder="From.." type="text" class="datepicker" name="start" />
-    <input placeholder="Until.." type="text" class="datepicker" name="end" />
-    <input type="checkbox" name="exact"> Exact Dates
+</div>
+<div class="form-group">
+    <input class="form-control" placeholder="From.." type="text" class="datepicker" name="start" />
+</div>
+<div class="form-group">
+    <input class="form-control" placeholder="Until.." type="text" class="datepicker" name="end" />
+</div>
+<div class="checkbox">
+	<label>
+		<input type="checkbox" name="exact"> Exact Dates
+	</label>
 </div>

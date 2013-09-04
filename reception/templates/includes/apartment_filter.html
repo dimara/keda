@@ -1,15 +1,21 @@
-<div>
-        <select name="area" id="id_area">
-            <option value="">Area (All)</option>
-            {% for a in areas %}
-            <option value="{{ a.0 }}"> {{ a.1 }} </option>
-            {% endfor %}
-        </select>
-        <select name="category" id="id_category">
-            <option value="">Category (All)</option>
-            {% for c in categories %}
-            <option value="{{ c.id }}"> {{ c.desc }} </option>
-            {% endfor %}
-        </select>
-        <input id="input_damaged" type="checkbox" name="damaged">Exclude Damaged
+<div class="form-group">
+    <select class="form-control" name="area" id="id_area">
+        <option value="">Area (All)</option>
+        {% for a in areas %}
+        <option value="{{ a.0 }}"> {{ a.1 }} </option>
+        {% endfor %}
+    </select>
+</div>
+<div class="form-group">
+    <select class="form-control" name="category" id="id_category">
+        <option value="">Category (All)</option>
+        {% for c in categories %}
+        <option value="{{ c.id }}"> {{ c.desc }} </option>
+        {% endfor %}
+    </select>
+</div>
+<div class="checkbox">
+    <label>
+        <input type="checkbox" name="damaged">Exclude Damaged
+    </labal>
 </div>

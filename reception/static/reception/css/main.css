@@ -26,10 +26,6 @@
 
 }
 
-#logout{
-	float: right;
-}
-
 #titles{
     display: table-row!important;
 }
@@ -47,12 +43,6 @@
 button{
 /*	position: absolute;
 	margin-left: 4px;*/
-}
-
-#input_damaged,.rltvs,.vhcls,.cntcts,.prd,.aprtmnt,.tp,.pd,.actv{
-	margin-bottom: 2px!important;
-	margin-right: 5px!important;
-	margin-left: 1px!important;
 }
 
 #id_check_out, #id_end{
@@ -238,15 +228,11 @@ table#staff td, th {
 }
 
 input[type="checkbox"] {
-	margin: 0px!important;
+	/*margin: 0px!important;*/
 }
 
 .ui-widget { 
 	font-size: 0.8em!important; 
-}
-
-#search{
-	margin-right: 4px;
 }
 
 .scrollup{
