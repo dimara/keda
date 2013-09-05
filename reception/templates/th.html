@@ -6,7 +6,9 @@
     <h3>Phone activations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3> <br>
     <form action="/th/" method="GET">
     {% include "includes/dates.html" %}
+    <div class="row">
     {% include "includes/search_filter.html" %}
+    </div>
     </form>
     {% include "includes/info.html" %}
 

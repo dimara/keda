@@ -4,22 +4,41 @@
 
 {% block content %}
     <h3>Reservations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
-    <form class="form-inline" role="form" action="/reservations/" method="GET">
+    <form class="form" role="form" action="/reservations/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
-      {% include "includes/search_filter.html" %}
+      <div class="row">
+      <div class="col-md-3">
+      <div class="form-group"> 
       <select class="form-control" name="order" style="">
           <option value="">Order by</option>
-          <option value="name"> Name</option>
-          <option value="apartment"> Apartment</option>
+          <option value="name">Name</option>
+          <option value="apartment">Apartment</option>
       </select>
+      </div>
+      </div>
+    <div class="col-md-1">
+    <div class="checkbox">
+    <label>
+      <input id="warnings" type="checkbox" name="warnings">Warnings
+    </label>
+    </div>
+    </div>
+    <div class="col-md-1">
+      <div class="checkbox">
+      <label>
+        <input id="errors" type="checkbox" name="errors">Errors
+      </label>
+      </div>
+    </div>
+      </div>
+      <div class="row">
+      {% include "includes/search_filter.html" %}
+      </div>
     </form>
-    <label class="checkbox inline">
-      <input id="warnings" type="checkbox" name="warnings"> Warnings
-    </label>
-    <label class="checkbox inline">
-      <input id="errors" type="checkbox" name="errors"> Errors
-    </label>
+
+
+
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
@@ -34,7 +53,7 @@
         <th></th>
       </tr>
       {% for r in reservations %}
-        <tr {% if r.errors and r.warnings %} class="error warnings" {% elif r.errors %} class="error" {% elif r.warnings %} class="warnings" {% else %} class="ok" {% endif %}>
+        <tr {% if r.errors and r.warnings %} class="warnings danger" {% elif r.warnings %} class="warnings" {% elif r.errors %} class="danger" {% else %} class="ok" {% endif %}>
             <td>
               {{ forloop.counter }}
             </td>
@@ -66,5 +85,5 @@
         </tr>
       {% endfor %}
     </table>
-<script type="text/javascript"> $('[rel=tooltip]').tooltip(); </script>
+
 {% endblock %}

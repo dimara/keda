@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
     <head>
+    	<title>{% block title %}{% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% endblock %}</title>
-            {% include "includes/scripts.html" %}
+            {% include "includes/css.html" %}
           	<style type="text/css">
 			img {
 			  -webkit-transition: all 0.5s ease;
@@ -27,13 +27,12 @@
         
     </head>
 <body>
-  <div id="container" class="container-fluid">
+  <div id="container" class="container">
     <img src="/static/reception/keda_z.jpg" alt="keda" style="display:block;margin-left:auto;margin-right:auto;width:130px;padding-top:20px;">
     <br><br>
     <h3 style="text-align:center;">You have been successfully logged out from the KEDA/Z site!</h3>
     <br>
-    <a class="btn btn-large" href="/accounts/login/?next=/" style="display:block;margin-left:auto;margin-right:auto;width:200px;">Login</a>
-
+    <a class="btn btn-default" href="/accounts/login/?next=/" style="display:block;margin-left:auto;margin-right:auto;width:200px;">Login</a>
 </div>
-
+{% include "includes/scripts.html" %}
 </body>

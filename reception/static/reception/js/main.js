@@ -107,25 +107,11 @@ $(document).ready(function () {
                 $("#table").removeClass("table-condensed");
             }
         });
-
-        $("#warnings").click(function() {
-            if($('#warnings:checked').length) {
-                    $(".ok").hide();
-                    $(".error").hide();
-                    $(".warnings").show();
-                    $( "#errors" ).prop( "checked", false );
-                }
-                else{
-                    $(".ok").show();
-                    $(".error").show();
-                    }
-        });
-
         $("#errors").click(function() {
             if($('#errors:checked').length) {
                     $(".ok").hide();
                     $(".warnings").hide();
-                    $(".error").show();
+                    $(".danger").show();
                     $( "#warnings" ).prop( "checked", false );
                 }
                 else{
@@ -133,10 +119,19 @@ $(document).ready(function () {
                     $(".warnings").show();
                     }
         });
+        $("#warnings").click(function() {
+            if($('#warnings:checked').length) {
+                    $(".ok").hide();
+                    $(".danger").hide();
+                    $(".warnings").show();
+                    $( "#errors" ).prop( "checked", false );
+                }
+                else{
+                    $(".ok").show();
+                    $(".danger").show();
+                    }
+        });
 
-    $(function() {
-        $( ".datepicker" ).datepicker({ dateFormat: "yy-mm-dd" });
-    });
 
 
 $(window).scroll(function(){

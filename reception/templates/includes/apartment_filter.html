@@ -1,3 +1,5 @@
+<div class="row"> 
+<div class="col-md-3">
 <div class="form-group">
     <select class="form-control" name="area" id="id_area">
         <option value="">Area (All)</option>
@@ -6,6 +8,8 @@
         {% endfor %}
     </select>
 </div>
+</div>
+<div class="col-md-3">
 <div class="form-group">
     <select class="form-control" name="category" id="id_category">
         <option value="">Category (All)</option>
@@ -14,8 +18,12 @@
         {% endfor %}
     </select>
 </div>
+</div>
+<div class="col-md-2">
 <div class="checkbox">
     <label>
         <input type="checkbox" name="damaged">Exclude Damaged
     </labal>
+</div>
+</div>
 </div>

@@ -7,7 +7,9 @@
     <form action="/info/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
+      <div class="row">
       {% include "includes/search_filter.html" %}
+      </div>
     </form>
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">

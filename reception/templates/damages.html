@@ -5,11 +5,11 @@
 {% block content %}
     <h3>Damages</h3> <br>
     <form action="/damages/" method="GET">
-      <div class="form-row">
-	{{ date }}
-        <input tabindex=1 type="text" id="search" size="20" placeholder="Type to filter" style="float:right"/>
+      <div class="row">
+        {% include "includes/search_filter.html" %}
       </div>
     </form>
+    <span style="float:right;">{{ date }}</span>
     <table class="table table-hover table-condensed" id="table">
       <tr id="titles">
         <th></th>

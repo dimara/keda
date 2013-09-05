@@ -3,14 +3,20 @@
 {% block title %}Search for Available Appartments{% endblock %}
 
 {% block content %}
-    <h3>Availability</h3><br>
+    <h3>Availability {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/availability/" method="get">
-        <div class="form-row">
-                {% if date_errors %} <div class="alert alert-error" > {{ date_errors }} </div> {% endif %}
+      <div class="row"> 
+        <div class="col-md-6">
+                {% if date_errors %}
+                <div class="alert alert-danger" ><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>{{ date_errors }} </div> 
+                {% endif %}
         </div>
+      </div>
         {% include "includes/dates.html" %}
         {% include "includes/apartment_filter.html" %}
+        <div class="row">
         {% include "includes/search_filter.html" %}
+        </div>
     </form>
       {% include "includes/info.html" %}
       <table class="table table-hover" id="table">

@@ -1,3 +1,5 @@
+<div class="row"> 
+<div class="col-md-3">
 <div class="form-group">
     <select class="form-control" name="period">
         <option value="">Period..</option>
@@ -6,14 +8,22 @@
         {% endfor %}
     </select>
 </div>
-<div class="form-group">
-    <input class="form-control" placeholder="From.." type="text" class="datepicker" name="start" />
 </div>
+<div class="col-md-3">
 <div class="form-group">
-    <input class="form-control" placeholder="Until.." type="text" class="datepicker" name="end" />
+    <input class="form-control" placeholder="From.." type="text" name="start" id="dp1"/>
 </div>
+</div>
+<div class="col-md-3">
+<div class="form-group">
+    <input class="form-control" placeholder="Until.." type="text" name="end" id="dp2"/>
+</div>
+</div>
+<div class="col-md-2">
 <div class="checkbox">
 	<label>
 		<input type="checkbox" name="exact"> Exact Dates
 	</label>
+</div>
+</div>
 </div>
