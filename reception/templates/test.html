@@ -3,7 +3,6 @@
 {% block title %}Test Page{% endblock %}
 
 {% block content %}
-    <h3>Reservations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/test/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}

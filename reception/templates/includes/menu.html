@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-    <li class="active"><a href="#" id="page-title">Home</a></li>
+    <li class="active"><a href="#" ><span id="page-title">Home</span>{% if period %} - <small>Period {{ period.name }}</small>{% endif %}</a></li>
       <li><a href=/>Site</a></li>
       <li><a href=/admin/reception/ target="_blank">Admin</a></li>
     </ul>

@@ -27,6 +27,26 @@ $(document).ready(function () {
     if(window.location.href.indexOf("parousiologio") > -1) {
        $('#page-title').html('Παρουσιολόγιο');
     }
+    if(window.location.href.indexOf("stats") > -1) {
+       $('#page-title').html('Stats');
+    }
+    if(window.location.href.indexOf("damages") > -1) {
+           $('#page-title').html('Damages');
+    }
+    if(window.location.href.indexOf("logistic") > -1) {
+           $('#page-title').html('Logistic');
+    }
+    if(window.location.href.indexOf("info") > -1) {
+           $('#page-title').html('Reservation Info');
+    }
+    if(window.location.href.indexOf("apartments") > -1) {
+           $('#page-title').html('Apartments');
+    }
+    if(window.location.href.indexOf("persons") > -1) {
+           $('#page-title').html('Persons');
+    }
+
+
 
         $("#showstatus").click(function() {
             if($('#showstatus:checked').length) {

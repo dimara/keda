@@ -3,20 +3,12 @@
 {% block title %}Reservations{% endblock %}
 
 {% block content %}
-    <h3>Reservations {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form class="form" role="form" action="/reservations/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
       <div class="row">
-      <div class="col-md-3">
-      <div class="form-group"> 
-      <select class="form-control" name="order" style="">
-          <option value="">Order by</option>
-          <option value="name">Name</option>
-          <option value="apartment">Apartment</option>
-      </select>
-      </div>
-      </div>
+        {% include "includes/search_filter.html" %}
+
     <div class="col-md-1">
     <div class="checkbox">
     <label>
@@ -31,9 +23,15 @@
       </label>
       </div>
     </div>
+          <div class="col-md-3 col-md-offset-4">
+      <div class="form-group"> 
+      <select class="form-control" name="order" style="">
+          <option value="">Order by</option>
+          <option value="name">Name</option>
+          <option value="apartment">Apartment</option>
+      </select>
       </div>
-      <div class="row">
-      {% include "includes/search_filter.html" %}
+      </div>
       </div>
     </form>
 

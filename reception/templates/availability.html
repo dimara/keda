@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}Search for Available Appartments{% endblock %}
-
 {% block content %}
-    <h3>Availability {% if period %}-<small class="subtext-h3"> Period {{ period.name }}</small>{% endif %}</h3><br>
     <form action="/availability/" method="get">
       <div class="row"> 
         <div class="col-md-6">
