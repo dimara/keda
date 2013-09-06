@@ -4,18 +4,38 @@
 
 {% block content %}
     <form action="/persons/" method="get">
-        {% include "includes/dates.html" %}
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group">
+              <input class="form-control" placeholder="Look for.." type="text" name="text" />
+              </div><!-- /input-group -->
+            </div><!-- /input-group -->
+            <div class="col-md-1">
+              <div class="form-group">
+            @
+              </div><!-- /input-group -->
+            </div><!-- /input-group -->
+            <div class="col-md-3">
+              <div class="form-group">
+              <select class="form-control" name="inside">
+                  <option value="surnames"> Surnames</option>
+                  <option value="vehicles"> Vehicles</option>
+              </select>
+              </div><!-- /input-group -->
+            </div><!-- /input-group -->
+          </div><!-- /input-group -->
         <div class="row">
-        {% include "includes/search_filter.html" %}
-        </div>
+      {% include "includes/search_filter.html" %}
+          </div><!-- /input-group -->
     </form>
-        {% include "includes/info.html" %}
 
+    {% include "includes/info.html" %}
     <table class="table table-hover" id="table">
         <tr id="titles">
         <th></th>
         <th>Person</th>
         <th>Contacts</th>
+        <th>Vehicles</th>
         <th>Reservations</th>
       </tr>
       {% for p in persons %}
@@ -27,6 +47,11 @@
         <td>
         {% for c in p.contacts.all %}
             {{ c.mobile }}<br>
+        {% endfor %}
+        </td>
+        <td>
+        {% for v in p.vehicles.all %}
+            {{ v.plate }}<br>
         {% endfor %}
         </td>
         <td>

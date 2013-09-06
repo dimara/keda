@@ -370,17 +370,24 @@ def gmap_data(request):
 
 @login_required(login_url='/accounts/login/')
 def persons(request):
-    period, start, end = get_start_end(request)
-    persons = MilitaryPerson.objects.all()
-    persons = filter(lambda p: [p for r in p.reservations.all() if r.inside(start, end)], persons)
-    persons = MilitaryPerson.objects.filter(id__in=[p.id for p in persons])
-    persons = persons.all().prefetch_related("reservations", "contacts", "rank")
-    persons = sorted(persons, key=lambda p: p.surname)
+    text = request.GET.get("text", None)
+    inside = request.GET.get("inside", None)
+    persons = []
+    if text:
+      print text
+      print type(text)
+      text = text.upper()
+      print text
+      persons = MilitaryPerson.objects.all()
+      if inside == "vehicles":
+        persons = persons.filter(vehicles__plate__contains=text)
+      elif inside == "surnames":
+        persons = persons.filter(surname__contains=text)
+      persons = persons.all().prefetch_related("reservations", "contacts", "vehicles", "rank")
+      persons = sorted(persons, key=lambda p: p.surname)
     ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "periods": Period.objects.all(),
+      "text": text,
+      "inside": inside,
       "persons": persons,
       }
     return render_to_response("persons.html", ctx, context_instance=RequestContext(request))
