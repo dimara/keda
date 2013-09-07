@@ -1,5 +1,5 @@
 
-              {% if r.status = "PENDING" %}<span class="label label-warning">Pending</span>{% endif %}
-              {% if r.status = "CANCELED" %}<span class="label label-danger">Canceled</span>{% endif %}
-              {% if r.status = "CHECKEDOUT" %}<span class="label label-info">Checked OUT</span>{% endif %}
-              {% if r.status = "UNKNOWN" %}<span class="label label-danger">Unknown</span>{% endif %}
+              {% if r.status = 0 %}<span class="label label-warning">Pending</span>{% endif %}
+              {% if r.status = 2 %}<span class="label label-danger">Canceled</span>{% endif %}
+              {% if r.status = 3 %}<span class="label label-info">Checked OUT</span>{% endif %}
+              {% if r.status = 4 %}<span class="label label-danger">Unknown</span>{% endif %}

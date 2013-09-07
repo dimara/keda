@@ -5,6 +5,7 @@ from django.forms import ModelForm
 from django.forms import ChoiceField, ModelChoiceField, Field, HiddenInput, BooleanField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from nested_inlines.forms import BaseNestedModelForm
+from reception.constants import *
 import datetime
 
 # Create your models here.
@@ -302,42 +303,42 @@ class Reservation(models.Model):
     )
 
     AGENTS = (
-      (u"ΓΕΑ/Β3", "ΓΕΑ/Β3"),
-      (u"ΕΑ", "ΕΑ"),
-      (u"Μ.Υ.", "Μ.Υ"),
-      (u"ΔΚΤΗΣ", "ΔΚΤΗΣ"),
-      (u"ΥΔΚΤΗΣ", "ΥΔΚΤΗΣ"),
-      (u"ΑΣΦΑΛΕΙΑ", "ΑΣΦΑΛΕΙΑ"),
-      (u"RECEPTION", "RECEPTION"),
-      (u"ΓΕΕΘΑ", "ΓΕΕΘΑ"),
+      (RA_GEA, "ΓΕΑ/Β3"),
+      (RA_EA, "ΕΑ"),
+      (RA_MY, "Μ.Υ"),
+      (RA_DKTS, "ΔΚΤΗΣ"),
+      (RA_YDKTS, "ΥΔΚΤΗΣ"),
+      (RA_ASF, "ΑΣΦΑΛΕΙΑ"),
+      (RA_REC, "RECEPTION"),
+      (RA_GEETHA, "ΓΕΕΘΑ"),
       )
 
     STATUSES = (
-      ("PENDING", "Pending Confirmation"),
-      ("CONFIRMED", "Confirmed"),
-      ("CANCELED", "Canceled"),
-      ("CHECKEDOUT", "Checked OUT"),
-      ("UNKNOWN", "Unknown"),
+      (RS_PENDING, "Pending"),
+      (RS_CONFIRM, "Confirmed"),
+      (RS_CANCEL, "Canceled"),
+      (RS_CHECKOUT, "Checked OUT"),
+      (RS_UNKNOWN, "Unknown"),
       )
 
     RESERVATION_TYPES = (
-      (u"ΤΑΚΤΙΚΟΣ", "ΤΑΚΤΙΚΟΣ"),
-      (u"ΠΑΡ/ΣΤΗΣ", "ΠΑΡ/ΣΤΗΣ"),
-      (u"ΟΣΣΕΑΥ", "ΟΣΣΕΑΥ"),
-      (u"ΜΟΝΑΔΑ", "ΜΟΝΑΔΑ"),
-      (u"ΣΧΟΛΕΙΑ", "ΣΧΟΛΕΙΑ"),
-      ("CLIMS", "CLIMS"),
+      (RT_REGULAR, "ΤΑΚΤΙΚΟΣ"),
+      (RT_DAILY, "ΠΑΡ/ΣΤΗΣ"),
+      (RT_OSSEAY, "ΟΣΣΕΑΥ"),
+      (RT_UNIT, "ΜΟΝΑΔΑ"),
+      (RT_SCHOOLS, "ΣΧΟΛΕΙΑ"),
+      (RT_CLIMS, "CLIMS"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
     owner = models.ForeignKey(MilitaryPerson, related_name="reservations")
-    agent = models.CharField("Agent", choices=AGENTS, max_length=20, null=True, blank=True)
+    agent = models.IntegerField("Agent", choices=AGENTS, max_length=20, null=True, blank=True)
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
     appartment = models.ForeignKey(Appartment, related_name="reservations", null=True, blank=True)
-    status = models.CharField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
-    res_type = models.CharField("Type", choices=RESERVATION_TYPES, max_length=20,
+    status = models.IntegerField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
+    res_type = models.IntegerField("Type", choices=RESERVATION_TYPES, max_length=20,
                                 null=True, blank=True)
     telephone = models.BooleanField("Telephone", default=False)
     book_ref = models.IntegerField("No", null=True, blank=True)
@@ -350,12 +351,12 @@ class Reservation(models.Model):
     @property
     def info(self):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %d, Δωμάτιο: %s, Status: %s" % \
-                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.status)
+                  (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.get_status_display())
 
     @property
     def details(self):
         return  u"Από %s έως %s, Δωμάτιο: %s, Status: %s" % \
-                  (self.check_in, self.check_out, self.appartment, self.status)
+                  (self.check_in, self.check_out, self.appartment, self.get_status_display())
     @property
     def period(self):
         ret = u"%s..." % self.check_in.strftime("%d %b")
@@ -371,30 +372,30 @@ class Reservation(models.Model):
         if include_all:
             return status
         else:
-            return self.status in ("CONFIRMED", "PENDING", "UNKNOWN") and status
+            return self.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and status
 
     @property
     def errors(self):
       today = datetime.date.today()
       errors = []
-      if self.check_in < today and self.status == "PENDING":
+      if self.check_in < today and self.status == RS_PENDING:
         errors.append("Booking period started but not arrived!")
       if self.check_out and self.check_out < today:
-        if self.status == "CONFIRMED":
+        if self.status == RS_CONFIRM:
           errors.append("Booking period over but still staying!")
-        if self.status == "PENDING":
+        if self.status == RS_PENDING:
           errors.append("Booking period over but never arrived!")
       return errors
 
     @property
     def warnings(self):
       warnings = []
-      if self.res_type == u"ΤΑΚΤΙΚΟΣ":
-        if self.agent not in (u"ΓΕΑ/Β3", u"Μ.Υ.", u"ΕΑ"):
+      if self.res_type == RT_REGULAR:
+        if self.agent not in (RA_GEA, RA_MY, RA_EA):
           warnings.append("Regular visitor without agent!")
-        if not self.book_ref and self.status != "CANCELED":
+        if not self.book_ref and self.status != RS_CANCEL:
           warnings.append("Regular visitor without book reference!")
-      if self.res_type in (u"ΤΑΚΤΙΚΟΣ", u"ΠΑΡ/ΣΤΗΣ") and self.status == "CHECKEDOUT":
+      if self.res_type in (RT_REGULAR, RT_DAILY) and self.status == RS_CHECKOUT:
         if not self.receipt or self.receipt.pending:
           warnings.append("Left without paying!")
       return warnings
@@ -496,7 +497,7 @@ class PersonForm(BaseNestedModelForm):
           self.fields["existing"] = ModelChoiceField(queryset=conflicting, required=False, label="Existing")
           msgs = [u"Conflicting Person:", ]
           for c in conflicting:
-            msgs.append("%s %s" % (c.info(), c.identify()))
+            msgs.append("%s %s" % (": ".join(c.person_info()), c.identify()))
           if not resolve:
             # modify
             self._update_errors({
@@ -559,10 +560,10 @@ class ReservationForm(BaseNestedModelForm):
         self.cleaned_data = {}
         super(ReservationForm, self).full_clean()
         if self.instance.appartment:
-            reservations = self.instance.appartment.reservations.filter(status__in=["PENDING", "CONFIRMED", "UNKNOWN"]).exclude(id=self.instance.id)
+            reservations = self.instance.appartment.reservations.filter(status__in=[RS_PENDING, RS_CONFIRM, RS_UNKNOWN]).exclude(id=self.instance.id)
             conflicting = []
             for r in reservations:
-                if (self.instance.status in ("PENDING", "CONFIRMED", "UNKNOWN") and
+                if (self.instance.status in (RS_PENDING, RS_CONFIRM, RS_UNKNOWN) and
                     r.owner.id != self.instance.owner.id and
                     r.inside(self.instance.check_in, self.instance.check_out)):
                     conflicting.append(r)

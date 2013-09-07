@@ -59,7 +59,7 @@
                     <a target="_blank" href="/admin/reception/militaryperson/{{ r.owner.id }}/">{{ r.owner.info }}</a>
                     {% include "includes/status.html" %}
             </td>
-            <td> {{ r.agent }} </td>
+            <td> {{ r.get_agent_display }} </td>
             <td>
                     <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a>
             </td>

@@ -16,6 +16,7 @@ from django.core.context_processors import csrf
 from django import forms
 from itertools import chain
 from django.contrib.auth.decorators import login_required
+from reception.constants import *
 
 
 @login_required(login_url='/accounts/login/')
@@ -61,7 +62,7 @@ def check_period(avail, check_in, check_out):
         for a in avail:
             ok = True
             for r in a.reservations.all():
-                if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(check_in, check_out):
+                if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(check_in, check_out):
                     ok = False
                     break
             if ok:
@@ -129,7 +130,7 @@ def appartments(request):
     for a in appartments:
         reserved = False
         for r in a.reservations.all():
-            if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(start, end):
+            if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(start, end):
                 reserved = True
                 appres.append((a, r))
         if not reserved:
@@ -289,7 +290,7 @@ def logistic(request):
 def th(request):
 
     period, start, end = get_start_end(request)
-    reservations = Reservation.objects.filter(status="CONFIRMED", telephone=True)
+    reservations = Reservation.objects.filter(status=RS_CONFIRM, telephone=True)
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
@@ -334,6 +335,9 @@ def gmap(request):
       "end": end,
       "url": url,
       "periods": Period.objects.all(),
+      "RS_PENDING": RS_PENDING,
+      "RS_CONFIRM": RS_CONFIRM,
+      "RS_UNKNOWN": RS_UNKNOWN,
       }
     return render_to_response("map.html", ctx, context_instance=RequestContext(request))
 
@@ -354,7 +358,7 @@ def gmap_data(request):
           msg = u"Cannot add url for " + a.appartment
           print msg.encode("utf-8")
         for r in a.reservations.all():
-            if r.status in ("CONFIRMED", "PENDING", "UNKNOWN") and r.inside(start, end):
+            if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(start, end):
               fr = False
               if info.get(a.appartment, None):
                 info[a.appartment]["status"] = r.status
@@ -402,21 +406,21 @@ def stats(request):
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:
-      reservations = filter(lambda x: x.status == "CONFIRMED", reservations)
+      reservations = filter(lambda x: x.status == RS_CONFIRM, reservations)
     else:
-      reservations = filter(lambda x: x.status != "CANCELED", reservations)
+      reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
     l = lambda x: [r.persons for r in x if r.persons]
     persons = sum(l(reservations))
     l = lambda x: [r.receipt.euro for r in x if r.receipt]
     euros = sum(l(reservations))
     print euros
-    regular = filter(lambda x: x.res_type == u"ΤΑΚΤΙΚΟΣ", reservations)
-    b3 = filter(lambda x: x.agent == u"ΓΕΑ/Β3", regular)
-    ea = filter(lambda x: x.agent == u"ΕΑ", regular)
-    my = filter(lambda x: x.agent == u"Μ.Υ.", regular)
-    osseay = filter(lambda x: x.res_type == u"ΟΣΣΕΑΥ", reservations)
-    paratheristes = filter(lambda x: x.res_type == u"ΠΑΡ/ΣΤΗΣ", reservations)
-    monada = filter(lambda x: x.res_type == u"ΜΟΝΑΔΑ", reservations)
+    regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
+    b3 = filter(lambda x: x.agent == RA_GEA, regular)
+    ea = filter(lambda x: x.agent == RA_EA, regular)
+    my = filter(lambda x: x.agent == RA_MY, regular)
+    osseay = filter(lambda x: x.res_type == RT_OSSEAY, reservations)
+    paratheristes = filter(lambda x: x.res_type == RT_DAILY, reservations)
+    monada = filter(lambda x: x.res_type == RT_UNIT, reservations)
 
     ctx = {
       "period": period,

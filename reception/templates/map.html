@@ -67,13 +67,13 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
             // Set up our GMarkerOptions object
             var status=info["status"];
             switch(status) {
-              case "PENDING":
+              case {{ RS_PENDING }}:
                 color = "FFFF00";
                 break;
-              case "CONFIRMED":
+              case {{ RS_CONFIRM }}:
                 color = "FF0000";
                 break;
-              case "UNKNOWN":
+              case {{ RS_UNKNOWN }}:
                 color = "483737";
                 break;
               default:
