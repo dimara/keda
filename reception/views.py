@@ -29,6 +29,15 @@ def home(request):
 
     return render_to_response("welcome.html", {"now" : now,"date": date, "username": username}, context_instance=RequestContext(request))
 
+def get_display(key, list):
+    d = dict(list)
+    try:
+      key = int(key)
+    except:
+      pass
+    if key in d:
+        return d[key]
+    return None
 
 def display_meta(request):
     values = request.META.items()
@@ -70,6 +79,24 @@ def check_period(avail, check_in, check_out):
 
     return (ret, err)
 
+def get_ctx(period, start, end, area, category, damaged, rtype, status):
+    ctx = {
+      "period": period,
+      "start": start,
+      "end": end,
+      "periods": Period.objects.all(),
+      "area": area,
+      "areas": Appartment.AREAS,
+      "category": category,
+      "categories": Category.objects.values(),
+      "damaged": damaged,
+      "rtype": get_display(rtype, Reservation.RESERVATION_TYPES),
+      "rtypes": Reservation.RESERVATION_TYPES,
+      "status": get_display(status, Reservation.STATUSES),
+      "statuses": Reservation.STATUSES,
+      }
+    return ctx
+
 
 @login_required(login_url='/accounts/login/')
 def availability(request):
@@ -92,19 +119,10 @@ def availability(request):
     avail, date_errors = check_period(avail, start, end)
     avail = sorted(avail, key=lambda a: (a.area, int(a.no)))
 
-    ctx =  {
-      "period": period,
-      "start": start,
-      "end": end,
-      "periods": Period.objects.all(),
-      "date_errors": date_errors,
-      "area": area,
-      "areas": Appartment.AREAS,
-      "category": category,
-      "categories": Category.objects.values(),
-      "damaged": damaged,
+    ctx = get_ctx(period, start, end, area, category, damaged, None, None)
+    ctx.update({
       "avail": avail,
-      }
+      })
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
 
@@ -136,16 +154,11 @@ def appartments(request):
         if not reserved:
           appres.append((a, None))
 
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "periods": Period.objects.all(),
-      "areas": Appartment.AREAS,
-      "categories": Category.objects.values(),
+    ctx = get_ctx(period, start, end, area, category, damaged, None, None)
+    ctx.update({
       "appartments": appartments,
       "appres": appres,
-      }
+      })
     return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
 
 
@@ -208,17 +221,10 @@ def info(request):
                                          "appartment",
                                          "receipts")
     reservations = sorted(reservations, key=lambda x: x.owner.surname)
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "rtype": rtype,
-      "status": status,
-      "rtypes": Reservation.RESERVATION_TYPES,
-      "statuses": Reservation.STATUSES,
-      "periods": Period.objects.all(),
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx.update({
       "reservations": reservations,
-      }
+      })
     return render_to_response("info.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
@@ -245,17 +251,11 @@ def reservations(request):
       reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
     else:
       reservations = sorted(reservations, key=lambda r: r.owner.surname)
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "rtype": rtype,
-      "status": status,
-      "rtypes": Reservation.RESERVATION_TYPES,
-      "statuses": Reservation.STATUSES,
-      "periods": Period.objects.all(),
+
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx.update({
       "reservations": reservations,
-      }
+      })
     return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
@@ -272,18 +272,11 @@ def logistic(request):
     receipts = [r for r in receipts if r.inside(start, end)]
 
     l = lambda x: [r.euro for r in x]
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "rtype": rtype,
-      "status": status,
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx.update({
       "sum": sum(l(receipts)),
-      "periods": Period.objects.all(),
       "receipts": receipts,
-      "rtypes": Reservation.RESERVATION_TYPES,
-      "statuses": Reservation.STATUSES,
-      }
+      })
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
@@ -294,13 +287,10 @@ def th(request):
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "periods": Period.objects.all(),
+    ctx = get_ctx(period, start, end, None, None, None, None, None)
+    ctx.update({
       "reservations": reservations,
-      }
+      })
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
@@ -422,11 +412,8 @@ def stats(request):
     paratheristes = filter(lambda x: x.res_type == RT_DAILY, reservations)
     monada = filter(lambda x: x.res_type == RT_UNIT, reservations)
 
-    ctx = {
-      "period": period,
-      "start": start,
-      "end": end,
-      "periods": Period.objects.all(),
+    ctx = get_ctx(period, start, end, None, None, None, None, None)
+    ctx.update({
       "show": show,
       "live": live,
       "reservations": reservations,
@@ -440,7 +427,7 @@ def stats(request):
       "osseay": len(osseay),
       "paratheristes": len(paratheristes),
       "monada": len(monada),
-      }
+      })
     return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
