@@ -368,10 +368,7 @@ def persons(request):
     inside = request.GET.get("inside", None)
     persons = []
     if text:
-      print text
-      print type(text)
       text = text.upper()
-      print text
       persons = MilitaryPerson.objects.all()
       if inside == "vehicles":
         persons = persons.filter(vehicles__plate__contains=text)
@@ -403,7 +400,6 @@ def stats(request):
     persons = sum(l(reservations))
     l = lambda x: [r.receipt.euro for r in x if r.receipt]
     euros = sum(l(reservations))
-    print euros
     regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
     b3 = filter(lambda x: x.agent == RA_GEA, regular)
     ea = filter(lambda x: x.agent == RA_EA, regular)
