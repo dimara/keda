@@ -398,6 +398,8 @@ class Reservation(models.Model):
       if self.res_type in (RT_REGULAR, RT_DAILY) and self.status == RS_CHECKOUT:
         if not self.receipt or self.receipt.pending:
           warnings.append("Left without paying!")
+      if self.receipt.pending:
+        warnings.append("Pending receipt!")
       return warnings
 
     def on(self, start, end):
