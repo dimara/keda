@@ -62,20 +62,25 @@ def id_from_request(qd, name):
     return value2id(qd.get(name))
 
 
-def check_period(avail, check_in, check_out):
+def check_availability(avail, check_in, check_out, include_pending=False):
     err = None
     ret = []
+    excluded_statuses = [RS_PENDING, RS_CONFIRM, RS_UNKNOWN]
     if (check_out and check_out <= check_in):
             err = "ERROR: Check-out before Check-in!!!"
     else:
         for a in avail:
             ok = True
+            pending = None
             for r in a.reservations.all():
-                if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(check_in, check_out):
-                    ok = False
-                    break
+                if r.inside(check_in, check_out):
+                    if include_pending and r.status == RS_PENDING:
+                      pending = r
+                    elif r.status in excluded_statuses:
+                      ok = False
+                      break
             if ok:
-                ret.append(a)
+                ret.append((a, pending))
 
     return (ret, err)
 
@@ -104,6 +109,7 @@ def availability(request):
     area = request.GET.get("area")
     category = id_from_request(request.GET, "category")
     damaged = request.GET.get("damaged", False)
+    pending = request.GET.get("pending", False)
 
     avail = Appartment.objects.all()
     if area:
@@ -116,8 +122,8 @@ def availability(request):
         avail = avail.filter(category=category)
 
     date_errors = None
-    avail, date_errors = check_period(avail, start, end)
-    avail = sorted(avail, key=lambda a: (a.area, int(a.no)))
+    avail, date_errors = check_availability(avail, start, end, pending)
+    avail = sorted(avail, key=lambda (a, r): (a.area, int(a.no)))
 
     ctx = get_ctx(period, start, end, area, category, damaged, None, None)
     ctx.update({

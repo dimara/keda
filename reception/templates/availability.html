@@ -14,6 +14,13 @@
         {% include "includes/apartment_filter.html" %}
         <div class="row">
         {% include "includes/search_filter.html" %}
+        <div class="col-md-1">
+        <div class="checkbox">
+        <label>
+          <input type="checkbox" name="pending">Include Pending
+        </label>
+        </div>
+        </div>
         </div>
     </form>
       {% include "includes/info.html" %}
@@ -25,8 +32,9 @@
           <th>Beds</th>
           <th>Category</th>
           <th>Damages</th>
+          <th></th>
         </tr>
-        {% for a in avail %}
+        {% for a, r in avail %}
         <tr>
           <td>{{ forloop.counter }}</td>
           <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
@@ -40,6 +48,7 @@
               {% endif %}
             {% endfor %}
           </td>
+          <td>{{ r.owner.info }}</td>
         </tr>
         {% endfor %}
       </table>   
