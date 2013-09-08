@@ -30,6 +30,9 @@
     </form>
 
     {% include "includes/info.html" %}
+    {% if trunc %}
+    The following list is truncated! Please be more specific!
+    {% endif %}
     <table class="table table-hover" id="table">
         <tr id="titles">
         <th></th>
@@ -61,5 +64,14 @@
         </td>
       </tr>
       {% endfor %}
+      {% if trunc %}
+      <tr>
+        <td> ... </td>
+        <td> ... </td>
+        <td> ... </td>
+        <td> ... </td>
+        <td> ... </td>
+      </tr>
+      {% endif %}
     </table>
 {% endblock %}

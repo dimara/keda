@@ -367,6 +367,7 @@ def persons(request):
     text = request.GET.get("text", None)
     inside = request.GET.get("inside", None)
     persons = []
+    trunc = False
     if text:
       text = text.upper()
       persons = MilitaryPerson.objects.all()
@@ -374,9 +375,13 @@ def persons(request):
         persons = persons.filter(vehicles__plate__contains=text)
       elif inside == "surnames":
         persons = persons.filter(surname__contains=text)
+      if len(persons) > 20:
+        persons = MilitaryPerson.objects.filter(id__in=[p.id for p in persons[:20]])
+        trunc = True
       persons = persons.all().prefetch_related("reservations", "contacts", "vehicles", "rank")
       persons = sorted(persons, key=lambda p: p.surname)
     ctx = {
+      "trunc": trunc,
       "text": text,
       "inside": inside,
       "persons": persons,
