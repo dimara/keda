@@ -375,32 +375,25 @@ class Reservation(models.Model):
             return self.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and status
 
     @property
-    def errors(self):
+    def notifications(self):
       today = datetime.date.today()
       errors = []
       if self.check_in < today and self.status == RS_PENDING:
-        errors.append("Booking period started but not arrived!")
+        errors.append(RE_NOTARRIVED)
       if self.check_out and self.check_out < today:
         if self.status == RS_CONFIRM:
-          errors.append("Booking period over but still staying!")
+          errors.append(RE_NOTLEFT)
         if self.status == RS_PENDING:
-          errors.append("Booking period over but never arrived!")
-      return errors
-
-    @property
-    def warnings(self):
-      warnings = []
+          errors.append(RE_NEVERCAME)
       if self.res_type == RT_REGULAR:
         if self.agent not in (RA_GEA, RA_MY, RA_EA):
-          warnings.append("Regular visitor without agent!")
+          errors.append(RE_NOAGENT)
         if not self.book_ref and self.status != RS_CANCEL:
-          warnings.append("Regular visitor without book reference!")
+          errors.append(RE_NOBOOK)
       if self.res_type in (RT_REGULAR, RT_DAILY) and self.status == RS_CHECKOUT:
         if not self.receipt or self.receipt.pending:
-          warnings.append("Left without paying!")
-      if self.receipt.pending:
-        warnings.append("Pending receipt!")
-      return warnings
+          errors.append(RE_NOTPAYED)
+      return (errors, sum(errors)>=10)
 
     def on(self, start, end):
       if start and end:

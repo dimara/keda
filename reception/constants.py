@@ -19,3 +19,16 @@ RA_YDKTS = 4
 RA_ASF = 5
 RA_REC = 6
 RA_GEETHA = 7
+
+# "Regular visitor without agent!"
+RE_NOAGENT = 0
+# "Regular visitor without book reference!"
+RE_NOBOOK = 1
+# "Booking period started but not arrived!"
+RE_NOTARRIVED = 10
+# "Booking period over but still staying!"
+RE_NOTLEFT = 11
+# "Booking period over but never arrived!"
+RE_NEVERCAME = 12
+# "Left without paying!"
+RE_NOTPAYED = 13
