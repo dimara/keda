@@ -598,7 +598,7 @@ class InlineReservationForm(ReservationForm):
     pass
 
 class Receipt(models.Model):
-    date = models.DateTimeField("Date", default=datetime.datetime.now(), null=True, blank=True)
+    date = models.DateTimeField("Date")
     no = models.CharField("No", max_length=10)
     reservation = models.ForeignKey(Reservation, related_name="receipts")
     euro = models.DecimalField("Euro", decimal_places=2, max_digits=10 )
