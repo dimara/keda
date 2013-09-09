@@ -1,6 +1,8 @@
 from django.contrib import admin
+from django.forms.models import BaseInlineFormSet
 from nested_inlines.admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
 from reception.models import *
+import datetime
 
 class RelativeInline(admin.TabularInline):
     model = Relative
@@ -26,10 +28,22 @@ class ReceiptInline(admin.TabularInline):
     extra = 0
     inlines = []
 
+
+class ReservationFormSet(BaseInlineFormSet):
+    def get_queryset(self) :
+      qs = super(ReservationFormSet, self).get_queryset()
+      if len(qs) > 5:
+        since = datetime.date.today() - datetime.timedelta(days=30)
+        qs = qs.filter(check_in__gte=since)
+
+      return qs
+
+
 class ReservationAppartmentInline(admin.TabularInline):
     model = Reservation
     fk_name = "appartment"
     form = InlineReservationForm
+    formset = ReservationFormSet
     extra = 0
     inlines = []
 
