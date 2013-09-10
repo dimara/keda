@@ -1,5 +1,5 @@
         {% if period or start or end or area or category or rtype or status or damaged %}
-        <div id="info">
+        <div id="info"> 
             <h4><small>
             {% if period %} Period {{ period.name }}: {% endif %}
             {% if start %} IN @ {{ start }} ... {% endif %}
@@ -11,6 +11,7 @@
             {% if damaged %}, + Damaged {% endif %}
             {% if text %}, Matching {{ text }} {% endif %}
             {% if inside %} inside {{ inside }} {% endif %}
+            | Reservations: <span id="cntr"></span> | Errors: <span id="ecntr"></span>
             </small></h4>
         </div>
         {% endif %}

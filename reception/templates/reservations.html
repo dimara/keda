@@ -9,13 +9,7 @@
       <div class="row">
         {% include "includes/search_filter.html" %}
 
-    <div class="col-md-1">
-    <div class="checkbox">
-    <label>
-      <input id="warnings" type="checkbox" name="warnings">Warnings
-    </label>
-    </div>
-    </div>
+
     <div class="col-md-1">
       <div class="checkbox">
       <label>
@@ -50,7 +44,7 @@
         <th></th>
       </tr>
       {% for r in reservations %}
-        <tr {% if r.notifications.1 %} class="warnings danger" {% elif r.notifications.0 %} class="warnings" {% else %} class="ok" {% endif %}>
+        <tr {% if r.notifications.1 %} class="danger" {% elif r.notifications.0 %} class="nodanger" {% else %} class="ok" {% endif %}>
             <td>
               {{ forloop.counter }}
             </td>
@@ -71,7 +65,7 @@
             <td> {{ r.receipt.no }} </td>
             <td>
               {% if r.notifications.0 %}
-                  <span rel="tooltip" title="{{ r.notifications.0|join:", " }}"> <span class="badge badge-important">E</span> </span>
+                  <span rel="tooltip" class="n{{ r.notifications.0|join:" n" }}"> <span class="badge badge-important">E</span> </span>
               {% endif %}
             </td>
         </tr>
