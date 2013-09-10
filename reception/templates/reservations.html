@@ -10,7 +10,7 @@
         {% include "includes/search_filter.html" %}
 
 
-    <div class="col-md-1">
+    <div class="col-md-2">
       <div class="checkbox">
       <label>
         <input id="errors" type="checkbox" name="errors">Errors
@@ -28,8 +28,88 @@
       </div>
       </div>
     </form>
+<div class="row">
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt0" type="checkbox" name="rt0" checked>TAKTIKOΣ
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt1" type="checkbox" name="rt1" checked>ΠΑΡ/ΣΤΗΣ
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt2" type="checkbox" name="rt2" checked>ΟΣΣΕΑΥ
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt3" type="checkbox" name="rt3" checked>ΜΟΝΑΔΑ
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt4" type="checkbox" name="rt4" checked>ΣΧΟΛΕΙΑ
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="rt5" type="checkbox" name="rt5" checked>CLIMS
+      </label>
+      </div>
+    </div>
+</div>
 
-
+<div class="row">
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="ra0" type="checkbox" name="ra0" checked>Pending
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="ra1" type="checkbox" name="ra1" checked>Confirmed
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="ra2" type="checkbox" name="ra2" checked>Canceled
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="ra3" type="checkbox" name="ra3" checked>Checked Out
+      </label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="checkbox">
+      <label>
+        <input id="ra4" type="checkbox" name="ra4" checked>Unknown
+      </label>
+      </div>
+    </div>
+</div>
 
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
@@ -44,7 +124,7 @@
         <th></th>
       </tr>
       {% for r in reservations %}
-        <tr {% if r.notifications.1 %} class="danger" {% elif r.notifications.0 %} class="nodanger" {% else %} class="ok" {% endif %}>
+        <tr class="shw rt{{r.res_type}} ra{{r.status}} {% if r.notifications.1 %}danger{% elif r.notifications.0 %}nodanger{% else %}ok{% endif %}">
             <td>
               {{ forloop.counter }}
             </td>
