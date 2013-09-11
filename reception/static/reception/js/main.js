@@ -159,45 +159,24 @@ $(document).ready(function () {
     $("#cntr").html($(".shw").length);
     $("#ecntr").html($(".danger,.nodanger").length);
 
-    $("#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function() {
-        var y=0;
-        for (var i = 0; i < 6; i++) {
-            if($("#rt"+i).is(':checked')){
-                if (!$("#ra0").is(':checked')||!$("#ra1").is(':checked')||!$("#ra2").is(':checked')||!$("#ra3").is(':checked')||!$("#ra4").is(':checked')) {
-                    $("#ra0,#ra1,#ra2,#ra3,#ra4").prop('checked', true);
-                    $("#ra0,#ra1,#ra2,#ra3,#ra4").show();
-                }
-                $(".rt"+i).show();
-                $(".rt"+i).addClass( "shw" );
-            }
-            else{
-                $(".rt"+i).hide();      
-                $(".rt"+i).removeClass( "shw" );      
-            }
-        };
-    $("#ecntr").html($(".danger,.nodanger").length);
-    $("#cntr").html($(".shw").length);
-    });
+var chbxes=["ra0","ra1","ra2","ra3","ra4","rt0","rt1","rt2","rt3","rt4","rt5"];
 
-    $("#ra0,#ra1,#ra2,#ra3,#ra4").click(function() {
-        var x=0;
-        for (var i = 0; i < 5; i++) {
-            if($("#ra"+i).is(':checked')){
-                if (!$("#rt0").is(':checked')||!$("#rt1").is(':checked')||!$("#rt2").is(':checked')||!$("#rt3").is(':checked')||!$("#rt4").is(':checked')||!$("#rt5").is(':checked')) {
-                    $("#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").prop('checked', true);
-                    $("#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").show();
-                }
-                    $(".ra"+i).show();
-                    $(".ra"+i).addClass( "shw" );
+$("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function(){
+        for (var i = 0; i < chbxes.length; i++) {
+            if($("#"+chbxes[i]).is(':checked')){
+                $("."+chbxes[i]).show();
+                $("."+chbxes[i]).addClass( "shw" );
             }
-                else{
-                    $(".ra"+i).hide();
-                    $(".ra"+i).removeClass( "shw" );   
-                }          
+        };
+        for (var i = 0; i < chbxes.length; i++) {
+            if($("#"+chbxes[i]).is(':not(:checked)')){
+                $("."+chbxes[i]).hide();
+                $("."+chbxes[i]).removeClass( "shw" );   
+            }          
         };
     $("#ecntr").html($(".danger,.nodanger").length);
     $("#cntr").html($(".shw").length);
-    });
+});
 
     $(window).scroll(function(){
             if ($(this).scrollTop() > 100) {
