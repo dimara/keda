@@ -21,6 +21,13 @@
         </label>
         </div>
         </div>
+        <div class="col-md-1">
+        <div class="checkbox">
+        <label>
+          <input type="checkbox" name="notleft">Include Not Left
+        </label>
+        </div>
+        </div>
         </div>
     </form>
       {% include "includes/info.html" %}
@@ -34,7 +41,7 @@
           <th>Damages</th>
           <th></th>
         </tr>
-        {% for a, r in avail %}
+        {% for a, res in avail %}
         <tr>
           <td>{{ forloop.counter }}</td>
           <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
@@ -48,7 +55,13 @@
               {% endif %}
             {% endfor %}
           </td>
-          <td>{{ r.owner.info }}</td>
+          <td>
+            {% for r in res %}
+                {{ r.period }} - {{ r.owner.info }} - {{ r.get_status_display }}<br>
+            {% endfor %}
+          </td>
+
+
         </tr>
         {% endfor %}
       </table>   

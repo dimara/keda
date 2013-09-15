@@ -62,7 +62,7 @@ def id_from_request(qd, name):
     return value2id(qd.get(name))
 
 
-def check_availability(avail, check_in, check_out, include_pending=False):
+def check_availability(avail, check_in, check_out, include_pending=False, include_notleft=False):
     err = None
     ret = []
     excluded_statuses = [RS_PENDING, RS_CONFIRM, RS_UNKNOWN]
@@ -71,16 +71,18 @@ def check_availability(avail, check_in, check_out, include_pending=False):
     else:
         for a in avail:
             ok = True
-            pending = None
-            for r in a.reservations.all():
+            res = []
+            for r in a.reservations.filter(status__in=excluded_statuses):
                 if r.inside(check_in, check_out):
                     if include_pending and r.status == RS_PENDING:
-                      pending = r
-                    elif r.status in excluded_statuses:
+                      res.append(r)
+                    else:
                       ok = False
                       break
+                elif include_notleft and RE_NOTLEFT in r.notifications[0]:
+                    res.append(r)
             if ok:
-                ret.append((a, pending))
+                ret.append((a, res))
 
     return (ret, err)
 
@@ -110,6 +112,7 @@ def availability(request):
     category = id_from_request(request.GET, "category")
     damaged = request.GET.get("damaged", False)
     pending = request.GET.get("pending", False)
+    notleft = request.GET.get("notleft", False)
 
     avail = Appartment.objects.all()
     if area:
@@ -122,7 +125,7 @@ def availability(request):
         avail = avail.filter(category=category)
 
     date_errors = None
-    avail, date_errors = check_availability(avail, start, end, pending)
+    avail, date_errors = check_availability(avail, start, end, pending, notleft)
     avail = sorted(avail, key=lambda (a, r): (a.area, int(a.no)))
 
     ctx = get_ctx(period, start, end, area, category, damaged, None, None)
