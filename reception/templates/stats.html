@@ -3,22 +3,14 @@
 {% block title %}Stats{% endblock %}
 
 {% block content %}
-    <form action="/stats/" method="get">
+  <form action="/stats/" method="get">
         {% include "includes/dates.html" %}
-        <div class="row">
+  <div class="orderfixed" id="st">
         {% include "includes/search_filter.html" %}
+  </div>
+        {% include "includes/stats_checkboxes.html" %}
         
-  <div class="col-md-1">
-    <div class="checkbox">
-      <span rel="tooltip" title="Visitors with CONFIRMED status" data-placement="bottom"><input type="checkbox" name="live">Live</span>
-    </div>
-  </div>
-    <div class="col-md-1">
-        <div class="checkbox">
-          <span rel="tooltip" title="Show list of visitors" data-placement="right"><input type="checkbox" name="show">Show</span>
-        </div>
-    </div>
-  </div>
+
   
     </form>
     <style type="text/css">#info{float: none;font-weight: bold;}h4 small{font-weight: bold;line-height: 2;color: black;text-decoration: underline;}</style>

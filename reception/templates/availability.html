@@ -12,25 +12,18 @@
       </div>
         {% include "includes/dates.html" %}
         {% include "includes/apartment_filter.html" %}
-        <div class="row">
+        <div class="orderfixed">
         {% include "includes/search_filter.html" %}
-        <div class="col-md-1">
-        <div class="checkbox">
-        <label>
-          <input type="checkbox" name="pending">Include Pending
-        </label>
         </div>
-        </div>
-        <div class="col-md-1">
-        <div class="checkbox">
-        <label>
-          <input type="checkbox" name="notleft">Include Not Left
-        </label>
-        </div>
-        </div>
-        </div>
+
     </form>
       {% include "includes/info.html" %}
+      <form class="form" role="form" action="/availability/" method="GET">
+  <div class="col-md-3" id="sbox">
+  <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
+  </div>
+</form>
+
       <table class="table table-hover" id="table">
         <tr id="titles">
           <th></th>

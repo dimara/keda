@@ -4,11 +4,17 @@
 
 {% block content %}
 
-{% include "includes/form.html" %}
+<form class="form" role="form" action="/reservations/" method="GET">
+  {% include "includes/dates.html" %}
+  {% include "includes/reservation_filter.html" %}
+  <div class="orderfixed">
+  {% include "includes/search_filter.html" %}
+  </div>
+</form>
 {% include "includes/checkboxes.html" %}
 
 
-    {% include "includes/info.html" %}
+{% include "includes/info.html" %}
 
 <form class="form" role="form" action="/reservations/" method="GET">
   <div class="col-md-3" id="sbox">

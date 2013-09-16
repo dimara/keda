@@ -297,10 +297,10 @@ color:rgba(185,74,72,0.9);
 	/*width: 84%!important;*/
 }
 
-.fixed1{
+.datesfixed{
 	position: fixed;
 	right: 0;
-	/*top: 55px;*/
+	top: 60px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -308,10 +308,10 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
-.fixed2{
+.resfixed{
 	position: fixed;
 	right: 0;
-	top: 242px;
+	top: 222px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -319,10 +319,10 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
-.fixed3{
+.chkfixed{
 	position: fixed;
 	right: 0;
-	top: 345px;
+	top: 310px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -330,15 +330,44 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
-.fixed4{
+.orderfixed{
 	position: fixed;
 	right: 0;
-	top: 520px;
+	top: 475px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
 	margin-right: 15px;
     width:18%; 
+}
+
+.apfixed{
+	position: fixed;
+	right: 0;
+	top: 222px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+.stfixed{
+	position: fixed;
+	right: 0;
+	top: 222px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+#st{
+	top: 300px!important;
+}
+#th{
+	top: 222px!important;
 }
 
 #sbox{
