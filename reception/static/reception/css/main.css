@@ -248,7 +248,7 @@ input[type="checkbox"] {
 }
 
 .container {
-padding-top: 41px;
+padding-top: 40px;
 }
 
 /*.login-container{
@@ -290,4 +290,65 @@ color:rgba(185,74,72,0.9);
 
 #container{
 	padding-top: 2em;
+}
+
+.container{
+	margin-right: 19%;
+	/*width: 84%!important;*/
+}
+
+.fixed1{
+	position: fixed;
+	right: 0;
+	/*top: 55px;*/
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+.fixed2{
+	position: fixed;
+	right: 0;
+	top: 242px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+.fixed3{
+	position: fixed;
+	right: 0;
+	top: 345px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+.fixed4{
+	position: fixed;
+	right: 0;
+	top: 520px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
+#sbox{
+	margin-bottom: 10px;
+}
+
+label{
+	font-weight: normal;
+}
+
+.form-group {
+	margin-bottom: 10px!important;
 }

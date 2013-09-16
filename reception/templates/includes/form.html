@@ -1,6 +1,11 @@
-{% for field in form %}
-    <div class="fieldWrapper">
-        {{ field.errors }}
-        {{ field.label_tag }}: {{ field }}
-    </div>
-{% endfor %}
+    <form class="form" role="form" action="/reservations/" method="GET">
+      {% include "includes/dates.html" %}
+      {% include "includes/reservation_filter.html" %}
+      <!-- <div class="row"> -->
+        {% include "includes/search_filter.html" %}
+
+        
+
+
+      <!-- </div> -->
+    </form>

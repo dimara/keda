@@ -3,115 +3,19 @@
 {% block title %}Reservations{% endblock %}
 
 {% block content %}
-    <form class="form" role="form" action="/reservations/" method="GET">
-      {% include "includes/dates.html" %}
-      {% include "includes/reservation_filter.html" %}
-      <div class="row">
-        {% include "includes/search_filter.html" %}
 
+{% include "includes/form.html" %}
+{% include "includes/checkboxes.html" %}
 
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="errors" type="checkbox" name="errors">Errors
-      </label>
-      </div>
-    </div>
-          <div class="col-md-3 col-md-offset-4">
-      <div class="form-group"> 
-      <select class="form-control" name="order" style="">
-          <option value="">Order by</option>
-          <option value="name">Name</option>
-          <option value="apartment">Apartment</option>
-      </select>
-      </div>
-      </div>
-      </div>
-    </form>
-<div class="row hidden-print">
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt0" type="checkbox" name="rt0" checked>TAKTIKOΣ
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt1" type="checkbox" name="rt1" checked>ΠΑΡ/ΣΤΗΣ
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt2" type="checkbox" name="rt2" checked>ΟΣΣΕΑΥ
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt3" type="checkbox" name="rt3" checked>ΜΟΝΑΔΑ
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt4" type="checkbox" name="rt4" checked>ΣΧΟΛΕΙΑ
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="rt5" type="checkbox" name="rt5" checked>CLIMS
-      </label>
-      </div>
-    </div>
-</div>
-
-<div class="row hidden-print">
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="ra0" type="checkbox" name="ra0" checked>Pending
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="ra1" type="checkbox" name="ra1" checked>Confirmed
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="ra2" type="checkbox" name="ra2" checked>Canceled
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="ra3" type="checkbox" name="ra3" checked>Checked Out
-      </label>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div class="checkbox">
-      <label>
-        <input id="ra4" type="checkbox" name="ra4" checked>Unknown
-      </label>
-      </div>
-    </div>
-</div>
 
     {% include "includes/info.html" %}
+
+<form class="form" role="form" action="/reservations/" method="GET">
+  <div class="col-md-3" id="sbox">
+  <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
+  </div>
+</form>
+
     <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>
