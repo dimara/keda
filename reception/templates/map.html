@@ -15,22 +15,21 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
   {% include "includes/menu.html" %}
   <div class="container">
     <form action="/gmap/" method="GET">
-    {% include "includes/dates.html" %}
-    <div class="row">
-    {% include "includes/search_filter.html" %}
-  </div>
+      {% include "includes/dates.html" %}
+      <div class="orderfixed" id="logi">
+        {% include "includes/search_filter.html" %}
+      </div>
     </form>
-    {% include "includes/info.html" %}<br>
-    <div id="map_canvas" style="width: 800px; height: 300px"></div>
-</div>
-{% include "includes/scripts.html" %}
+    <div class="row">{% include "includes/info.html" %}</div>
+    <div id="map_canvas" style="width: 800px; height: 600px"></div>
+    {% include "includes/scripts.html" %}
     <script src="/static/reception/js/mapiconmaker.js" type="text/javascript"></script>
     <script src="//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyAYmNkNGSndWm1gHvKw4xZCH6D0-duW6iQ" type="text/javascript"></script>
     <script type="text/javascript">
 
     function initialize() {
       if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(1024,640)});
+        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(800,600)});
         map.setMapType(G_SATELLITE_MAP);
         map.setCenter(new GLatLng(38.066583,23.99712324142456), 17);
         map.removeMapType(G_HYBRID_MAP);
