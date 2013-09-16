@@ -363,6 +363,17 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
+.prsfixed{
+	position: fixed;
+	right: 0;
+	top: 60px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+	margin-right: 15px;
+    width:18%; 
+}
+
 #st{
 	top: 300px!important;
 }
@@ -372,6 +383,23 @@ color:rgba(185,74,72,0.9);
 
 #sbox{
 	margin-bottom: 10px;
+	padding-left: 0px;
+}
+
+#prsn{
+	top: 222px!important;
+}
+
+#logi,#inf{
+	top: 310px!important;
+}
+
+#dmg{
+	top: 60px!important;
+}
+
+#appa,#avai{
+	top: 390px!important;
 }
 
 label{

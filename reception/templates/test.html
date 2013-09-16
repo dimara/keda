@@ -3,47 +3,29 @@
 {% block title %}Test Page{% endblock %}
 
 {% block content %}
-    <form action="/test/" method="GET">
-      {% include "includes/dates.html" %}
-      {% include "includes/reservation_filter.html" %}
       <div class="row">
-        <div class="col-md-3">
-        <div class="form-group"> 
-        <select class="form-control" name="order" style="">
-            <option value="">Order by</option>
-            <option value="name">Name</option>
-            <option value="apartment">Apartment</option>
-        </select>
-        </div>
-        </div>
-<!--       </div>
-      <div class="row"> -->
       <div class="col-md-1"><div class="checkbox"><label><input id="condensed" type="checkbox" >Condensed</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input id="showstatus" type="checkbox" checked>Status</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="rltvs" type="checkbox" checked>Relatives</label></div></div>
+      <div class="col-md-1"><div class="checkbox"><label><input class="rltvs" type="checkbox" >Relatives</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input class="vhcls" type="checkbox" checked>Vehicles</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="cntcts" type="checkbox" checked>Contacts</label></div></div>
-      </div>
-      
-      <div class="row">
-      {% include "includes/search_filter.html" %}
+      <div class="col-md-1"><div class="checkbox"><label><input class="cntcts" type="checkbox" checked>Contacts</label></div></div>     
       <div class="col-md-1"><div class="checkbox"><label><input class="prd" type="checkbox" checked>Period</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input class="aprtmnt" type="checkbox" checked>Appartment</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input class="tp" type="checkbox" checked>Type</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input class="pd" type="checkbox" checked>Payed</label></div></div>
       <div class="col-md-1"><div class="checkbox"><label><input class="actv" type="checkbox" checked>EA</label></div></div>
       </div>
-        
-      </form>
-
-      
-      
-      
-      
-      
-      
-    
-
+    <form action="/test/" method="GET">
+        {% include "includes/dates.html" %}
+        {% include "includes/reservation_filter.html" %}
+    <div class="orderfixed">
+        {% include "includes/search_filter.html" %}
+    </div>
+        <div class="col-md-3" id="sbox">
+        <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
+        </div>  
+    </form>
+    {% include "includes/checkboxes.html" %}
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">

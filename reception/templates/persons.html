@@ -4,30 +4,30 @@
 
 {% block content %}
     <form action="/persons/" method="get">
-          <div class="row">
-            <div class="col-md-3">
+          <div class="prsfixed">
               <div class="form-group">
               <input class="form-control" placeholder="Look for.." type="text" name="text" />
-              </div><!-- /input-group -->
-            </div><!-- /input-group -->
+              </div>
             <div class="col-md-1">
               <div class="form-group">
             @
-              </div><!-- /input-group -->
-            </div><!-- /input-group -->
-            <div class="col-md-3">
+              </div>
+            </div>
               <div class="form-group">
               <select class="form-control" name="inside">
                   <option value="surnames"> Surnames</option>
                   <option value="vehicles"> Vehicles</option>
               </select>
-              </div><!-- /input-group -->
-            </div><!-- /input-group -->
-          </div><!-- /input-group -->
-        <div class="row">
-      {% include "includes/search_filter2.html" %}
-          </div><!-- /input-group -->
-    </form>
+              </div>
+          </div>
+        <div class="orderfixed" id="th">
+        {% include "includes/search_filter.html" %}
+        </div>
+  <div class="col-md-3" id="sbox">
+  <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
+  </div>
+
+    </form> 
 
     {% include "includes/info.html" %}
     {% if trunc %}

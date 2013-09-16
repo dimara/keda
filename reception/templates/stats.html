@@ -4,17 +4,14 @@
 
 {% block content %}
   <form action="/stats/" method="get">
-        {% include "includes/dates.html" %}
+    {% include "includes/dates.html" %}
   <div class="orderfixed" id="st">
-        {% include "includes/search_filter.html" %}
+    {% include "includes/search_filter.html" %}
   </div>
-        {% include "includes/stats_checkboxes.html" %}
-        
-
-  
-    </form>
-    <style type="text/css">#info{float: none;font-weight: bold;}h4 small{font-weight: bold;line-height: 2;color: black;text-decoration: underline;}</style>
-{% include "includes/info.html" %}
+    {% include "includes/stats_checkboxes.html" %}
+  </form>
+<style type="text/css">#info{float: none;font-weight: bold;}h4 small{font-weight: bold;line-height: 2;color: black;text-decoration: underline;}</style>
+  {% include "includes/info.html" %}
 <table class="table table-bordered" style="width: 37%">
 <tbody>
                 <tr>

@@ -5,8 +5,11 @@
 {% block content %}
     <h3>Damages</h3> <br>
     <form action="/damages/" method="GET">
-      <div class="row">
+      <div class="orderfixed" id="dmg">
         {% include "includes/search_filter.html" %}
+      </div>
+      <div class="col-md-3" id="sbox">
+        <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
       </div>
     </form>
     <span style="float:right;">{{ date }}</span>

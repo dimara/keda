@@ -6,8 +6,11 @@
     <form action="/info/" method="GET">
       {% include "includes/dates.html" %}
       {% include "includes/reservation_filter.html" %}
-      <div class="row">
+      <div class="orderfixed" id="inf">
       {% include "includes/search_filter.html" %}
+      </div>
+      <div class="col-md-3" id="sbox">
+        <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
       </div>
     </form>
     {% include "includes/info.html" %}

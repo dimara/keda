@@ -78,6 +78,7 @@ $(document).ready(function () {
             $(".relatives").hide();
         }
     });
+    $(".relatives").hide();//temp
 
     $(".vhcls").click(function() {
         if($('.vhcls:checked').length) {

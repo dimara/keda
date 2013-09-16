@@ -6,10 +6,15 @@
     <form action="/appartments/" method="get">
         {% include "includes/dates.html" %}
         {% include "includes/apartment_filter.html" %}
-        <div class="row">
+        <div class="orderfixed" id="appa">
         {% include "includes/search_filter.html" %}
         </div>
+
+          <div class="col-md-3" id="sbox">
+          <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
+          </div>
     </form>
+
     <table class="table table-hover" id="table">
         <tr id="titles">
         <th></th>
