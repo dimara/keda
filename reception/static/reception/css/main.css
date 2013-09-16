@@ -293,7 +293,7 @@ color:rgba(185,74,72,0.9);
 }
 
 .container{
-	margin-right: 19%;
+	margin-right: 20%;
 	/*width: 84%!important;*/
 }
 
@@ -304,7 +304,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -315,7 +315,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -326,7 +326,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -337,7 +337,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -348,7 +348,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -359,7 +359,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -370,7 +370,7 @@ color:rgba(185,74,72,0.9);
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
-	margin-right: 15px;
+	margin-right: 10px;
     width:18%; 
 }
 
@@ -408,4 +408,12 @@ label{
 
 .form-group {
 	margin-bottom: 10px!important;
+}
+
+#fhide{
+right: 100%;
+top: 0px;
+position: absolute;
+height: 150px;
+width: 17px;
 }

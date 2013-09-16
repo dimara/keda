@@ -192,6 +192,31 @@ $("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function(){
         return false;
         });
 
+
+
+
+$('#fhide').click(function() {
+    var divs = '.datesfixed,.resfixed,.orderfixed,.chkfixed,.apfixed,.stfixed,.prsfixed';
+    var pos = $('').offset();
+    if (!($(divs).hasClass("moved"))) {
+        $(divs).css({right:pos}).animate({"right":"-18%"}, "slow").addClass("moved");
+        $('.container').animate({"margin-right":"4%"},"slow");
+    }else{
+        $(divs).css({right:pos}).animate({"right":"0px"}, "slow").removeClass("moved");
+        $('.container').animate({"margin-right":"20%"},"slow");
+    }
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+});
