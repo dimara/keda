@@ -4,8 +4,10 @@
 
 {% block content %}
     <h3>Damages</h3> <br>
+
     <form action="/damages/" method="GET">
       <div class="orderfixed" id="dmg">
+        <i class="glyphicon glyphicon-chevron-right" id="fhide"></i>
         {% include "includes/search_filter.html" %}
       </div>
       <div class="col-md-3" id="sbox">

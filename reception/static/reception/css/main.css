@@ -26,6 +26,25 @@
 
 }
 
+@media (max-width: 1024px) {
+/*.chkfixed{font-size: 5px!important;}*/
+/*body{background: red;}*/
+.chkfixed{font-size: 0.96}
+.chkfixed label{
+	margin: 0px!important;
+}
+
+.chkfixed input{
+	margin-right: 0px!important;
+	margin-top: 0px!important;
+}
+
+#ra1{margin-left: 16px!important;}
+#ra0{margin-left: 30px!important;}
+
+}
+
+
 #titles{
     display: table-row!important;
 }
@@ -241,7 +260,7 @@ input[type="checkbox"] {
     opacity:0.3;
     position:fixed;
     bottom:40px;
-    right:65px;
+    right:270px;
     display:none;
     text-indent:-9999px;
     background: url('/static/reception/img/icon_top.png') no-repeat;
@@ -286,6 +305,7 @@ color:rgba(185,74,72,0.9);
 
 #info{
 	float: right;
+	color:#999;
 }
 
 #container{
@@ -322,7 +342,7 @@ color:rgba(185,74,72,0.9);
 .chkfixed{
 	position: fixed;
 	right: 0;
-	top: 310px;
+	bottom: 0px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -333,7 +353,7 @@ color:rgba(185,74,72,0.9);
 .orderfixed{
 	position: fixed;
 	right: 0;
-	top: 475px;
+	top: 310px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -416,4 +436,18 @@ top: 0px;
 position: absolute;
 height: 150px;
 width: 17px;
+}
+
+#ra1{margin-left: 18px;}
+#ra4{margin-left: 24px;}
+#ra0{margin-left: 31px;}
+#ra2{margin-left: 23px;}
+#errors{margin-left: 44px;}
+
+.chkfixed label{
+	margin-right: 10px;
+}
+
+.chkfixed input{
+	margin-right: 5px;
 }

@@ -146,19 +146,25 @@ $(document).ready(function () {
     $("#errors").click(function() {
         if($('#errors:checked').length) {
                 $(".ok").hide();
+                $(".ok").addClass( "noshw" ); 
+                $(".ok").removeClass( "shw" );  
                 $(".nodanger").show();
                 $(".danger").show();  
                 $("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").prop('checked', true);
-                $("#cntr").html($(".nodanger,.danger").length);
+                // $("#cntr").html($(".nodanger,.danger").length);
             }
             else{
                 $(".ok").show();
-                $("#cntr").html($(".ok,.nodanger,.danger").length);
+                $(".ok").addClass( "shw" ); 
+                $(".ok").removeClass( "noshw" );  
+                // $("#cntr").html($(".ok,.nodanger,.danger").length);
                 }
+        $("#cntr").html($(".shw").length);
+        $("#ecntr").html($(".noshw").length);
     });
 
     $("#cntr").html($(".shw").length);
-    $("#ecntr").html($(".danger,.nodanger").length);
+    $("#ecntr").html($(".noshw").length);
 
 var chbxes=["ra0","ra1","ra2","ra3","ra4","rt0","rt1","rt2","rt3","rt4","rt5"];
 
@@ -167,15 +173,17 @@ $("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function(){
             if($("#"+chbxes[i]).is(':checked')){
                 $("."+chbxes[i]).show();
                 $("."+chbxes[i]).addClass( "shw" );
+                $("."+chbxes[i]).removeClass( "noshw" );  
             }
         };
         for (var i = 0; i < chbxes.length; i++) {
             if($("#"+chbxes[i]).is(':not(:checked)')){
                 $("."+chbxes[i]).hide();
-                $("."+chbxes[i]).removeClass( "shw" );   
+                $("."+chbxes[i]).removeClass( "shw" );  
+                $("."+chbxes[i]).addClass( "noshw" ); 
             }          
         };
-    $("#ecntr").html($(".danger,.nodanger").length);
+    $("#ecntr").html($(".noshw").length);
     $("#cntr").html($(".shw").length);
 });
 
@@ -195,28 +203,22 @@ $("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function(){
 
 
 
-$('#fhide').click(function() {
-    var divs = '.datesfixed,.resfixed,.orderfixed,.chkfixed,.apfixed,.stfixed,.prsfixed';
-    var pos = $('').offset();
-    if (!($(divs).hasClass("moved"))) {
-        $(divs).css({right:pos}).animate({"right":"-18%"}, "slow").addClass("moved");
-        $('.container').animate({"margin-right":"4%"},"slow");
-    }else{
-        $(divs).css({right:pos}).animate({"right":"0px"}, "slow").removeClass("moved");
-        $('.container').animate({"margin-right":"20%"},"slow");
-    }
-});
-
-
-
-
-
-
-
-
-
-
-
-
+    $('#fhide').click(function() {
+        var divs = '.datesfixed,.resfixed,.orderfixed,.chkfixed,.apfixed,.stfixed,.prsfixed';
+        var pos = $('').offset();
+        if (!($(divs).hasClass("moved"))) {
+            $(divs).css({right:pos}).animate({"right":"-18%"}, "slow").addClass("moved");
+            $('.container').animate({"margin-right":"4%"},"slow");
+            $('.glyphicon').removeClass('glyphicon-chevron-right');
+            $('.glyphicon').addClass('glyphicon-chevron-left');
+            $('.scrollup').animate({'right': '5%'},"slow");
+        }else{
+            $(divs).css({right:pos}).animate({"right":"0px"}, "slow").removeClass("moved");
+            $('.container').animate({"margin-right":"20%"},"slow");
+            $('.glyphicon').removeClass('glyphicon-chevron-left');
+            $('.glyphicon').addClass('glyphicon-chevron-right');
+            $('.scrollup').animate({'right': '22%'},"slow");
+        }
+    });
 
 });
