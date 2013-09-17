@@ -211,7 +211,7 @@ $("#ra0,#ra1,#ra2,#ra3,#ra4,#rt0,#rt1,#rt2,#rt3,#rt4,#rt5").click(function(){
             $('.container').animate({"margin-right":"4%"},"slow");
             $('.glyphicon').removeClass('glyphicon-chevron-right');
             $('.glyphicon').addClass('glyphicon-chevron-left');
-            $('.scrollup').animate({'right': '5%'},"slow");
+            $('.scrollup').animate({'right': '6%'},"slow");
         }else{
             $(divs).css({right:pos}).animate({"right":"0px"}, "slow").removeClass("moved");
             $('.container').animate({"margin-right":"20%"},"slow");

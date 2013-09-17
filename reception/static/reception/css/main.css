@@ -51,7 +51,6 @@
 
 .label{
 	margin-left: 5px;
-	position: absolute;
 }
 
 .datetimeshortcuts{
@@ -260,7 +259,7 @@ input[type="checkbox"] {
     opacity:0.3;
     position:fixed;
     bottom:40px;
-    right:270px;
+    right: 22%;
     display:none;
     text-indent:-9999px;
     background: url('/static/reception/img/icon_top.png') no-repeat;
