@@ -417,6 +417,9 @@ class Reservation(models.Model):
                 # case of period start is between reservation dates
                 # [ { ] (})
                 (self.check_in <= start and self.check_out >= start) or
+                  # case of period is open and start is before check out
+                  # { ] 
+                  (self.check_out >= start and not end) or
                   # {   }
                   (end and (
                     # case of period end is between reservation dates
