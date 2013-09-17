@@ -6,7 +6,7 @@ $(".n10").attr("title",ntf["n10"]);
 $(".n11").attr("title",ntf["n11"]);
 $(".n12").attr("title",ntf["n12"]);
 $(".n13").attr("title",ntf["n13"]);
-$(".n0.n1").attr("title",ntf["n1"]+ntf["n13"]);
+$(".n0.n1").attr("title",ntf["n0"]+ntf["n1"]);
 $(".n1.n13").attr("title",ntf["n1"]+ntf["n13"]);
 $(".n10.n1").attr("title",ntf["n10"]+ntf["n1"]);
 $(".n10.n12").attr("title",ntf["n10"]+ntf["n12"]);
