@@ -50,7 +50,7 @@
           </td>
           <td>
             {% for r in res %}
-                {{ r.period }} - {{ r.owner.info }} - {{ r.get_status_display }}<br>
+                <a target="_blank" href="/admin/reception/reservation/{{ r.id }}/">{{ r.get_res_type_display }} - {{ r.period }} - {{ r.owner.info }} - {{ r.get_status_display }}</a><br>
             {% endfor %}
           </td>
 
