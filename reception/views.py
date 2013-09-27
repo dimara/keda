@@ -405,16 +405,21 @@ def stats(request):
     period, start, end = get_start_end(request)
     live = request.GET.get("live", False)
     show = request.GET.get("show", False)
+    fast = request.GET.get("fast", False)
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:
       reservations = filter(lambda x: x.status == RS_CONFIRM, reservations)
     else:
       reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
-    l = lambda x: [r.persons for r in x if r.persons]
-    persons = sum(l(reservations))
-    l = lambda x: [r.receipt.euro for r in x if r.receipt]
-    euros = sum(l(reservations))
+    if not fast:
+      l = lambda x: [r.persons for r in x if r.persons]
+      persons = sum(l(reservations))
+      l = lambda x: [r.receipt.euro for r in x if r.receipt]
+      euros = sum(l(reservations))
+    else:
+      persons = "..."
+      euros = "..."
     regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
     b3 = filter(lambda x: x.agent == RA_GEA, regular)
     ea = filter(lambda x: x.agent == RA_EA, regular)
