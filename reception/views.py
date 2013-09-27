@@ -273,12 +273,13 @@ def logistic(request):
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
-    receipts = Receipt.objects.all().order_by("date", "no")
+    receipts = Receipt.objects.all()
     if rtype:
         receipts = receipts.filter(reservation__res_type=rtype)
     if status:
         receipts = receipts.filter(reservation__status=status)
     receipts = [r for r in receipts if r.inside(start, end)]
+    receipts = sorted(receipts, key=lambda r: (r.date, int(r.no)))
 
     l = lambda x: [r.euro for r in x]
     ctx = get_ctx(period, start, end, None, None, None, rtype, status)
