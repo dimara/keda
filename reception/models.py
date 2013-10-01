@@ -213,6 +213,7 @@ class Appartment(models.Model):
       (u"Μ3", "Μ3"),
       (u"Μ4", "Μ4"),
       (u"Μ5", "Μ5"),
+      (u"Μ3Ε", "Μ3Ε")
     )
     BEDS = (
       (0, "None"),
