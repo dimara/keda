@@ -417,11 +417,11 @@ def stats(request):
       reservations = filter(lambda x: x.status == RS_CONFIRM, reservations)
     else:
       reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
-    if not fast:
-      l = lambda x: [r.persons for r in x if r.persons]
-      persons = sum(l(reservations))
-      l = lambda x: [r.receipt.euro for r in x if r.receipt]
-      euros = sum(l(reservations))
+    rids = [r.id for r in reservations]
+    if not fast and len(rids) < 900:
+      persons = sum([r.persons for r in reservations if r.persons])
+      receipts = Receipt.objects.filter(reservation__in=rids)
+      euros = sum([r.euro for r in receipts])
     else:
       persons = "..."
       euros = "..."
