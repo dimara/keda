@@ -86,7 +86,7 @@ def check_availability(avail, check_in, check_out, include_pending=False, includ
 
     return (ret, err)
 
-def get_ctx(period, start, end, area, category, damaged, rtype, status):
+def get_ctx(period, start, end, area, category, damaged, rtype, status, agent):
     ctx = {
       "period": period,
       "start": start,
@@ -101,6 +101,8 @@ def get_ctx(period, start, end, area, category, damaged, rtype, status):
       "rtypes": Reservation.RESERVATION_TYPES,
       "status": get_display(status, Reservation.STATUSES),
       "statuses": Reservation.STATUSES,
+      "agent": agent,
+      "agents": Reservation.AGENTS,
       }
     return ctx
 
@@ -128,7 +130,7 @@ def availability(request):
     avail, date_errors = check_availability(avail, start, end, pending, notleft)
     avail = sorted(avail, key=lambda (a, r): (a.area, int(a.no)))
 
-    ctx = get_ctx(period, start, end, area, category, damaged, None, None)
+    ctx = get_ctx(period, start, end, area, category, damaged, None, None, None)
     ctx.update({
       "avail": avail,
       })
@@ -163,7 +165,7 @@ def appartments(request):
         if not reserved:
           appres.append((a, None))
 
-    ctx = get_ctx(period, start, end, area, category, damaged, None, None)
+    ctx = get_ctx(period, start, end, area, category, damaged, None, None, None)
     ctx.update({
       "appartments": appartments,
       "appres": appres,
@@ -230,7 +232,7 @@ def info(request):
                                          "appartment",
                                          "receipts")
     reservations = sorted(reservations, key=lambda x: x.owner.surname)
-    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
       "reservations": reservations,
       })
@@ -242,6 +244,7 @@ def reservations(request):
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
+    agent = request.GET.get("agent", None)
     order = request.GET.get("order", None)
     exact = request.GET.get("exact", None)
     reservations = Reservation.objects.all()
@@ -249,6 +252,8 @@ def reservations(request):
         reservations = reservations.filter(res_type=rtype)
     if status:
         reservations = reservations.filter(status=status)
+    if agent:
+        reservations = reservations.filter(agent=agent)
 
     if exact:
         reservations = filter(lambda x: x.on(start, end), reservations)
@@ -261,7 +266,7 @@ def reservations(request):
     else:
       reservations = sorted(reservations, key=lambda r: r.owner.surname)
 
-    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
       "reservations": reservations,
       })
@@ -282,7 +287,7 @@ def logistic(request):
     receipts = sorted(receipts, key=lambda r: (r.date, int(r.no)))
 
     l = lambda x: [r.euro for r in x]
-    ctx = get_ctx(period, start, end, None, None, None, rtype, status)
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
       "sum": sum(l(receipts)),
       "receipts": receipts,
@@ -297,7 +302,7 @@ def th(request):
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
-    ctx = get_ctx(period, start, end, None, None, None, None, None)
+    ctx = get_ctx(period, start, end, None, None, None, None, None, None)
     ctx.update({
       "reservations": reservations,
       })
@@ -428,7 +433,7 @@ def stats(request):
     paratheristes = filter(lambda x: x.res_type == RT_DAILY, reservations)
     monada = filter(lambda x: x.res_type == RT_UNIT, reservations)
 
-    ctx = get_ctx(period, start, end, None, None, None, None, None)
+    ctx = get_ctx(period, start, end, None, None, None, None, None, None)
     ctx.update({
       "show": show,
       "live": live,

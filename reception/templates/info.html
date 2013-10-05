@@ -35,7 +35,7 @@
             {% endwith %}
             {% include "includes/status.html" %}
         </td>
-        <td> {{ r.agent }} </td>
+        <td> {{ r.get_agent_display }} </td>
 
         <td>
         {% for v in r.owner.vehicles.all %}

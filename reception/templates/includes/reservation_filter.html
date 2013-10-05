@@ -2,7 +2,7 @@
 <!-- <div class="col-md-3"> -->
 <div class="form-group">
     <select class="form-control" name="rtype" >
-        <option value="">Reservation Type (All)</option>
+        <option value="">Type (All)</option>
         {% for t in rtypes %}
         <option value="{{ t.0 }}"> {{ t.1 }}</option>
         {% endfor %}
@@ -12,9 +12,17 @@
 <!-- <div class="col-md-3"> -->
 <div class="form-group">        
     <select class="form-control" name="status" >
-        <option value="">Reservation Status (All)</option>
+        <option value="">Status (All)</option>
         {% for s in statuses %}
         <option value="{{ s.0 }}"> {{ s.1 }}</option>
+        {% endfor %}
+    </select>
+</div>
+<div class="form-group">        
+    <select class="form-control" name="agent" >
+        <option value="">Agent (All)</option>
+        {% for a in agents %}
+        <option value="{{ a.0 }}"> {{ a.1 }}</option>
         {% endfor %}
     </select>
 </div>
