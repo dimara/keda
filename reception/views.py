@@ -101,7 +101,7 @@ def get_ctx(period, start, end, area, category, damaged, rtype, status, agent):
       "rtypes": Reservation.RESERVATION_TYPES,
       "status": get_display(status, Reservation.STATUSES),
       "statuses": Reservation.STATUSES,
-      "agent": agent,
+      "agent": get_display(agent, Reservation.AGENTS),
       "agents": Reservation.AGENTS,
       }
     return ctx
@@ -238,6 +238,31 @@ def info(request):
       })
     return render_to_response("info.html", ctx, context_instance=RequestContext(request))
 
+
+def logfile(ctx):
+    reservations = ctx["reservations"]
+    period = ctx["period"]
+    p = period.name if period else None
+    s = ctx["start"].isoformat()
+    e = ctx["end"].isoformat()
+    rtype = ctx["rtype"]
+    t = rtype.decode("utf-8") if period else None
+    agent = ctx["agent"]
+    a = agent.decode("utf-8") if agent else None
+    fname = u"reception/logfiles/reservations_%s_%s_%s_%s_%s_%s" % \
+            (s, p, e, t, a, datetime.datetime.now().isoformat())
+    f = open(fname, "w")
+    data = u""
+    for r in reservations:
+       ap = r.appartment.appartment if r.appartment else None
+       rank = r.owner.rank.short if r.owner.rank else None
+       data += u"%s+++%s+++%s+++%s" % \
+               (r.owner.rank, r.owner.surname, r.owner.name, ap)
+       data += "\n"
+    f.write(data.encode('utf-8'))
+    f.close()
+    
+
 @login_required(login_url='/accounts/login/')
 def reservations(request):
 
@@ -247,6 +272,7 @@ def reservations(request):
     agent = request.GET.get("agent", None)
     order = request.GET.get("order", None)
     exact = request.GET.get("exact", None)
+    log = request.GET.get("log", None)
     reservations = Reservation.objects.all()
     if rtype:
         reservations = reservations.filter(res_type=rtype)
@@ -266,10 +292,12 @@ def reservations(request):
     else:
       reservations = sorted(reservations, key=lambda r: r.owner.surname)
 
-    ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
+    ctx = get_ctx(period, start, end, None, None, None, rtype, status, agent)
     ctx.update({
       "reservations": reservations,
       })
+    if log:
+      logfile(ctx)
     return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
