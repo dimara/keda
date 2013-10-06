@@ -239,7 +239,7 @@ def info(request):
     return render_to_response("info.html", ctx, context_instance=RequestContext(request))
 
 
-def logfile(ctx):
+def logfile(ctx, log):
     reservations = ctx["reservations"]
     period = ctx["period"]
     p = period.name if period else None
@@ -249,9 +249,8 @@ def logfile(ctx):
     t = rtype.decode("utf-8") if period else None
     agent = ctx["agent"]
     a = agent.decode("utf-8") if agent else None
-    fname = u"reception/logfiles/reservations_%s_%s_%s_%s_%s_%s" % \
-            (s, p, e, t, a, datetime.datetime.now().isoformat())
-    f = open(fname, "w")
+    fname = u"reservations_%s_%s_%s_%s_%s_%s" % \
+            (s, e, p, t, a, datetime.datetime.now().isoformat())
     data = u""
     for r in reservations:
        ap = r.appartment.appartment if r.appartment else None
@@ -259,8 +258,11 @@ def logfile(ctx):
        data += u"%s+++%s+++%s+++%s" % \
                (r.owner.rank, r.owner.surname, r.owner.name, ap)
        data += "\n"
-    f.write(data.encode('utf-8'))
-    f.close()
+    if log:
+       f = open("reception/logfiles/"+fname, "w")
+       f.write(data.encode('utf-8'))
+       f.close()
+    return fname, data
     
 
 @login_required(login_url='/accounts/login/')
@@ -273,6 +275,7 @@ def reservations(request):
     order = request.GET.get("order", None)
     exact = request.GET.get("exact", None)
     log = request.GET.get("log", None)
+    cvs = request.GET.get("cvs", None)
     reservations = Reservation.objects.all()
     if rtype:
         reservations = reservations.filter(res_type=rtype)
@@ -296,8 +299,11 @@ def reservations(request):
     ctx.update({
       "reservations": reservations,
       })
-    if log:
-      logfile(ctx)
+    if log or cvs:
+      title, data = logfile(ctx, log)
+      if cvs:
+        return HttpResponse(title+"\n"+data, content_type="text/plain")
+    
     return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
