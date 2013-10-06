@@ -246,7 +246,7 @@ def logfile(ctx, log):
     s = ctx["start"].isoformat()
     e = ctx["end"].isoformat()
     rtype = ctx["rtype"]
-    t = rtype.decode("utf-8") if period else None
+    t = rtype.decode("utf-8") if rtype else None
     agent = ctx["agent"]
     a = agent.decode("utf-8") if agent else None
     fname = u"reservations_%s_%s_%s_%s_%s_%s" % \
