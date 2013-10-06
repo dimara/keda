@@ -1,46 +1,43 @@
 <div class="apfixed"> 
 <!-- <div class="col-md-3"> -->
-<div class="form-group">
-    <select class="form-control" name="area" id="id_area">
-        <option value="">Area (All)</option>
-        {% for a in areas %}
-        <option value="{{ a.0 }}"> {{ a.1 }} </option>
-        {% endfor %}
-    </select>
-</div>
-<!-- </div> -->
-<!-- <div class="col-md-3"> -->
-<div class="form-group">
-    <select class="form-control" name="category" id="id_category">
-        <option value="">Category (All)</option>
-        {% for c in categories %}
-        <option value="{{ c.id }}"> {{ c.desc }} </option>
-        {% endfor %}
-    </select>
-</div>
+	<div class="form-group">
+	    <select class="form-control" name="area" id="id_area">
+		<option value="">Area (All)</option>
+		{% for a in areas %}
+		<option value="{{ a.0 }}"> {{ a.1 }} </option>
+		{% endfor %}
+	    </select>
+	<!-- </div> -->
+	<!-- <div class="col-md-3"> -->
+	    <select class="form-control" name="category" id="id_category">
+		<option value="">Category (All)</option>
+		{% for c in categories %}
+		<option value="{{ c.id }}"> {{ c.desc }} </option>
+		{% endfor %}
+	    </select>
 <!-- </div> -->
 <!-- <div class="col-md-2"> -->
-<div class="checkbox">
-    <label>
-        <input type="checkbox" name="damaged">Exclude Damaged
-    </labal>
-</div>
-
-        <!-- <div class="row"> -->
-        
-        <!-- <div class="col-md-1"> -->
-        <div class="checkbox">
-        <label>
-          <input type="checkbox" name="pending">Include Pending
-        </label>
-        </div>
-        <!-- </div> -->
-        <!-- <div class="col-md-1"> -->
-        <div class="checkbox">
-        <label>
-          <input type="checkbox" name="notleft">Include Not Left
-        </label>
-        </div>
+		<div class="sckb">
+		    <label>Exclude Damaged
+			<input type="checkbox" name="damaged">
+		    </label>
+                </div>
+		<!-- <div class="row"> -->
+		
+		<!-- <div class="col-md-1"> -->
+		<div class="sckb">
+			<label>Include Pending
+			  <input type="checkbox" name="pending">
+			</label>
+		</div>
+		<!-- </div> -->
+		<!-- <div class="col-md-1"> -->
+		<div class="sckb">
+			<label>Include Not Left
+			  <input type="checkbox" name="notleft">
+			</label>
+		</div>
+	</div>
         <!-- </div> -->
         <!-- </div> -->
 

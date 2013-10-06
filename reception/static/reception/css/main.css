@@ -374,6 +374,10 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
+.sckb{
+	float: right;
+}
+
 .stfixed{
 	position: fixed;
 	right: 0;
