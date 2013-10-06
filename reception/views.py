@@ -459,13 +459,15 @@ def stats(request):
     else:
       reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
     rids = [r.id for r in reservations]
+    errors = None
     if not fast and len(rids) < 900:
       persons = sum([r.persons for r in reservations if r.persons])
       receipts = Receipt.objects.filter(reservation__in=rids)
       euros = sum([r.euro for r in receipts])
     else:
-      persons = "..."
-      euros = "..."
+      errors = "Too many reservations found! Cannot calculate persons and euros!"
+      persons = 0
+      euros = 0
     regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
     b3 = filter(lambda x: x.agent == RA_GEA, regular)
     ea = filter(lambda x: x.agent == RA_EA, regular)
@@ -489,7 +491,16 @@ def stats(request):
       "osseay": len(osseay),
       "paratheristes": len(paratheristes),
       "monada": len(monada),
+      "errors": errors,
       })
+    if cvs:
+        p = period.name if period else None
+        data = u"%s+++%s+++%s+++%d+++%.2f+++%d+++%d+++%d+++%d+++%d+++%d+++%d\n" % \
+               (p, start.isoformat(), end.isoformat(), len(reservations), euros,
+                len(regular),  len(b3), len(ea), len(my),
+                len(osseay), len(paratheristes), len(monada))
+        return HttpResponse(data, content_type="text/plain")
+
     return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
 @login_required(login_url='/accounts/login/')
