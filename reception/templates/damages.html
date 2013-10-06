@@ -3,18 +3,8 @@
 {% block title %}List of Damages{% endblock %}
 
 {% block content %}
-    <h3>Damages</h3> <br>
 
-    <form action="/damages/" method="GET">
-      <div class="orderfixed" id="dmg">
-        <i class="glyphicon glyphicon-chevron-right" id="fhide"></i>
-        {% include "includes/search_filter.html" %}
-      </div>
-      <div class="col-md-3" id="sbox">
-        <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
-      </div>
-    </form>
-    <span style="float:right;">{{ date }}</span>
+    {% include "includes/filter.html" %}
     <table class="table table-hover table-condensed" id="table">
       <tr id="titles">
         <th></th>

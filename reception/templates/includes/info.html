@@ -1,8 +1,9 @@
         <div id="info"> 
             <h5>
+            {% if title %} <b> {{ title }} </b> {% endif %}
             {% if period %} Period {{ period.name }}: {% endif %}
-            {% if start %} IN @ {{ start }} ... {% endif %}
-            {% if end %} OUT @ {{ end }} {% endif %}
+            {% if start %} {{ start }} ... {% endif %}
+            {% if end %} {{ end }} {% endif %}
             {% if area %}, Area {{ area }} {% endif %}
             {% if category %}, Category {{ category }} {% endif %}
             {% if rtype %}, Type {{ rtype }} {% endif %}

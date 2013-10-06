@@ -4,41 +4,33 @@
 
 {% block content %}
       <div class="row hidden-print">
-      <div class="col-md-1"><div class="checkbox"><label><input id="condensed" type="checkbox" >Condensed</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input id="showstatus" type="checkbox" checked>Status</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="rltvs" type="checkbox" >Relatives</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="vhcls" type="checkbox" checked>Vehicles</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="cntcts" type="checkbox" checked>Contacts</label></div></div>     
-      <div class="col-md-1"><div class="checkbox"><label><input class="prd" type="checkbox" checked>Period</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="aprtmnt" type="checkbox" checked>Appartment</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="tp" type="checkbox" checked>Type</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="pd" type="checkbox" checked>Payed</label></div></div>
-      <div class="col-md-1"><div class="checkbox"><label><input class="actv" type="checkbox" checked>EA</label></div></div>
+      <div class="col-md-1"><label><input id="condensed" type="checkbox" >Condensed</label></div>
+      <div class="col-md-offset-1 col-md-1"><label><input id="showstatus" type="checkbox" checked>Status</label></div>
+      <div class="col-md-1"><label><input class="vhcls" type="checkbox" checked>Vehicles</label></div>
+      <div class="col-md-1"><label><input class="cntcts" type="checkbox" checked>Contacts</label></div>
+      <div class="col-md-1"><label><input class="prd" type="checkbox" checked>Period</label></div>
+      <div class="col-md-1"><label><input class="aprtmnt" type="checkbox" checked>Apartment</label></div>
+      <div class="col-md-1"><label><input class="tp" type="checkbox" checked>Type</label></div>
+      <div class="col-md-1"><label><input class="pd" type="checkbox" checked>Payed</label></div>
       </div>
     <form action="/test/" method="GET">
         {% include "includes/dates.html" %}
         {% include "includes/reservation_filter.html" %}
-    <div class="orderfixed">
         {% include "includes/search_filter.html" %}
-    </div>
-        <div class="col-md-3" id="sbox">
-        <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
-        </div>  
     </form>
     {% include "includes/checkboxes.html" %}
+    {% include "includes/filter.html" %}
     {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>
         <th>Visitor</th>
-        <th class="relatives">Relatives</th>
         <th class="vehicles">Vehicles</th>
         <th class="contacts">Contacts</th>
         <th class="period">Period</th>
         <th class="appartment">Appartment</th> 
         <th class="type">Type</th>
         <th class="payed">Payed</th>
-        <th class="ea">EA</th>
       </tr>
       {% for r in reservations %}
       <tr>
@@ -46,11 +38,6 @@
             {% with r.owner as person %}
             <td> {% include "includes/person_display.html" %} {% include "includes/status.html" %} </td>
             {% endwith %}
-        <td class="relatives">
-        {% for rr in r.owner.relatives.all %}
-          {{ rr }}<br>
-        {% endfor %}
-        </td>
         <td class="vehicles">
         {% for v in r.owner.vehicles.all %}
           {{ v.plate }}<br>
@@ -71,11 +58,6 @@
         {% for p in r.receipts.all %}
           {{ p.no }}<br>
         {% endfor %}
-        </td>
-        <td class="ea">
-          {% if r.owner.militaryperson %}
-              {% if not r.owner.militaryperson.active %} EA {% endif %}
-          {% endif %}
         </td>
       {% endfor %}
     </table>

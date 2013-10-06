@@ -6,21 +6,12 @@
 
 
 <form class="form" role="form" action="/reservations/" method="GET">
-
-
   {% include "includes/dates.html" %}
   {% include "includes/reservation_filter.html" %}
-  <div class="orderfixed">
   {% include "includes/search_filter.html" %}
-  </div>
-  <div class="col-md-3" id="sbox">
-  <input class="form-control" tabindex=1 type="search" id ="search" size="20" placeholder="Type to filter" />
-  </div>
-  <div class="col-md-3">
-    <h5>Total: <span id="cntr" class="text-success"></span> Hidden: <span id="ecntr" class="text-danger"></span></h5>
-  </div>
 </form>
 {% include "includes/checkboxes.html" %}
+{% include "includes/filter.html" %}
 {% include "includes/info.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
