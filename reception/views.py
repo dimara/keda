@@ -17,6 +17,7 @@ from django import forms
 from itertools import chain
 from django.contrib.auth.decorators import login_required
 from reception.constants import *
+import os
 
 
 @login_required(login_url='/accounts/login/')
@@ -126,13 +127,14 @@ def availability(request):
     if category:
         avail = avail.filter(category=category)
 
-    date_errors = None
-    avail, date_errors = check_availability(avail, start, end, pending, notleft)
+    errors = None
+    avail, errors = check_availability(avail, start, end, pending, notleft)
     avail = sorted(avail, key=lambda (a, r): (a.area, int(a.no)))
 
     ctx = get_ctx(period, start, end, area, category, damaged, None, None, None)
     ctx.update({
       "avail": avail,
+      "errors": errors,
       })
     return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
 
@@ -251,8 +253,9 @@ def logfile(ctx, log):
     a = agent.decode("utf-8") if agent else None
     status = ctx["status"]
     st = status.decode("utf-8") if status else None
+    timestamp = datetime.datetime.now().isoformat()
     fname = u"reservations_%s_%s_%s_%s_%s_%s_%s" % \
-            (s, e, p, t, a, st, datetime.datetime.now().isoformat())
+            (s, e, p, t, a, st, timestamp)
     data = u""
     for r in reservations:
        ap = r.appartment.appartment if r.appartment else None
@@ -261,7 +264,7 @@ def logfile(ctx, log):
                (rank, r.owner.surname, r.owner.name, ap, r.get_status_display())
        data += "\n"
     if log:
-       f = open("reception/logfiles/"+fname, "w")
+       f = open(os.path.join(constants.LOGDIR, fname), "w")
        f.write(data.encode('utf-8'))
        f.close()
     return fname, data
@@ -334,13 +337,14 @@ def logistic(request):
 def th(request):
 
     period, start, end = get_start_end(request)
-    reservations = Reservation.objects.filter(status=RS_CONFIRM, telephone=True)
+    reservations = Reservation.objects.filter(telephone=True)
     reservations = [r for r in reservations if r.inside(start, end)]
     reservations = sorted(reservations, key=lambda r: (r.appartment.area, int(r.appartment.no)) if r.appartment else None)
 
     ctx = get_ctx(period, start, end, None, None, None, None, None, None)
     ctx.update({
       "reservations": reservations,
+      "title": "Phone Activations",
       })
     return render_to_response("th.html", ctx, context_instance=RequestContext(request))
 
@@ -447,6 +451,7 @@ def stats(request):
     live = request.GET.get("live", False)
     show = request.GET.get("show", False)
     fast = request.GET.get("fast", False)
+    cvs = request.GET.get("cvs", False)
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:

@@ -32,3 +32,5 @@ RE_NOTLEFT = 11
 RE_NEVERCAME = 12
 # "Left without paying!"
 RE_NOTPAYED = 13
+
+LOGDIR = "reception/logfiles"
