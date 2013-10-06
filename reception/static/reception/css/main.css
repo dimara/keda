@@ -333,7 +333,7 @@ color:rgba(185,74,72,0.9);
 .resfixed{
 	position: fixed;
 	right: 0;
-	top: 222px;
+	top: 200px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
@@ -355,7 +355,7 @@ color:rgba(185,74,72,0.9);
 .orderfixed{
 	position: fixed;
 	right: 0;
-	top: 310px;
+	top: 320px;
 	/*width: 8em;*/
 	/*margin-top: -2.5em;*/
 	/*background: red;*/
