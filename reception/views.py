@@ -249,14 +249,16 @@ def logfile(ctx, log):
     t = rtype.decode("utf-8") if rtype else None
     agent = ctx["agent"]
     a = agent.decode("utf-8") if agent else None
-    fname = u"reservations_%s_%s_%s_%s_%s_%s" % \
-            (s, e, p, t, a, datetime.datetime.now().isoformat())
+    status = ctx["status"]
+    st = status.decode("utf-8") if status else None
+    fname = u"reservations_%s_%s_%s_%s_%s_%s_%s" % \
+            (s, e, p, t, a, st, datetime.datetime.now().isoformat())
     data = u""
     for r in reservations:
        ap = r.appartment.appartment if r.appartment else None
        rank = r.owner.rank.short if r.owner.rank else None
-       data += u"%s+++%s+++%s+++%s" % \
-               (r.owner.rank, r.owner.surname, r.owner.name, ap)
+       data += u"%s+++%s+++%s+++%s+++%s" % \
+               (rank, r.owner.surname, r.owner.name, ap, r.get_status_display())
        data += "\n"
     if log:
        f = open("reception/logfiles/"+fname, "w")
