@@ -452,6 +452,7 @@ def stats(request):
     show = request.GET.get("show", False)
     fast = request.GET.get("fast", False)
     cvs = request.GET.get("cvs", False)
+    log = request.GET.get("log", False)
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:
@@ -498,7 +499,7 @@ def stats(request):
         data = u"%s+++%s+++%s+++%d+++%.2f+++%d+++%d+++%d+++%d+++%d+++%d+++%d\n" % \
                (p, start.isoformat(), end.isoformat(), len(reservations), euros,
                 len(regular),  len(b3), len(ea), len(my),
-                len(osseay), len(paratheristes), len(monada))
+                len(paratheristes), len(monada), len(osseay))
         return HttpResponse(data, content_type="text/plain")
 
     return render_to_response("stats.html", ctx, context_instance=RequestContext(request))

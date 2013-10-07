@@ -29,7 +29,7 @@ if [  $# -lt 2 ]; then
   usage
 fi
 
-TEMP=$(getopt -o h --long help,start:,end:,sum,all,periods:,stats,lists,ip: -n 'get_cvs.sh' -- "$@")
+TEMP=$(getopt -o h --long help,agents:,types:,statuses:,start:,end:,sum,all,periods:,stats,lists,ip: -n 'get_cvs.sh' -- "$@")
                                                                                 
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi                   
                                                                                 
@@ -41,8 +41,11 @@ while true ; do
     --lists) LISTS=true ; shift ;;                                        
     --stats) STATS=true ; shift ;;                                                
     --sum) SUM=true ; shift ;;
-    --all) LISTS=true ; STATS=true ; SUM=true PERIODS=$ALL_PERIOD_IDS ; shift ;;                                                
-    --periods) PERIODS=$2 ; shift 2;;                                                
+    --all) PERIODS=$ALL_PERIOD_IDS ; shift ;;                                                
+    --periods) PERIODS=$2 ; shift 2;; 
+    --agents) AGENTS=$2 ; shift 2;;                                              
+    --types) TYPES=$2 ; shift 2;;                                              
+    --statuses) STATUS=$2 ; shift 2;;                                              
     --start) FIRST_DATE=$2 ; shift 2;;                                                
     --end) LAST_DATE=$2 ; shift 2;;                                                
     --ip) IP=$2 ; shift 2;;                                                
@@ -56,15 +59,18 @@ done
 : ${SUM:=false}
 : ${IP:=$SERVER_IP}
 : ${PERIODS:=$FIRST_PERIOD_ID}
+: ${AGENTS:=$ALL_AGENTS}
+: ${TYPES:=$ALL_TYPES}
+: ${STATUSES:=$ALL_STATUSES}
 
 curl -s -c cookies.txt -b cookies.txt https://$IP/accounts/login/ -k -o /dev/null
 csrftoken=$(grep csrftoken cookies.txt | awk '{ print $7 }')
 curl -s -c cookies.txt -b cookies.txt -d "username=$1&password=$2&csrfmiddlewaretoken=$csrftoken" https://$IP/accounts/login/ -k
 
 for period in $PERIODS; do
-  for rtype in $ALL_TYPES; do
-    for agent in $ALL_AGENTS; do
-      for status in $ALL_STATUSES; do 
+  for rtype in $TYPES; do
+    for agent in $AGENTS; do
+      for status in $STATUSES; do 
       if $LISTS; then
 	curl -k  -b cookies.txt  https://$IP/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on
 	echo; echo; echo;
@@ -76,11 +82,13 @@ done
 done
 
 if $STATS; then       
+        echo "Period+++Start+++End+++Total+++Euro+++B3+++EA+++MY+++DAILY+++UNIT+++OSSEAY"
 	for period in $PERIODS; do
 	  curl -k  -b cookies.txt  https://$IP/stats/?period=$period\&cvs=on
 	done
 fi
 
 if $SUM; then
+        echo "Period+++Start+++End+++Regular+++Euro+++B3+++EA+++MY+++DAILY+++UNIT+++OSSEAY\n"
 	curl -k  -b cookies.txt  https://$IP/stats/?start=$FIRST_DATE\&end=$LAST_DATE\&fast=on\&cvs=on
 fi
