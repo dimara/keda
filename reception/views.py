@@ -181,7 +181,7 @@ def appartments(request):
 
 
 def parousiologio(request):
-    staff = Staff.objects.all().order_by("rank__level", "extra", "-surname").reverse()
+    staff = Staff.objects.filter(power=True).order_by("rank__level", "extra", "-surname").reverse()
     ctx = {
       "date": datetime.date.today(),
       "staff": staff,

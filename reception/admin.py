@@ -108,8 +108,8 @@ class NestedMilitaryPersonAdmin(NestedPersonAdmin):
 
 
 class NestedStaffAdmin(NestedMilitaryPersonAdmin):
-    list_display = NestedMilitaryPersonAdmin.list_display + ('category', 'extra')
-    list_filter = ('extra', )
+    list_display = NestedMilitaryPersonAdmin.list_display + ('category', 'extra', 'power')
+    list_filter = ('extra', 'power' )
 
 
 class DamageAdmin(admin.ModelAdmin):

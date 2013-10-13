@@ -160,12 +160,13 @@ class MilitaryPerson(Person):
 
 class Staff(MilitaryPerson):
     CATEGORIES = (
-      (u"ΟΡΓ", "ΟΡΓΑΝΙΚΟΣ"),
-      (u"ΑΠΟ", "ΑΠΟΣΠΑΣΜΕΝΟΣ"),
+      (u"ΟΡΓ", u"ΟΡΓΑΝΙΚΟΣ"),
+      (u"ΑΠΟ", u"ΑΠΟΣΠΑΣΜΕΝΟΣ"),
       )
 
     category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
     extra = models.CharField("Extra Info", max_length=25, null=True, blank=True)
+    power = models.BooleanField("In Unit-Power", default=True)
 
     def person_info(self):
               return ("staff", self.info())
