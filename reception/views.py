@@ -438,7 +438,7 @@ def persons(request):
     text = request.GET.get("text", None)
     inside = request.GET.get("inside", None)
     persons = []
-    trunc = False
+    errors = None
     if text:
       text = text.upper()
       persons = MilitaryPerson.objects.all()
@@ -448,11 +448,11 @@ def persons(request):
         persons = persons.filter(surname__contains=text)
       if len(persons) > 20:
         persons = MilitaryPerson.objects.filter(id__in=[p.id for p in persons[:20]])
-        trunc = True
+        errors = "The following list is truncated! Please be more specific!"
       persons = persons.all().prefetch_related("reservations", "contacts", "vehicles", "rank")
       persons = sorted(persons, key=lambda p: p.surname)
     ctx = {
-      "trunc": trunc,
+      "errors": errors,
       "text": text,
       "inside": inside,
       "persons": persons,

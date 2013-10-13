@@ -8,11 +8,9 @@
         {% include "includes/search_filter.html" %}
     </form> 
 
+    {% include "includes/errors.html" %}
     {% include "includes/filter.html" %}
     {% include "includes/info.html" %}
-    {% if trunc %}
-    The following list is truncated! Please be more specific!
-    {% endif %}
     <table class="table table-hover" id="table">
         <tr id="titles">
         <th></th>
@@ -44,7 +42,7 @@
         </td>
       </tr>
       {% endfor %}
-      {% if trunc %}
+      {% if errors %}
       <tr>
         <td> ... </td>
         <td> ... </td>
