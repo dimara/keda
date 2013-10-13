@@ -152,32 +152,10 @@ class MilitaryPerson(Person):
         return ret
 
     def person_info(self):
-            try:
-              return ("visitor", self.visitor.info())
-            except:
-              try:
-                return ("staff", self.staff.info())
-              except:
-                return ("militaryperson", self.info())
-
-
-class Visitor(MilitaryPerson):
-    member = models.BooleanField("Member", default=False)
-
-    def __unicode__(self):
-        ret = super(Visitor, self).__unicode__()
-        if self.member:
-            ret += u" (ΜΕΛΟΣ)"
-        return ret
-
-    def info(self):
-        ret = super(Visitor, self).info()
-        if self.member:
-            ret += u" (ΜΕΛΟΣ)"
-        return ret
-
-    def person_info(self):
-              return ("visitor", self.info())
+        try:
+          return ("staff", self.staff.info())
+        except:
+          return ("militaryperson", self.info())
 
 
 class Staff(MilitaryPerson):
