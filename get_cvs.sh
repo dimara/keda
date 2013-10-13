@@ -63,7 +63,7 @@ done
 : ${TYPES:=$ALL_TYPES}
 : ${STATUSES:=$ALL_STATUSES}
 
-curl -s -c cookies.txt -b cookies.txt $URL/accounts/login/ -k -o /dev/null
+curl -s -c cookies.txt -b cookies.txt $URL/accounts/login/ -k -o /dev/null &>/dev/null
 csrftoken=$(grep csrftoken cookies.txt | awk '{ print $7 }')
 curl -s -c cookies.txt -b cookies.txt -d "username=$1&password=$2&csrfmiddlewaretoken=$csrftoken" $URL/accounts/login/ -k
 
@@ -82,13 +82,13 @@ done
 done
 
 if $STATS; then
-        echo "Period+++Start+++End+++Total+++Euro+++B3+++EA+++MY+++DAILY+++UNIT+++OSSEAY"
+  echo "Period|Start|End|Regular|Euro|B3|EA|MY|DAILY|UNIT|OSSEAY"
 	for period in $PERIODS; do
 	  curl -k  -b cookies.txt  $URL/stats/?period=$period\&cvs=on
 	done
 fi
 
 if $SUM; then
-        echo "Period+++Start+++End+++Regular+++Euro+++B3+++EA+++MY+++DAILY+++UNIT+++OSSEAY\n"
+        echo "Period|Start|End|Regular|Euro|B3|EA|MY|DAILY|UNIT|OSSEAY"
 	curl -k  -b cookies.txt  $URL/stats/?start=$FIRST_DATE\&end=$LAST_DATE\&fast=on\&cvs=on
 fi

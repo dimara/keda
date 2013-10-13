@@ -305,14 +305,14 @@ class Reservation(models.Model):
     )
 
     AGENTS = (
-      (RA_GEA, "ΓΕΑ/Β3"),
-      (RA_EA, "ΕΑ"),
-      (RA_MY, "Μ.Υ"),
-      (RA_DKTS, "ΔΚΤΗΣ"),
-      (RA_YDKTS, "ΥΔΚΤΗΣ"),
-      (RA_ASF, "ΑΣΦΑΛΕΙΑ"),
-      (RA_REC, "RECEPTION"),
-      (RA_GEETHA, "ΓΕΕΘΑ"),
+      (RA_GEA, u"ΓΕΑ/Β3"),
+      (RA_EA, u"ΕΑ"),
+      (RA_MY, u"Μ.Υ"),
+      (RA_DKTS, u"ΔΚΤΗΣ"),
+      (RA_YDKTS, u"ΥΔΚΤΗΣ"),
+      (RA_ASF, u"ΑΣΦΑΛΕΙΑ"),
+      (RA_REC, u"RECEPTION"),
+      (RA_GEETHA, u"ΓΕΕΘΑ"),
       )
 
     STATUSES = (
@@ -324,12 +324,12 @@ class Reservation(models.Model):
       )
 
     RESERVATION_TYPES = (
-      (RT_REGULAR, "ΤΑΚΤΙΚΟΣ"),
-      (RT_DAILY, "ΠΑΡ/ΣΤΗΣ"),
-      (RT_OSSEAY, "ΟΣΣΕΑΥ"),
-      (RT_UNIT, "ΜΟΝΑΔΑ"),
-      (RT_SCHOOLS, "ΣΧΟΛΕΙΑ"),
-      (RT_CLIMS, "CLIMS"),
+      (RT_REGULAR, u"ΤΑΚΤΙΚΟΣ"),
+      (RT_DAILY, u"ΠΑΡ/ΣΤΗΣ"),
+      (RT_OSSEAY, u"ΟΣΣΕΑΥ"),
+      (RT_UNIT, u"ΜΟΝΑΔΑ"),
+      (RT_SCHOOLS, u"ΣΧΟΛΕΙΑ"),
+      (RT_CLIMS, u"CLIMS"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
@@ -420,7 +420,7 @@ class Reservation(models.Model):
                 # [ { ] (})
                 (self.check_in <= start and self.check_out >= start) or
                   # case of period is open and start is before check out
-                  # { ] 
+                  # { ]
                   (self.check_out >= start and not end) or
                   # {   }
                   (end and (

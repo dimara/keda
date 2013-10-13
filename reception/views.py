@@ -11,6 +11,7 @@ from django.forms.models import modelformset_factory
 from django.forms.models import inlineformset_factory
 from django.shortcuts import render_to_response
 from reception.models import *
+from reception import constants
 from django.db.models import Q
 from django.core.context_processors import csrf
 from django import forms
@@ -18,6 +19,10 @@ from itertools import chain
 from django.contrib.auth.decorators import login_required
 from reception.constants import *
 import os
+
+import os, tempfile, zipfile
+from django.http import HttpResponse
+from django.core.servers.basehttp import FileWrapper
 
 
 @login_required(login_url='/accounts/login/')
@@ -241,34 +246,36 @@ def info(request):
     return render_to_response("info.html", ctx, context_instance=RequestContext(request))
 
 
-def logfile(ctx, log):
+def get_cvs(ctx):
     reservations = ctx["reservations"]
     period = ctx["period"]
     p = period.name if period else None
     s = ctx["start"].isoformat()
     e = ctx["end"].isoformat()
-    rtype = ctx["rtype"]
-    t = rtype.decode("utf-8") if rtype else None
-    agent = ctx["agent"]
-    a = agent.decode("utf-8") if agent else None
-    status = ctx["status"]
-    st = status.decode("utf-8") if status else None
+    t = ctx["rtype"]
+    a = ctx["agent"]
+    st = ctx["status"]
     timestamp = datetime.datetime.now().isoformat()
-    fname = u"reservations_%s_%s_%s_%s_%s_%s_%s" % \
-            (s, e, p, t, a, st, timestamp)
-    data = u""
+    comments = """\
+# Reservations
+# period %s
+# between %s and %s
+# type %s
+# agent %s
+# status %s
+# as generated @ %s
+""" % (p, s, e, t, a, st, timestamp)
+    header = u"Βαθμός|Επίθετο|Όνομα|Οίκημα|Status\n"
+    data = ""
     for r in reservations:
        ap = r.appartment.appartment if r.appartment else None
        rank = r.owner.rank.short if r.owner.rank else None
-       data += u"%s+++%s+++%s+++%s+++%s" % \
+       data += "%s|%s|%s|%s|%s\n" % \
                (rank, r.owner.surname, r.owner.name, ap, r.get_status_display())
-       data += "\n"
-    if log:
-       f = open(os.path.join(constants.LOGDIR, fname), "w")
-       f.write(data.encode('utf-8'))
-       f.close()
-    return fname, data
-    
+
+    response = "%s%s%s" % (comments, header,  data)
+    return response
+
 
 @login_required(login_url='/accounts/login/')
 def reservations(request):
@@ -279,7 +286,7 @@ def reservations(request):
     agent = request.GET.get("agent", None)
     order = request.GET.get("order", None)
     exact = request.GET.get("exact", None)
-    log = request.GET.get("log", None)
+    txt = request.GET.get("file", None)
     cvs = request.GET.get("cvs", None)
     reservations = Reservation.objects.all()
     if rtype:
@@ -304,12 +311,21 @@ def reservations(request):
     ctx.update({
       "reservations": reservations,
       })
-    if log or cvs:
-      title, data = logfile(ctx, log)
-      if cvs:
-        return HttpResponse(title+"\n"+data, content_type="text/plain")
-    
-    return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
+    if cvs:
+      data = get_cvs(ctx)
+      return send_response(data, txt=txt)
+    else:
+      return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
+
+
+def send_response(data, txt=True):
+      if txt:
+        content_type = "text/plain"
+      else:
+        data = """<html> <head> <meta charset="utf-8"> </head> <body>""" + data.replace("\n","<br>") + "<body>"
+        content_type = "text/html"
+      return HttpResponse(data, content_type=content_type)
+
 
 @login_required(login_url='/accounts/login/')
 def logistic(request):
@@ -452,7 +468,7 @@ def stats(request):
     show = request.GET.get("show", False)
     fast = request.GET.get("fast", False)
     cvs = request.GET.get("cvs", False)
-    log = request.GET.get("log", False)
+    txt = request.GET.get("file", False)
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:
@@ -494,15 +510,36 @@ def stats(request):
       "monada": len(monada),
       "errors": errors,
       })
+    p = period.name if period else ""
+    dates = u"%s περίοδος: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))
+    timestamp = datetime.datetime.now().isoformat()
+    comments = u"""\
+# Stats
+# period %s
+# between %s and %s
+# as generated @ %s
+""" % (p, start.isoformat(), end.isoformat(), timestamp)
+    header = u"Ημ/νίες|ΤΑΚΤΙΚΟΙ|EURO|ΓΕΑ/Β3|Ε.Α.|Μ.Υ.|ΠΑΡ/ΣΤΕΣ|ΜΟΝΑΔΑ|ΟΣΣΕΑΥ\n"
+    data = u"%s|%d|%.2f|%d|%d|%d|%d|%d|%d\n" % \
+           (dates, len(reservations), euros,
+            len(b3), len(ea), len(my),
+            len(paratheristes), len(monada), len(osseay))
+    graph = create_graph(comments, header, data)
+    ctx.update({"graph": graph})
     if cvs:
-        p = period.name if period else None
-        data = u"%s+++%s+++%s+++%d+++%.2f+++%d+++%d+++%d+++%d+++%d+++%d+++%d\n" % \
-               (p, start.isoformat(), end.isoformat(), len(reservations), euros,
-                len(regular),  len(b3), len(ea), len(my),
-                len(paratheristes), len(monada), len(osseay))
-        return HttpResponse(data, content_type="text/plain")
+        response = comments + "#" + header + data
+        return send_response(response, txt=txt)
+    else:
+      return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
-    return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
+def create_graph(comments, header, data):
+   f = open("stats.dat", "w")
+   contents = comments + header + data
+   print contents
+   f.write(contents.encode("utf-8"))
+   f.close()
+   os.system("gnuplot stats.plt")
+   return "stats.pdf"
 
 @login_required(login_url='/accounts/login/')
 def test(request):
@@ -539,3 +576,18 @@ def test(request):
       "reservations": reservations,
       }
     return render_to_response("test.html", ctx, context_instance=RequestContext(request))
+
+
+
+def send_file(request):
+    """
+    Send a file through Django without loading the whole file into
+    memory at once. The FileWrapper will turn the file object into an
+    iterator for chunks of 8KB.
+    """
+    filename=request.GET.get("filename", "stats.pdf")
+    content_type=request.GET.get("content_type", "application/pdf")
+    wrapper = FileWrapper(file(filename))
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(filename)
+    return response

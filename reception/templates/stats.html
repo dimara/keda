@@ -11,11 +11,37 @@
 <style type="text/css">#info{float: none;font-weight: bold;}h4 small{font-weight: bold;line-height: 2;color: black;text-decoration: underline;}</style>
   {% include "includes/errors.html" %}
   {% include "includes/info.html" %}
-<table class="table table-bordered" style="width: 37%">
-<tbody>
+<table class="table table-bordered" style="width:37%">
+<tr id=titles>
+  <th> <b>Reservations</b> </th>
+  <th> <b>Persons</b> </th>
+  <th> <b>Euros</b> </th>
+</tr>
+<tr>
+  <td> {{ total }} </td>
+  <td> {{ persons }} </td>
+  <td> {{ euros }} </td>
+</tr>
+<table class="table table-bordered">
+<tr id=titles>
+  <th> <b>ΓΕΑ/Β3</b> </th>
+  <th> <b>Ε.Α.</b> </th>
+  <th> <b>Μ.Υ.</b> </th>
+  <th> <b>ΠΑΡ/ΣΤΕΣ</b> </th>
+  <th> <b>ΜΟΝΑΔΑ</b> </th>
+  <th> <b>ΟΣΣΕΑΥ</b> </th>
+</tr>
+<tr>
+  <td> {{ b3 }} </td>
+  <td> {{ ea }} </td>
+  <td> {{ my }} </td>
+  <td> {{ paratheristes }} </td>
+  <td> {{ monada }} </td>
+  <td> {{ osseay }} </td>
+</tr>
+<!--
                 <tr>
                   <td>
-                      <b>Reservations</b><br>
                       <i class="glyphicon glyphicon-chevron-right"></i>Persons<br>
                       <i class="glyphicon glyphicon-chevron-right"></i>Euros
                   </td>
@@ -45,12 +71,20 @@
                   <td>{{ osseay }}</td>
                 </tr>
               </tbody>
+--!>
 </table>
-
-   
+<style type="text/css">
+object {
+    width: 100%;
+    height: 300px;
+    border: 0
+}
+</style>
+<object type="application/pdf" data="/graphs/">
 
     {% if show %}
 
+    {% include "includes/filter.html" %}
     <table  id="table" class="table table-hover">
       <tr id="titles">
         <th></th>

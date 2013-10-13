@@ -37,6 +37,7 @@ urlpatterns = patterns('',
     url(r'^info/$', info),
     url(r'^persons/$', persons),
     url(r'^stats/$', stats),
+    url(r'^graphs/$', send_file),
 
 )
 
