@@ -535,7 +535,6 @@ def stats(request):
 def create_graph(comments, header, data):
    f = open("stats.dat", "w")
    contents = comments + header + data
-   print contents
    f.write(contents.encode("utf-8"))
    f.close()
    os.system("gnuplot stats.plt")
