@@ -286,7 +286,7 @@ def reservations(request):
     agent = request.GET.get("agent", None)
     order = request.GET.get("order", None)
     exact = request.GET.get("exact", None)
-    txt = request.GET.get("file", None)
+    txt = request.GET.get("txt", None)
     cvs = request.GET.get("cvs", None)
     reservations = Reservation.objects.all()
     if rtype:
@@ -312,19 +312,22 @@ def reservations(request):
       "reservations": reservations,
       })
     if cvs:
-      data = get_cvs(ctx)
-      return send_response(data, txt=txt)
+      return send_cvs(request, get_cvs(ctx), txt=txt)
     else:
       return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
 
 
-def send_response(data, txt=True):
+def send_cvs(request, cvs, txt=False):
       if txt:
-        content_type = "text/plain"
+        content_type = "text/utf-8"
+        return HttpResponse(cvs, content_type=content_type)
       else:
-        data = """<html> <head> <meta charset="utf-8"> </head> <body>""" + data.replace("\n","<br>") + "<body>"
-        content_type = "text/html"
-      return HttpResponse(data, content_type=content_type)
+        #cvs = """<html> <head> <meta charset="utf-8"> </head> <body>""" + cvs.replace("\n","<br>") + "<body>"
+        cvs = cvs.replace("\n","<br>")
+        ctx = {
+          "cvs": cvs,
+          }
+        return render_to_response("cvs.html", ctx, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/accounts/login/')
@@ -468,7 +471,7 @@ def stats(request):
     show = request.GET.get("show", False)
     fast = request.GET.get("fast", False)
     cvs = request.GET.get("cvs", False)
-    txt = request.GET.get("file", False)
+    txt = request.GET.get("txt", False)
     reservations = Reservation.objects.all()
     reservations = filter(lambda x: x.inside(start, end), reservations)
     if live:
@@ -511,7 +514,7 @@ def stats(request):
       "errors": errors,
       })
     p = period.name if period else ""
-    dates = u"%s περίοδος: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))
+    dates = u"%s: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))
     timestamp = datetime.datetime.now().isoformat()
     comments = u"""\
 # Stats
@@ -527,13 +530,13 @@ def stats(request):
     graph = create_graph(comments, header, data)
     ctx.update({"graph": graph})
     if cvs:
-        response = comments + "#" + header + data
-        return send_response(response, txt=txt)
+        cvs = comments + "#" + header + data
+        return send_cvs(request, cvs, txt=txt)
     else:
       return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
 
 def create_graph(comments, header, data):
-   f = open("stats.dat", "w")
+   f = open("stats.txt", "w")
    contents = comments + header + data
    f.write(contents.encode("utf-8"))
    f.close()
