@@ -445,7 +445,7 @@ def gmap_data(request):
     return HttpResponse(simplejson.dumps(info))
 
 @login_required(login_url='/accounts/login/')
-def persons(request):
+def lookup(request):
     text = request.GET.get("text", None)
     inside = request.GET.get("inside", None)
     persons = []
