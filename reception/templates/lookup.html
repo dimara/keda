@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Persons{% endblock %}
+{% block title %}Lookup{% endblock %}
 
 {% block content %}
     <form action="/lookup/" method="get">
@@ -17,33 +17,43 @@
         <th>Person</th>
         <th>Contacts</th>
         <th>Vehicles</th>
-        <th>Reservations</th>
+        <th></th>
+        <th></th>
+        <th></th>
       </tr>
       {% for p in persons %}
-      <tr>
-        <td> {{ forloop.counter }}</td>
-        {% with p as person %}
-          <td> {% include "includes/person_display.html" %} </td>
-        {% endwith %}
-        <td>
-        {% for c in p.contacts.all %}
-            {{ c.mobile }}<br>
-        {% endfor %}
-        </td>
-        <td>
-        {% for v in p.vehicles.all %}
-            {{ v.plate }}<br>
-        {% endfor %}
-        </td>
-        <td>
+        <tr>
+          <td> {{ forloop.counter }}</td>
+          {% with p as person %}
+            <td> {% include "includes/person_display.html" %} </td>
+          {% endwith %}
+          <td>
+          {% for c in p.contacts.all %}
+              {{ c.mobile }}<br>
+          {% endfor %}
+          </td>
+          <td>
+          {% for v in p.vehicles.all %}
+              {{ v.plate }}<br>
+          {% endfor %}
+          </td>
+          <td></td>
+          <td></td>
+        </tr>
         {% for r in p.reservations.all %}
-            {{ r.details }}<br>
+          <tr class="inlineres">
+            <td>  <a href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+            <td> {{ r.appartment }} </td>
+            <td> {{ r.get_agent_display }} </td>
+            <td> {{ r.period }} </td>
+            <td> {{ r.get_res_type_display }} </td>
+            <td>{% include "includes/status.html" %}</td>
+          </tr>
         {% endfor %}
-        </td>
-      </tr>
       {% endfor %}
       {% if errors %}
       <tr>
+        <td> ... </td>
         <td> ... </td>
         <td> ... </td>
         <td> ... </td>

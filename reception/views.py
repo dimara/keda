@@ -166,15 +166,14 @@ def appartments(request):
     appartments = sorted(appartments, key=lambda a: (a.area, int(a.no)))
     result = []
     for a in appartments:
-        cur = None
+        cur = []
         res = []
         if history:
           res = a.reservations.order_by("-check_out")
         if current:
           for r in a.reservations.exclude(status__in=[RS_CHECKOUT, RS_CANCEL]):
             if r.inside(start, end):
-                cur = r
-                break
+                cur.append(r)
         result.append((a, cur, res))
 
     ctx = get_ctx(period, start, end, area, None, None, None, None, None)

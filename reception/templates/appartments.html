@@ -19,6 +19,7 @@
         <th>Category</th>
         <th>Beds</th>
         <th>Damages</th>
+        <th></th>
       </tr>
       {% for a, c, h in result %}
         <tr>
@@ -33,37 +34,36 @@
             {% endif %}
           {% endfor %}
           </td>
+          <td></td>
         </tr>
-        {% if c %}
-            <tr>
-              <td><i class="glyphicon glyphicon-chevron-right"></i></td>
-              <td>
-                {% with c.owner as person %}
-                  {% include "includes/person_display.html" %}
-                  {% include "includes/status.html" %}
-                {% endwith %}
-              </td>
-              <td> {{ c.get_agent_display }} </td>
-              <td> <a href="/admin/reception/reservation/{{ c.id }}/">{{ c.period }}</a> </td>
-              <td> {{ c.get_res_type_display }} </td>
-            </tr>
-          {% endif %}
-          {% if h %}
-            {% for r in h %}
-              <tr>
-                <td><i class="glyphicon glyphicon-chevron-right"></i></td>
-                <td>
-                  {% with r.owner as person %}
-                    {% include "includes/person_display.html" %}
-                    {% include "includes/status.html" %}
-                  {% endwith %}
-                </td>
-                <td> {{ r.get_agent_display }} </td>
-                <td> <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a> </td>
-                <td> {{ r.get_res_type_display }} </td>
-              </tr>
-            {% endfor %}
-          {% endif %}
+        {% for r in c %}
+          <tr class="inlineres">
+            <td> <a href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+            <td>
+              {% with r.owner as person %}
+                {% include "includes/person_display.html" %}
+              {% endwith %}
+            </td>
+            <td> {{ r.get_agent_display }} </td>
+            <td>{{ r.period }} </td>
+            <td> {{ r.get_res_type_display }} </td>
+            <td> {% include "includes/status.html" %} </td>
+          </tr>
+        {% endfor %}
+        {% for r in h %}
+          <tr class="inlineres">
+            <td><a href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+            <td>
+              {% with r.owner as person %}
+                {% include "includes/person_display.html" %}
+              {% endwith %}
+            </td>
+            <td> {{ r.get_agent_display }} </td>
+            <td> {{ r.period }} </td>
+            <td> {{ r.get_res_type_display }} </td>
+            <td>{% include "includes/status.html" %}</td>
+          </tr>
+        {% endfor %}
       {% endfor %}
     </table>
     <a href="#" class="scrollup">Scroll</a>

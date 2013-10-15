@@ -457,3 +457,7 @@ width: 17px;
 .chkfixed input{
 	margin-right: 5px;
 }
+
+.inlineres {
+  font-size: 10px;
+}
