@@ -4,12 +4,14 @@
 
 {% block content %}
     <form class="form" role="form" action="/parousiologio/" method="GET">
-      <select onchange="submit()" class="form-control" name="unit" style="width:30%;float:right">
+      <div class="datesfixed">
+      <select onchange="submit()" class="form-control" name="unit">
         <option value="">Unit (All)</option>
         {% for u in units %}
         <option value="{{ u.id }}"> {{ u.name }}</option>
         {% endfor %}
       </select>
+      </div>
     </form>
 
 
