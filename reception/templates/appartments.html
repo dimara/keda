@@ -13,14 +13,12 @@
         {% include "includes/info.html" %}
 
     <table class="table table-hover" id="table">
-        <tr id="titles">
+      <tr id="titles">
         <th></th>
         <th>Appartment</th>
         <th>Category</th>
         <th>Beds</th>
         <th>Damages</th>
-        <th>Reservations</th>
-        <th>Type</th>
       </tr>
       {% for a, c, h in result %}
         <tr>
@@ -28,7 +26,6 @@
           <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
           <td> {{ a.category }}</td>
           <td> {{ a.beds }}</td>
-
           <td>
           {% for d in a.damages.all %}
             {% if not d.fixed %}
@@ -38,41 +35,35 @@
           </td>
         </tr>
         {% if c %}
-        <table class="table table-hover table-condenced">
-          <tr>
-            <td>
-              <i class="glyphicon glyphicon-chevron-right"></i>
-              <i class="glyphicon glyphicon-chevron-right"></i>
-              <i class="glyphicon glyphicon-chevron-right"></i>
-              {% with c.owner as person %}
-                {% include "includes/person_display.html" %}
-                {% include "includes/status.html" %}
-              {% endwith %}
-            </td>
-            <td> {{ c.get_agent_display }} </td>
-            <td> <a href="/admin/reception/reservation/{{ c.id }}/">{{ c.period }}</a> </td>
-            <td> {{ c.get_res_type_display }} </td>
-          </tr>
-        </table>
-        {% endif %}
-        {% if h %}
-        <table class="table table-hover table-condenced">
-        {% for r in h %}
-          <tr>
-            <td>
-              <i class="glyphicon glyphicon-chevron-right"></i>
-              {% with r.owner as person %}
-                {% include "includes/person_display.html" %}
-                {% include "includes/status.html" %}
-              {% endwith %}
-            </td>
-            <td> {{ r.get_agent_display }} </td>
-            <td> <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a> </td>
-            <td> {{ r.get_res_type_display }} </td>
-          </tr>
-        {% endfor %}
-        </table>
-        {% endif %}
+            <tr>
+              <td><i class="glyphicon glyphicon-chevron-right"></i></td>
+              <td>
+                {% with c.owner as person %}
+                  {% include "includes/person_display.html" %}
+                  {% include "includes/status.html" %}
+                {% endwith %}
+              </td>
+              <td> {{ c.get_agent_display }} </td>
+              <td> <a href="/admin/reception/reservation/{{ c.id }}/">{{ c.period }}</a> </td>
+              <td> {{ c.get_res_type_display }} </td>
+            </tr>
+          {% endif %}
+          {% if h %}
+            {% for r in h %}
+              <tr>
+                <td><i class="glyphicon glyphicon-chevron-right"></i></td>
+                <td>
+                  {% with r.owner as person %}
+                    {% include "includes/person_display.html" %}
+                    {% include "includes/status.html" %}
+                  {% endwith %}
+                </td>
+                <td> {{ r.get_agent_display }} </td>
+                <td> <a href="/admin/reception/reservation/{{ r.id }}/">{{ r.period }}</a> </td>
+                <td> {{ r.get_res_type_display }} </td>
+              </tr>
+            {% endfor %}
+          {% endif %}
       {% endfor %}
     </table>
     <a href="#" class="scrollup">Scroll</a>
