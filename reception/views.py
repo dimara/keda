@@ -474,7 +474,7 @@ def lookup(request):
       "inside": inside,
       "persons": persons,
       }
-    return render_to_response("persons.html", ctx, context_instance=RequestContext(request))
+    return render_to_response("lookup.html", ctx, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/accounts/login/')
