@@ -147,35 +147,43 @@ def availability(request):
 @login_required(login_url='/accounts/login/')
 def appartments(request):
     period, start, end =  get_start_end(request)
+    apartment = id_from_request(request.GET, "apartment")
     area = request.GET.get("area")
-    category = id_from_request(request.GET, "category")
-    damaged = request.GET.get("damaged", False)
+    history = request.GET.get("history", False)
+    current = request.GET.get("current", False)
 
     appartments = Appartment.objects.all()
     if area:
         appartments = appartments.filter(area=area)
+    elif apartment:
+        appartments = appartments.filter(id=apartment)
 
-    if damaged:
-        appartments = appartments.exclude(damages__fixed=False)
-
-    if category:
-        appartments = appartments.filter(category=category)
+    errors = None
+    if history and len(appartments)>1:
+      errors = "Cannot provide history for more than on Apartments!"
+      history = False
 
     appartments = sorted(appartments, key=lambda a: (a.area, int(a.no)))
-    appres = []
+    result = []
     for a in appartments:
-        reserved = False
-        for r in a.reservations.all():
-            if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(start, end):
-                reserved = True
-                appres.append((a, r))
-        if not reserved:
-          appres.append((a, None))
+        cur = None
+        res = []
+        if history:
+          res = a.reservations.order_by("-check_out")
+        if current:
+          for r in a.reservations.exclude(status__in=[RS_CHECKOUT, RS_CANCEL]):
+            if r.inside(start, end):
+                cur = r
+                break
+        result.append((a, cur, res))
 
-    ctx = get_ctx(period, start, end, area, category, damaged, None, None, None)
+    ctx = get_ctx(period, start, end, area, None, None, None, None, None)
     ctx.update({
-      "appartments": appartments,
-      "appres": appres,
+      "errors": errors,
+      "current": current,
+      "history": history,
+      "apartments": Appartment.objects.all(),
+      "result": result,
       })
     return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
 

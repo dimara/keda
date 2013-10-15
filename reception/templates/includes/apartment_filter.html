@@ -1,25 +1,22 @@
-<div class="apfixed"> 
+<div class="apfixed">
 	<div class="form-group">
+		<select class="form-control" name="apartment" id="id_apartment">
+			<option value="">Apartment (All)</option>
+			{% for a in apartments %}
+			<option value="{{ a.id }}"> {{ a }} </option>
+			{% endfor %}
+		</select>
 		<select class="form-control" name="area" id="id_area">
 			<option value="">Area (All)</option>
 			{% for a in areas %}
 			<option value="{{ a.0 }}"> {{ a.1 }} </option>
 			{% endfor %}
 		</select>
-		<select class="form-control" name="category" id="id_category">
-			<option value="">Category (All)</option>
-			{% for c in categories %}
-			<option value="{{ c.id }}"> {{ c.desc }} </option>
-			{% endfor %}
-		</select>
 		<div class="sckb">
-		    <label>Exclude Damaged <input type="checkbox" name="damaged"> </label>
+		    <label>Show History <input type="checkbox" name="history"> </label>
 		</div>
 		<div class="sckb">
-			<label>Include Pending <input type="checkbox" name="pending"> </label>
-		</div>
-		<div class="sckb">
-			<label>Include Not Left <input type="checkbox" name="notleft"> </label>
+		    <label>Show Current <input type="checkbox" name="current"> </label>
 		</div>
 	</div>
 </div>
