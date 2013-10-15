@@ -158,6 +158,14 @@ class MilitaryPerson(Person):
           return ("militaryperson", self.info())
 
 
+class Unit(models.Model):
+    name = models.CharField("Name", max_length=20)
+    internal = models.CharField("Internal Number", max_length=10, null=True, blank=True)
+
+    def __unicode__(self):
+        return u"%s (%s)" % (self.name, self.internal)
+
+
 class Staff(MilitaryPerson):
     CATEGORIES = (
       (u"ΟΡΓ", u"ΟΡΓΑΝΙΚΟΣ"),
@@ -167,6 +175,7 @@ class Staff(MilitaryPerson):
     category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
     extra = models.CharField("Extra Info", max_length=25, null=True, blank=True)
     power = models.BooleanField("In Unit-Power", default=True)
+    unit = models.ForeignKey(Unit, related_name="staff", null=True, blank=True)
 
     def person_info(self):
               return ("staff", self.info())
@@ -234,14 +243,6 @@ class Appartment(models.Model):
     @property
     def appartment(self):
         return u"%s-%s" % (self.area, self.no)
-
-class Unit(models.Model):
-    name = models.CharField("Name", max_length=20)
-    internal = models.CharField("Internal Number", max_length=10, null=True, blank=True)
-
-    def __unicode__(self):
-        return u"%s (%s)" % (self.name, self.internal)
-
 
 class Damage(models.Model):
     DAMAGES = (

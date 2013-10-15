@@ -189,10 +189,16 @@ def appartments(request):
 
 
 def parousiologio(request):
+    unit = id_from_request(request.GET, "unit")
     staff = Staff.objects.filter(power=True).order_by("rank__level", "extra", "-surname").reverse()
+    if unit:
+      unit = Unit.objects.get(id=unit)
+      staff = staff.filter(unit=unit)
     ctx = {
       "date": datetime.date.today(),
       "staff": staff,
+      "units": Unit.objects.all(),
+      "unit": unit,
       }
     return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
 

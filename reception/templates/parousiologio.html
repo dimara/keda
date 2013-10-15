@@ -3,9 +3,19 @@
 {% block title %}ΠΑΡΟΥΣΙΟΛΟΓΙΟ{% endblock %}
 
 {% block content %}
+    <form class="form" role="form" action="/parousiologio/" method="GET">
+      <select onchange="submit()" class="form-control" name="unit" style="width:30%;float:right">
+        <option value="">Unit (All)</option>
+        {% for u in units %}
+        <option value="{{ u.id }}"> {{ u.name }}</option>
+        {% endfor %}
+      </select>
+    </form>
+
+
     <b>{{ date }}<b>
       <table class="table table-hover table-bordered table-condensed" id="summary-par">
-       <tr> <th colspan="5" style="text-align:center;"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ ΣΜΗΝΟΥΣ ΕΚΜΕΤΑΛΛΕΥΣΕΩΝ</b></th> </tr>
+       <tr> <th colspan="5" style="text-align:center;"><b>ΔΕΛΤΙΟ ΠΑΡΟΥΣΙΑΣ {{ unit.name }}</b></th> </tr>
         <tr> <th></th> <th>ΔΥΝΑΜΗ</th> <th>ΠΑΡΟΝΤΕΣ</th> <th>ΑΠΟΝΤΕΣ</th>
              <td rowspan="6" style="text-align:center;"><img src="/static/reception/keda_z.jpg" alt="keda" style="width: 10em;"></tr>
         <tr id="3"> <td>ΑΞΚΟΙ</td> <td id="c3"></td> <td id="p3"></td> <td id="a3"></td> </tr>
