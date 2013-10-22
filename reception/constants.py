@@ -34,3 +34,6 @@ RE_NEVERCAME = 12
 RE_NOTPAYED = 13
 
 LOGDIR = "reception/logfiles"
+
+# used by pagination
+ENTRIES_PER_PAGE = 40
