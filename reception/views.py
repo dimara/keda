@@ -279,13 +279,13 @@ def get_cvs(ctx):
 # status %s
 # as generated @ %s
 """ % (p, s, e, t, a, st, timestamp)
-    header = u"Βαθμός|Επίθετο|Όνομα|Οίκημα|Status\n"
+    header = u"Βαθμός|Επίθετο|Όνομα|ΑΣΜΑ|Οίκημα|Status\n"
     data = ""
     for r in reservations:
        ap = r.appartment.appartment if r.appartment else None
        rank = r.owner.rank.short if r.owner.rank else None
-       data += "%s|%s|%s|%s|%s\n" % \
-               (rank, r.owner.surname, r.owner.name, ap, r.get_status_display())
+       data += "%s|%s|%s|%s|%s|%s\n" % \
+               (rank, r.owner.surname, r.owner.name, r.owner.ident, ap, r.get_status_display())
 
     response = "%s%s%s" % (comments, header,  data)
     return response
