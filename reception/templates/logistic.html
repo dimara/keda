@@ -16,11 +16,11 @@
         <th>Visitor</th>
         <th>Appartment</th>
         <th>Receipt</th>
-        <th>Euro</th>
+        <th align="right">Euro</th>
       </tr>
       {% for r in receipts %}
       <tr {% if r.pending %} class="error" {% endif %}>
-        <td>{{ forloop.counter }}</td>
+        <td>{{ forloop.counter|add:offset }}</td>
         {% with r.reservation as res %}
             {% with res.owner as person %}
             <td> {% include "includes/person_display.html" %} </td>
@@ -28,14 +28,19 @@
           <td> {{ res.appartment }} </td>
         {% endwith %}
         <td> {{ r.no }} </td>
-        <td> {{ r.euro|floatformat:2 }} </td>
+        <td align="right"> {{ r.euro|floatformat:2 }} </td>
       {% endfor %}
       <tr>
         <td></td>
         <td></td>
         <td></td>
         <td><b>Sum:</b></td>
-        <td><b>{{ sum|floatformat:2 }}</b></td>
+        <td align="right"><b>{{ sum|floatformat:2 }}</b></td>
       </tr>
     </table>
+    {% if pg %}
+      {% with receipts as objects %}
+        {% include "includes/paginator.html" %}
+      {% endwith %}
+    {% endif %}
 {% endblock %}

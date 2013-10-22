@@ -23,6 +23,7 @@ import os
 import os, tempfile, zipfile
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required(login_url='/accounts/login/')
@@ -343,12 +344,31 @@ def send_cvs(request, cvs, txt=False):
         return render_to_response("cvs.html", ctx, context_instance=RequestContext(request))
 
 
+def paging(page, objects):
+    paginator = Paginator(objects, 25) # Show 25 contacts per page
+    try:
+        page = int(page)
+    except ValueError:
+        return objects, 0
+
+    try:
+        objects = paginator.page(page)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page = paginator.num_pages
+        objects = paginator.page(page)
+    offset = (page - 1) * 25
+    return objects, offset
+
+
 @login_required(login_url='/accounts/login/')
 def logistic(request):
 
     period, start, end = get_start_end(request)
     rtype = request.GET.get("rtype", None)
     status = request.GET.get("status", None)
+    pg = request.GET.get("pg", None)
+    page = request.GET.get("page", None)
     receipts = Receipt.objects.all()
     if rtype:
         receipts = receipts.filter(reservation__res_type=rtype)
@@ -356,12 +376,17 @@ def logistic(request):
         receipts = receipts.filter(reservation__status=status)
     receipts = [r for r in receipts if r.inside(start, end)]
     receipts = sorted(receipts, key=lambda r: (r.date, int(r.no)))
+    offset = 0
+    if pg or page:
+      receipts, offset = paging(page, receipts)
 
     l = lambda x: [r.euro for r in x]
     ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
       "sum": sum(l(receipts)),
       "receipts": receipts,
+      "pg": pg,
+      "offset": offset,
       })
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 
