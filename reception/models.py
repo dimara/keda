@@ -51,8 +51,8 @@ class Person(models.Model):
         ret = u"%s" % self.surname
         if self.name:
           ret += u" %s" %self.name
-        if self.ident:
-          ret += u" %s" % self.ident
+        # if self.ident:
+        #   ret += u" %s" % self.ident
         return ret
 
     def identify(self):
