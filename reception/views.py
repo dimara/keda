@@ -380,12 +380,14 @@ def logistic(request):
     if pg or page:
       receipts, offset = paging(page, receipts)
 
+    metafora = sum(euros[:offset])
     ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
-      "sum": sum(euros[:offset]) + sum(l(receipts)),
+      "sum": metafora + sum(l(receipts)),
       "receipts": receipts,
       "pg": pg,
       "offset": offset,
+      "metafora": metafora,
       })
     return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
 
