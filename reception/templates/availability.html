@@ -20,7 +20,6 @@
           <th>Beds</th>
           <th>Category</th>
           <th>Damages</th>
-          <th></th>
         </tr>
         {% for a, res in avail %}
         <tr>
@@ -36,14 +35,21 @@
               {% endif %}
             {% endfor %}
           </td>
-          <td>
-            {% for r in res %}
-                <a target="_blank" href="/admin/reception/reservation/{{ r.id }}/">{{ r.get_res_type_display }} - {{ r.period }} - {{ r.owner.info }} - {{ r.get_status_display }}</a><br>
-            {% endfor %}
-          </td>
-
-
         </tr>
+          {% for r in res %}
+            <tr class="inlineres">
+              <td><a href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+              <td>
+                {% with r.owner as person %}
+                  {% include "includes/person_display.html" %}
+                {% endwith %}
+              </td>
+              <td> {{ r.get_agent_display }} </td>
+              <td> {{ r.period }} </td>
+              <td> {{ r.get_res_type_display }} </td>
+              <td>{% include "includes/status.html" %}</td>
+            </tr>
+          {% endfor %}
         {% endfor %}
-      </table>   
+      </table>
 {% endblock %}
