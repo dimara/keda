@@ -374,14 +374,15 @@ def logistic(request):
         receipts = receipts.filter(reservation__status=status)
     receipts = [r for r in receipts if r.inside(start, end)]
     receipts = sorted(receipts, key=lambda r: (r.date, int(r.no)))
+    l = lambda x: [r.euro for r in x]
+    euros = l(receipts)
     offset = 0
     if pg or page:
       receipts, offset = paging(page, receipts)
 
-    l = lambda x: [r.euro for r in x]
     ctx = get_ctx(period, start, end, None, None, None, rtype, status, None)
     ctx.update({
-      "sum": sum(l(receipts)),
+      "sum": sum(euros[:offset]) + sum(l(receipts)),
       "receipts": receipts,
       "pg": pg,
       "offset": offset,
