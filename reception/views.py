@@ -347,17 +347,15 @@ def send_cvs(request, cvs, txt=False):
 def paging(page, objects):
     paginator = Paginator(objects, constants.ENTRIES_PER_PAGE) # Show 25 contacts per page
     try:
-        page = int(page)
-    except ValueError:
-        return objects, 0
-
-    try:
+        objects = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
         objects = paginator.page(page)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         page = paginator.num_pages
         objects = paginator.page(page)
-    offset = (page - 1) * constants.ENTRIES_PER_PAGE
+    offset = (int(page) - 1) * constants.ENTRIES_PER_PAGE
     return objects, offset
 
 
