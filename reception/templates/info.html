@@ -51,6 +51,18 @@
           {{ p.no }}<br>
         {% endfor %}
         </td>
+        {% for rel in r.owner.relatives.all %}
+          <tr class="inlineres">
+            <td> <a href="/admin/reception/person/{{ rel.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+            <td>
+		{{ rel.info }}
+            </td>
+            <td> {{ rel.relationship }} </td>
+            <td> </td>
+            <td> </td>
+            <td> </td>
+          </tr>
+        {% endfor %}
       {% endfor %}
     </table>
 {% endblock %}
