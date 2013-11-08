@@ -71,6 +71,7 @@ class NestedPersonAdmin(NestedModelAdmin):
     inlines = [
         ContactInfoInline,
         VehicleInline,
+        RelativeInline,
         ]
 
 class DamageInline(admin.TabularInline):

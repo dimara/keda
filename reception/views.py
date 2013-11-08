@@ -488,6 +488,8 @@ def lookup(request):
         persons = persons.filter(vehicles__plate__contains=text)
       elif inside == "surnames":
         persons = persons.filter(surname__contains=text)
+      elif inside == "ids":
+        persons = persons.filter(ident__contains=text)
       if len(persons) > 20:
         persons = MilitaryPerson.objects.filter(id__in=[p.id for p in persons[:20]])
         errors = "The following list is truncated! Please be more specific!"

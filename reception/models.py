@@ -51,8 +51,8 @@ class Person(models.Model):
         ret = u"%s" % self.surname
         if self.name:
           ret += u" %s" %self.name
-        # if self.ident:
-        #   ret += u" %s" % self.ident
+        if self.ident:
+          ret += u" -%s-" % self.ident
         return ret
 
     def identify(self):
@@ -148,7 +148,7 @@ class MilitaryPerson(Person):
         if self.rank:
             ret = u"%s %s" % (self.rank.short, ret)
         if not self.active:
-            ret += u" (ΕΑ)"
+            ret += u" ε.α."
         return ret
 
     def person_info(self):
