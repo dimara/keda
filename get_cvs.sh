@@ -6,21 +6,24 @@ BASE_URL=https://192.168.1.124
 FIRST_DATE=2013-05-01
 LAST_DATE=2013-10-05
 ALL_TYPES=0
-ALL_AGENTS="0 1 2"
-ALL_STATUSES=3
+ALL_AGENTS=0\ 1\ 2
+#ALL_STATUSES=
 
 usage(){
   echo "
 Usage: $0 username password 
 
-   --stats   Include stats per period
-   --lists   Include reservations per period, and agent for REGULAR visitors
-   --sum     Aggregate results
-   --all     Enable stats, lists, and sum
-   --periods Space separated list of period IDs (default 1)
-   --start   Starting date (default 2013-05-01)
-   --end     Ending date (default 2013-10-05)
-   --url     The server url
+   --url      The server url
+   --stats    Include stats per period
+   --lists    Include reservations per period, and agent for REGULAR visitors
+   --sum      Aggregate results
+   --all      Enable stats, lists, and sum
+   --periods  Space separated list of period IDs (default 1)
+   --start    Starting date (default 2013-05-01)
+   --end      Ending date (default 2013-10-05)
+   --types    The reservation type (0..5)
+   --agents   The reservation agent (0..7) 
+   --statuses The reservation status (0..4)
 
 "
   exit 1
@@ -74,19 +77,19 @@ curl -s -c cookies.txt -b cookies.txt $URL/accounts/login/ -k -o /dev/null &>/de
 csrftoken=$(grep csrftoken cookies.txt | awk '{ print $7 }')
 curl -s -c cookies.txt -b cookies.txt -d "username=$1&password=$2&csrfmiddlewaretoken=$csrftoken" $URL/accounts/login/ -k
 
-for period in $PERIODS; do
-  for rtype in $TYPES; do
-    for agent in $AGENTS; do
-      for status in $STATUSES; do
-      if $LISTS; then
-	curl -k  -b cookies.txt  $URL/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on\&txt=on
-	echo; echo; echo;
-	sleep 1
-      fi
-done
-done
-done
-done
+if $LISTS; then
+  for period in $PERIODS; do
+      for rtype in $TYPES; do
+        for agent in $AGENTS; do
+          #for status in $STATUSES; do
+            curl -k  -b cookies.txt  $URL/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on\&txt=on
+	    echo; echo; echo;
+	    sleep 1
+          #done
+        done
+      done
+  done
+fi
 
 if $STATS; then
 	for period in $PERIODS; do
