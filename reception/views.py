@@ -177,9 +177,19 @@ def appartments(request):
                 cur.append(r)
         result.append((a, cur, res))
 
+    beds = map(sum, zip(*[(a.double, a.single, a.bunk) for a in  appartments]))
+    rates = []
+    if area:
+        regular = Appartment.rates(area, constants.RT_REGULAR)
+        osseay = Appartment.rates(area, constants.RT_OSSEAY)
+        school = Appartment.rates(area, constants.RT_SCHOOLS)
+        rates = [regular, osseay, school]
     ctx = get_ctx(period, start, end, area, None, None, None, None, None)
     ctx.update({
       "errors": errors,
+      "beds": "%dΔ+%dΜ+%dΚ" % (beds[0], beds[1], beds[2]),
+      "rooms": sum([a.rooms for a in appartments]),
+      "rates": rates,
       "current": current,
       "history": history,
       "apartments": Appartment.objects.all(),

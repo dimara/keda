@@ -244,6 +244,37 @@ class Appartment(models.Model):
     def appartment(self):
         return u"%s-%s" % (self.area, self.no)
 
+    @staticmethod
+    def rates(area=None, rt=None, rooms=3):
+        rates = {}
+        if area in (u"Μ1", u"Μ2", u"Μ3"):
+            print "adfasdf"
+            rates = { 
+              RT_REGULAR: "6 Euro/day",
+              RT_SCHOOLS: "16 Euro/day/person",
+              RT_OSSEAY: "40 Euro/month",
+              }
+        elif area in (u"Μ4", u"Μ5"):
+            rates = { 
+              RT_REGULAR: "7 Euro/day",
+              RT_SCHOOLS: "16 Euro/day/person",
+              }
+        elif area in (u"Α"):
+            rates = { 
+              RT_REGULAR: "9.5 Euro/day",
+              }
+        elif area in (u"Β", u"Ζ"):
+            if rooms == 2:
+                regular = "8 Euro/day"
+            else:
+                regular = "8.5 Euro/day"
+            rates = {
+              RT_REGULAR: regular,
+              RT_OSSEAY: "61 Euro/month",
+              }
+        return rates.get(rt, "N/A")
+ 
+
 class Damage(models.Model):
     DAMAGES = (
       ("AC" , "A/C"),
@@ -429,8 +460,9 @@ class Reservation(models.Model):
 
     @property
     def receipt(self):
-        if self.receipts.all():
-            return self.receipts.all()[0]
+        receipts = self.receipts.order_by("-date")
+        if receipts:
+            return receipts[0]
         else:
             return None
 

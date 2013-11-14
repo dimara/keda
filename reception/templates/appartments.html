@@ -16,7 +16,7 @@
       <tr id="titles">
         <th></th>
         <th>Appartment</th>
-        <th>Category</th>
+        <th>Rooms</th>
         <th>Beds</th>
         <th>Damages</th>
         <th></th>
@@ -25,7 +25,7 @@
         <tr>
           <td> {{ forloop.counter }}</td>
           <td> <a target="_blank" href="/admin/reception/appartment/{{ a.id }}/">{{ a }}</a> </td>
-          <td> {{ a.category }}</td>
+          <td> {{ a.rooms }}</td>
           <td> {{ a.beds }}</td>
           <td>
           {% for d in a.damages.all %}
@@ -65,6 +65,26 @@
           </tr>
         {% endfor %}
       {% endfor %}
+      <tr>
+        <td></td>
+        <td><b>Total:</b></td>
+        <td>{{ rooms }}</td>
+        <td>{{ beds }}</td>
+        <td></td>
+        <td></td>
+      </tr>
+      {% if rates %}
+      <tr>
+        <td></td>
+        <td><b>Rates:</b></td>
+        <td>ΤΑΚΤΙΚΟΙ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.0 }}</td>
+        <td>ΟΣΣΕΑΥ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.1 }}</td>
+        <td>ΣΧΟΛΕΙΑ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.2 }}</td>
+        </td>
+      </tr>
+      {% endif %}
+
     </table>
+
     <a href="#" class="scrollup">Scroll</a>
 {% endblock %}
