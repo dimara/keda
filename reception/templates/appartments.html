@@ -19,7 +19,7 @@
         <th>Rooms</th>
         <th>Beds</th>
         <th>Damages</th>
-        <th></th>
+        <th>Rates</th>
       </tr>
       {% for a, c, h in result %}
         <tr>
@@ -34,7 +34,7 @@
             {% endif %}
           {% endfor %}
           </td>
-          <td></td>
+          <td> <span rel="tooltip" title="{{ a.rates|join:", " }}"><span class="badge">R</span> </span></td>
         </tr>
         {% for r in c %}
           <tr class="inlineres">
@@ -73,17 +73,6 @@
         <td></td>
         <td></td>
       </tr>
-      {% if rates %}
-      <tr>
-        <td></td>
-        <td><b>Rates:</b></td>
-        <td>ΤΑΚΤΙΚΟΙ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.0 }}</td>
-        <td>ΟΣΣΕΑΥ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.1 }}</td>
-        <td>ΣΧΟΛΕΙΑ:<br><i class="glyphicon glyphicon-chevron-right"></i>{{ rates.2 }}</td>
-        </td>
-      </tr>
-      {% endif %}
-
     </table>
 
     <a href="#" class="scrollup">Scroll</a>

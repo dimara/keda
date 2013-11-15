@@ -26,7 +26,7 @@
         <td align="right"><b>{{ metafora|floatformat:2 }}</b></td>
       </tr>
       {% for r in receipts %}
-      <tr {% if r.pending %} class="error" {% endif %}>
+      <tr {% if r.pending %} class="danger" {% endif %}>
         <td>{{ forloop.counter|add:offset }}</td>
         {% with r.reservation as res %}
             {% with res.owner as person %}

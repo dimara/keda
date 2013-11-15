@@ -10,6 +10,7 @@ RT_OSSEAY = 2
 RT_UNIT = 3
 RT_SCHOOLS = 4
 RT_CLIMS = 5
+RT_AGAMON = 6
 
 RA_GEA = 0
 RA_EA = 1
@@ -37,3 +38,15 @@ LOGDIR = "reception/logfiles"
 
 # used by pagination
 ENTRIES_PER_PAGE = 40
+
+# rates
+R_LOW = "6 Euro/day"
+R_MED = "7 Euro/day"
+R_HIGH = "8 Euro/day"
+R_HIGHB = "8.5 Euro/day"
+R_LUX = "9.5 Euro/day"
+R_BEST = "10 Euro/day"
+R_SCHOOL = "16 Euro/day/person"
+R_UNIT = "40 Euro/month"
+R_UNITB = "61 Euro/month"
+R_NA = "N/A"

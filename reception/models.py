@@ -244,35 +244,21 @@ class Appartment(models.Model):
     def appartment(self):
         return u"%s-%s" % (self.area, self.no)
 
-    @staticmethod
-    def rates(area=None, rt=None, rooms=3):
-        rates = {}
-        if area in (u"Μ1", u"Μ2", u"Μ3"):
-            print "adfasdf"
-            rates = { 
-              RT_REGULAR: "6 Euro/day",
-              RT_SCHOOLS: "16 Euro/day/person",
-              RT_OSSEAY: "40 Euro/month",
-              }
-        elif area in (u"Μ4", u"Μ5"):
-            rates = { 
-              RT_REGULAR: "7 Euro/day",
-              RT_SCHOOLS: "16 Euro/day/person",
-              }
-        elif area in (u"Α"):
-            rates = { 
-              RT_REGULAR: "9.5 Euro/day",
-              }
-        elif area in (u"Β", u"Ζ"):
-            if rooms == 2:
-                regular = "8 Euro/day"
+    @property
+    def rates(self):
+        """ Return a list for regular/schools/unit """
+        if self.area in (u"Μ1", u"Μ2", u"Μ3"):
+             return [R_LOW, R_SCHOOLS, R_UNIT]
+        elif self.area in (u"Μ4", u"Μ5"):
+             return [R_MED, R_NA, R_NA]
+        elif self.area in (u"Α"):
+             return [R_LUX, R_NA, R_NA]
+        elif self.area in (u"Β", u"Ζ"):
+            if self.rooms == 2:
+                return [R_HIGH, R_NA, R_UNITB]
             else:
-                regular = "8.5 Euro/day"
-            rates = {
-              RT_REGULAR: regular,
-              RT_OSSEAY: "61 Euro/month",
-              }
-        return rates.get(rt, "N/A")
+                return [R_HIGHB, R_NA, R_UNITB]
+        return [R_NA, R_NA, R_NA] 
  
 
 class Damage(models.Model):
@@ -341,6 +327,7 @@ class Reservation(models.Model):
       (RT_UNIT, u"ΜΟΝΑΔΑ"),
       (RT_SCHOOLS, u"ΣΧΟΛΕΙΑ"),
       (RT_CLIMS, u"CLIMS"),
+      (RT_AGAMON, u"ΑΓΑΜΩΝ"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
