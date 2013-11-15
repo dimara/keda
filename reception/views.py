@@ -518,7 +518,6 @@ def stats(request):
     period, start, end = get_start_end(request)
     live = request.GET.get("live", False)
     show = request.GET.get("show", False)
-    fast = request.GET.get("fast", False)
     cvs = request.GET.get("cvs", False)
     txt = request.GET.get("txt", False)
     reservations = Reservation.objects.all()
@@ -527,16 +526,13 @@ def stats(request):
       reservations = filter(lambda x: x.status == RS_CONFIRM, reservations)
     else:
       reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
-    rids = [r.id for r in reservations]
-    errors = None
-    if not fast and len(rids) < 900:
-      persons = sum([r.persons for r in reservations if r.persons])
-      receipts = Receipt.objects.filter(reservation__in=rids)
-      euros = sum([r.euro for r in receipts])
-    else:
-      errors = "Too many reservations found! Cannot calculate persons and euros!"
-      persons = 0
-      euros = 0
+
+    receipts = Receipt.objects.all()
+    receipts = [r for r in receipts if r.inside(start, end)]
+    euros = sum([r.euro for r in receipts])
+
+    persons = sum([r.persons for r in reservations if r.persons])
+
     regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
     b3 = filter(lambda x: x.agent == RA_GEA, regular)
     ea = filter(lambda x: x.agent == RA_EA, regular)
@@ -560,7 +556,6 @@ def stats(request):
       "osseay": len(osseay),
       "paratheristes": len(paratheristes),
       "monada": len(monada),
-      "errors": errors,
       })
     p = period.name if period else ""
     dates = u"%s: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))

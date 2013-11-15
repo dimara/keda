@@ -328,6 +328,7 @@ class Reservation(models.Model):
       (RT_SCHOOLS, u"ΣΧΟΛΕΙΑ"),
       (RT_CLIMS, u"CLIMS"),
       (RT_AGAMON, u"ΑΓΑΜΩΝ"),
+      (RT_EXTUNIT, u"ΑΠΟΣ/ΝΟΙ"),
       )
 
     check_in = models.DateField("Check In", null=True, blank=True)
