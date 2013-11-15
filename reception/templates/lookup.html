@@ -42,7 +42,7 @@
         </tr>
         {% for r in p.reservations.all %}
           <tr class="inlineres">
-            <td>  <a href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
+            <td>  <a target="_blank" href="/admin/reception/reservation/{{ r.id }}/"><i class="glyphicon glyphicon-chevron-right"></i></a></td>
             <td> {{ r.appartment }} </td>
             <td> {{ r.get_agent_display }} </td>
             <td> {{ r.period }} </td>

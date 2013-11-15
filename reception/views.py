@@ -373,7 +373,11 @@ def logistic(request):
     page = request.GET.get("page", None)
     receipts = Receipt.objects.all()
     if rtype:
-        receipts = receipts.filter(reservation__res_type=rtype)
+        comb = [constants.RT_AGAMON, constants.RT_UNIT]
+        if int(rtype) in comb:
+            receipts = receipts.filter(reservation__res_type__in=comb)
+        else:
+            receipts = receipts.filter(reservation__res_type=rtype)
     if status:
         receipts = receipts.filter(reservation__status=status)
     receipts = [r for r in receipts if r.inside(start, end)]
