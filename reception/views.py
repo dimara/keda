@@ -540,6 +540,7 @@ def stats(request):
     osseay = filter(lambda x: x.res_type == RT_OSSEAY, reservations)
     paratheristes = filter(lambda x: x.res_type == RT_DAILY, reservations)
     monada = filter(lambda x: x.res_type == RT_UNIT, reservations)
+    agamon = filter(lambda x: x.res_type == RT_AGAMON, reservations)
 
     ctx = get_ctx(period, start, end, None, None, None, None, None, None)
     ctx.update({
@@ -554,6 +555,7 @@ def stats(request):
       "ea": len(ea),
       "my": len(my),
       "osseay": len(osseay),
+      "agamon": len(agamon),
       "paratheristes": len(paratheristes),
       "monada": len(monada),
       })
