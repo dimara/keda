@@ -49,7 +49,7 @@ while true ; do
     --periods) PERIODS="$2" ; shift 2;;
     --agents) AGENTS="$2" ; shift 2;;
     --types) TYPES="$2" ; shift 2;;
-    --statuses) STATUS="$2" ; shift 2;;
+    --statuses) STATUSES="$2" ; shift 2;;
     --start) FIRST_DATE=$2 ; shift 2;;
     --end) LAST_DATE=$2 ; shift 2;;
     --url) URL=$2 ; shift 2;;
@@ -84,11 +84,11 @@ if $LISTS; then
   for period in $PERIODS; do
       for rtype in $TYPES; do
         for agent in $AGENTS; do
-          #for status in $STATUSES; do
+          for status in $STATUSES; do
             curl -k  -b $COOKIES  $URL/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on\&txt=on
 	    echo; echo; echo;
 	    sleep 1
-          #done
+          done
         done
       done
   done

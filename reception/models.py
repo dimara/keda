@@ -248,7 +248,7 @@ class Appartment(models.Model):
     def rates(self):
         """ Return a list for regular/schools/unit """
         if self.area in (u"Μ1", u"Μ2", u"Μ3"):
-             return [R_LOW, R_SCHOOLS, R_UNIT]
+             return [R_LOW, R_SCHOOL, R_UNIT]
         elif self.area in (u"Μ4", u"Μ5"):
              return [R_MED, R_NA, R_NA]
         elif self.area in (u"Α"):
