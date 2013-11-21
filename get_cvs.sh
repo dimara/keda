@@ -2,12 +2,13 @@
 
 ALL_PERIOD_IDS="$(seq 1 12)"
 FIRST_PERIOD_ID=1
-BASE_URL=https://192.168.1.124
+BASE_URL=https://127.0.0.1
 FIRST_DATE=2013-05-01
 LAST_DATE=2013-10-05
-ALL_TYPES=0
-ALL_AGENTS=0\ 1\ 2
+ALL_TYPES=
+ALL_AGENTS=
 ALL_STATUSES=
+COOKIES=/tmp/cookies.txt
 
 usage(){
   echo "
@@ -73,16 +74,18 @@ if [ -n "$OUTPUT" ]; then
   exec 2>/dev/null
 fi
 
-curl -s -c cookies.txt -b cookies.txt $URL/accounts/login/ -k -o /dev/null &>/dev/null
-csrftoken=$(grep csrftoken cookies.txt | awk '{ print $7 }')
-curl -s -c cookies.txt -b cookies.txt -d "username=$1&password=$2&csrfmiddlewaretoken=$csrftoken" $URL/accounts/login/ -k
+stat $COOKIES && rm $COOKIES
+
+curl -s -c $COOKIES -b $COOKIES $URL/accounts/login/ -k -o /dev/null &>/dev/null
+csrftoken=$(grep csrftoken $COOKIES | awk '{ print $7 }')
+curl -s -c $COOKIES -b $COOKIES -d "username=$1&password=$2&csrfmiddlewaretoken=$csrftoken" $URL/accounts/login/ -k
 
 if $LISTS; then
   for period in $PERIODS; do
       for rtype in $TYPES; do
         for agent in $AGENTS; do
           #for status in $STATUSES; do
-            curl -k  -b cookies.txt  $URL/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on\&txt=on
+            curl -k  -b $COOKIES  $URL/reservations/?period=$period\&rtype=$rtype\&agent=$agent\&status=$status\&cvs=on\&txt=on
 	    echo; echo; echo;
 	    sleep 1
           #done
@@ -93,10 +96,10 @@ fi
 
 if $STATS; then
 	for period in $PERIODS; do
-	  curl -k  -b cookies.txt  $URL/stats/?period=$period\&cvs=on\&txt=on
+	  curl -k  -b $COOKIES  $URL/stats/?period=$period\&cvs=on\&txt=on
 	done
 fi
 
 if $SUM; then
-	curl -k  -b cookies.txt  $URL/stats/?start=$FIRST_DATE\&end=$LAST_DATE\&fast=on\&cvs=on\&txt=on
+	curl -k  -b $COOKIES  $URL/stats/?start=$FIRST_DATE\&end=$LAST_DATE\&fast=on\&cvs=on\&txt=on
 fi

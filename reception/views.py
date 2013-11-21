@@ -294,7 +294,6 @@ def get_cvs(ctx):
     response = "%s%s%s" % (comments, header,  data)
     return response
 
-
 @login_required(login_url='/accounts/login/')
 def reservations(request):
 

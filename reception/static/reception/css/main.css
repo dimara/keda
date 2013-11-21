@@ -341,6 +341,17 @@ color:rgba(185,74,72,0.9);
     width:18%; 
 }
 
+.genfixed{
+	position: fixed;
+	right: 0;
+	margin-right: 10px;
+	bottom: 20px;
+	/*width: 8em;*/
+	/*margin-top: -2.5em;*/
+	/*background: red;*/
+  width: 18%;
+}
+
 .chkfixed{
 	position: fixed;
 	right: 0;

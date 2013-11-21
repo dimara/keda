@@ -21,6 +21,17 @@ server {
     location /static {
         alias /root/keda/staticfiles;
     }
+    location /lists/results {
+        alias /root/keda/lists/results;
+        autoindex on;
+    }
+    location ~ ^/cgi-bin/.*\.cgi$ {
+        gzip           off;
+        root /var/www;
+        include fastcgi_params;
+        fastcgi_pass   unix:/var/run/fcgiwrap.socket;
+        fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+    }
     location / {
         proxy_pass_header Server;
         proxy_set_header Host $http_host;
