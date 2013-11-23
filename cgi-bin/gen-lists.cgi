@@ -5,6 +5,9 @@ IFS='=&'
 parm=($QUERY_STRING)
 IFS=$saveIFS
 
+
+source /etc/default/keda
+
 for ((i=0; i<${#parm[@]}; i+=2))
 do
     declare var_${parm[i]}=${parm[i+1]}
@@ -28,4 +31,4 @@ EOF
 exec >&-
 exec 2>&-
 
-/root/keda/get_all.sh user password
+$SCRIPTS_DIR/get_all.sh dimara marika
