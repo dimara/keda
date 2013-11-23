@@ -1,16 +1,17 @@
+map $server_name $server_ip_or_name {
+    default 127.0.0.1;
+}
+
 server {
     listen       80;
-    server_name  83.212.117.60;
-    rewrite ^ https://83.212.117.60$request_uri? permanent;
-#    rewrite ^ https://mysite.com$uri permanent; # also works
+    rewrite ^ https://$server_ip_or_name$request_uri? permanent;
 }
 server {
     listen   443;
-    server_name  83.212.117.60;
 
     ssl  on;
-    ssl_certificate  /root/certificate.pem;
-    ssl_certificate_key  /root/key.pem;
+    ssl_certificate  /etc/nginx/certs/certificate.pem;
+    ssl_certificate_key  /etc/nginx/certs/key.pem;
 
     ssl_session_timeout  5m;
 
@@ -42,5 +43,7 @@ server {
         proxy_read_timeout 10;
         proxy_pass http://127.0.0.1:8888/;
     }
+    charset utf-8;
+    charset_types text/css application/json text/plain application/liquid;
 }
 

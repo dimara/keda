@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OUTPUTDIR=/root/keda/lists/results/latest
+source /etc/default/keda
 
 
 if [ $# -ne 2 ]; then
@@ -13,6 +13,6 @@ rm $OUTPUTDIR/*
 
 for p in {1..12}; do
   for a in {0..2}; do
-    /root/keda/get_cvs.sh --lists --periods $p --types 0 --agents $a --statuses 3 $1 $2 > $OUTPUTDIR/period_$p-rtype_0-agent_$a-status_3.csv
+    $SCRIPTS_DIR/get_cvs.sh --lists --periods $p --types 0 --agents $a --statuses 3 $1 $2 > $OUTPUTDIR/period_$p-rtype_0-agent_$a-status_3.csv
   done
 done
