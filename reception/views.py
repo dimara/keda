@@ -567,11 +567,11 @@ def stats(request):
 # between %s and %s
 # as generated @ %s
 """ % (p, start.isoformat(), end.isoformat(), timestamp)
-    header = u"Ημ/νίες|ΤΑΚΤΙΚΟΙ|EURO|ΓΕΑ/Β3|Ε.Α.|Μ.Υ.|ΠΑΡ/ΣΤΕΣ|ΜΟΝΑΔΑ|ΟΣΣΕΑΥ\n"
-    data = u"%s|%d|%.2f|%d|%d|%d|%d|%d|%d\n" % \
+    header = u"Ημ/νίες|ΤΑΚΤΙΚΟΙ|EURO|ΓΕΑ/Β3|Ε.Α.|Μ.Υ.|ΠΑΡ/ΣΤΕΣ|ΜΟΝΑΔΑ|ΟΣΣΕΑΥ|ΑΓΑΜΩΝ\n"
+    data = u"%s|%d|%.2f|%d|%d|%d|%d|%d|%d|%d\n" % \
            (dates, len(reservations), euros,
             len(b3), len(ea), len(my),
-            len(paratheristes), len(monada), len(osseay))
+            len(paratheristes), len(monada), len(osseay), len(agamon))
     graph = create_graph(comments, header, data)
     ctx.update({"graph": graph})
     if cvs:
