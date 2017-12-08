@@ -1,3 +1,20 @@
 Δευ 16 Σεπ 2013 10:00:00 μμ EEST
 
 WE HAVE A KICK ASS PRODUCT!!!!
+
+To use it launch a wheezy machine
+
+apt-get install nginx gunicorn python-django/wheezy python-django-south/wheezy
+
+cp examples/keda.gunicorn /etc/gunicorn.d/keda
+cp examples/keda.nginx /etc/nginx/sites-enabled/keda
+
+openssl req -new -x509 -days 365000 -nodes -out /etc/ssl/certs/keda.pem -keyout /etc/ssl/private/keda.key
+
+python manage.py syncdb
+
+[Do not create superuser]
+
+python manage.py migrate
+
+python manage.py collectstatic

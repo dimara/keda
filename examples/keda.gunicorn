@@ -12,8 +12,6 @@ CONFIG = {
         '--workers=1',
         # '--worker-class=egg:gunicorn#sync',
         # '--timeout=30',
-        '--debug',
-        '--log-level=debug',
     ),
 }
 
