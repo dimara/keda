@@ -17,6 +17,7 @@
         <th>Appartment</th>
         <th>Receipt</th>
         <th align="right">Euro</th>
+        <th></th>
       </tr>
       <tr>
         <td></td>
@@ -24,6 +25,7 @@
         <td></td>
         <td></td>
         <td align="right"><b>{{ metafora|floatformat:2 }}</b></td>
+        <td></td>
       </tr>
       {% for r in receipts %}
       <tr {% if r.pending %} class="danger" {% endif %}>
@@ -36,6 +38,7 @@
         {% endwith %}
         <td> {{ r.no }} </td>
         <td align="right"> {{ r.euro|floatformat:2 }} </td>
+        <td> {% if r.pending %} p {% endif %}</td>
       {% endfor %}
       <tr>
         <td></td>
@@ -43,6 +46,7 @@
         <td></td>
         <td><b>Sum:</b></td>
         <td align="right"><b>{{ sum|floatformat:2 }}</b></td>
+        <td></td>
       </tr>
     </table>
     {% if pg %}
