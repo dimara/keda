@@ -49,7 +49,7 @@ sync
 
 backup=${BACKUPDIR}/db.sqlite3.$(timestamp)
 log Copying database $DB.to $backup..
-cp -av $DB $backup
+cp -v $DB $backup
 
 log Starting gunicorn...
 service gunicorn start
