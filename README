@@ -4,7 +4,7 @@ WE HAVE A KICK ASS PRODUCT!!!!
 
 To use it launch a wheezy machine
 
-apt-get install nginx gunicorn python-django/wheezy python-django-south/wheezy
+apt-get install nginx gunicorn python-django/wheezy python-django-south/wheezy gnuplot
 
 cp examples/keda.gunicorn /etc/gunicorn.d/keda
 cp examples/keda.nginx /etc/nginx/sites-enabled/keda
