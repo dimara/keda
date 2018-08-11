@@ -6,6 +6,10 @@ LOGFILE=/var/log/keda-backup.log
 DB=/root/keda/db.sqlite3
 BACKUPDIR=/backup
 
+if [ -e /etc/default/keda ]; then
+	. /etc/default/keda
+fi
+
 # NOTE: This will send email notifications
 exec &> >(tee -a $LOGFILE)
 #exec 1>> $LOGFILE 2>&1
