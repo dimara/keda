@@ -157,6 +157,9 @@ class MilitaryPerson(Person):
         except:
           return ("militaryperson", self.info())
 
+    def __unicode__(self):
+        return self.info()
+
 
 class Unit(models.Model):
     name = models.CharField("Name", max_length=20)
@@ -258,8 +261,8 @@ class Appartment(models.Model):
                 return [R_HIGH, R_NA, R_UNITB]
             else:
                 return [R_HIGHB, R_NA, R_UNITB]
-        return [R_NA, R_NA, R_NA] 
- 
+        return [R_NA, R_NA, R_NA]
+
 
 class Damage(models.Model):
     DAMAGES = (
