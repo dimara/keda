@@ -1,2 +1,4 @@
 SCRIPTS_DIR=/usr/lib/keda/scripts
 OUTPUTDIR=/var/www/lists/results/latest
+USERNAME=
+PASSWORD=

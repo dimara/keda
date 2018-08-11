@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 ALL_PERIOD_IDS="$(seq 1 12)"
 FIRST_PERIOD_ID=1
 BASE_URL=https://127.0.0.1

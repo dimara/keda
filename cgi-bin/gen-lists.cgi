@@ -31,4 +31,4 @@ EOF
 exec >&-
 exec 2>&-
 
-$SCRIPTS_DIR/get_all.sh dimara marika
+$SCRIPTS_DIR/get_all.sh $USERNAME $PASSWORD

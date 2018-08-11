@@ -1,11 +1,18 @@
 #!/bin/bash
 
+set -x
+
 source /etc/default/keda
 
 
 if [ $# -ne 2 ]; then
   echo "Usage: $0 <user> <password>"
   exit 1
+fi
+
+if [ -z "$OUTPUTDIR" ]; then
+       echo "OUTPUTDIR is not defined"
+       exit 1
 fi
 
 mkdir -p $OUTPUTDIR
