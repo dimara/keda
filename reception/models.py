@@ -532,7 +532,7 @@ class ReservationForm(BaseNestedModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReservationForm, self).__init__(*args, **kwargs)
-        self.fields["owner"].queryset = MilitaryPerson.objects.all().order_by("surname", "name")
+        self.fields["owner"].queryset = MilitaryPerson.objects.prefetch_related("rank").all().order_by("surname", "name")
 
     class Meta:
             model = Reservation
