@@ -11,7 +11,7 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
     <title>KEDA Google Map</title>
 
   </head>
-  <body onload="initialize()" onunload="GUnload()" style="font-family: Arial;border: 0 none;">
+  <body>
   {% include "includes/menu.html" %}
   <div class="container">
     <form action="/gmap/" method="GET">
@@ -24,36 +24,44 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
     <div id="map_canvas" style="width: 800px; height: 600px"></div>
     {% include "includes/scripts.html" %}
     <script src="/static/reception/js/mapiconmaker.js" type="text/javascript"></script>
-    <script src="//maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=AIzaSyAYmNkNGSndWm1gHvKw4xZCH6D0-duW6iQ" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAYmNkNGSndWm1gHvKw4xZCH6D0-duW6iQ"></script>
     <script type="text/javascript">
 
     function initialize() {
-      if (GBrowserIsCompatible()) {
-        var map = new GMap2(document.getElementById("map_canvas"), { size: new GSize(800,600)});
-        map.setMapType(G_SATELLITE_MAP);
-        map.setCenter(new GLatLng(38.066583,23.99712324142456), 17);
-        map.removeMapType(G_HYBRID_MAP);
-        map.addControl(new GMapTypeControl());
-        map.addControl(new GSmallMapControl());
-        function getIcon(color) {
-            return MapIconMaker.createMarkerIcon({width: 20, height: 34, primaryColor: color, cornercolor:color});
+        var map = new google.maps.Map(document.getElementById("map_canvas"), {
+            center: new google.maps.LatLng(38.066583,23.99712324142456),
+            zoom: 17,
+            // SATELLITE is pixelled
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        function getIcon(label, color) {
+            return MapIconMaker.createLabeledMarkerIcon({
+                label: label,
+                width: 20,
+                height: 34,
+                primaryColor: color,
+                cornercolor:color
+            });
         }
         function createMarker(latlng, color, myHtml, appartment) {
             var no = appartment.split('-')
             if (no.length > 1) { label=no[1] } else { label=no[0]; };
+            // gicon = getIcon(label, color);
             var url = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + label + '|' + color + '|000000' ;
-            gicon = new GIcon(G_DEFAULT_ICON)
-            gicon.image = url
-            gicon.iconSize = new GSize(20, 34)
-            markerOptions = { icon:gicon };
-            var marker = new GMarker(latlng, markerOptions);
-            GEvent.addListener(marker, "click", function() {
-              map.openInfoWindowHtml(latlng, myHtml);
+            gicon = new google.maps.MarkerImage();
+            gicon.url = url;
+            gicon.size = new google.maps.Size(20, 34);
+            markerOptions = { icon:gicon, position:latlng };
+            var marker = new google.maps.Marker(markerOptions);
+            var infoWindow = new google.maps.InfoWindow();
+            marker.addListener("click", function() {
+              infoWindow.setContent(myHtml);
+              infoWindow.open({anchor: marker, map})
             });
             return marker;
         }
         function createAppMarker(appartment, info) {
-          var latlng = new GLatLng(info["lat"], info["lng"]);
+          var latlng = new google.maps.LatLng(info["lat"], info["lng"]);
 
           myHtml = '<b><a target="_blank" href=' + info['url'] + '>' + appartment + '</a></b><br>';
           myHtml = "<a href=" + info['aurl'] + ">" + myHtml + "</a>"
@@ -87,30 +95,25 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
             for(var p in points){
               lat = points[p][0]
               lng = points[p][1]
-              latlngs.push(new GLatLng(lat, lng))
+              latlngs.push(new google.maps.LatLng(lat, lng))
             }
-            var polygon = new GPolygon(latlngs, "#f33f00", 1, 1, "#ff0000", 0.2);
-            //map.addOverlay(polygon);
+            var polygon = new google.maps.Polygon(latlngs, "#f33f00", 1, 1, "#ff0000", 0.2);
           }
-          return createMarker(latlng, color, myHtml, appartment)
+          return createMarker(latlng, color, myHtml, appartment);
         }
-        GEvent.addListener(map,"click", function(overlay, latlng) {     
-                var marker = new GMarker(latlng, markerOptions);
-                map.addOverlay(createMarker(latlng, "FFFFFF", "Test: " + latlng, "test"));
-            });
-
         $.getJSON("{{ url }}", function(json) {
             for(var appartment in json){
                 if (json.hasOwnProperty(appartment)){
                   var info=json[appartment];
-                  map.addOverlay(createAppMarker(appartment, info))
+                  console.log(appartment, info)
+                  marker = createAppMarker(appartment, info);
+                  marker.setMap(map);
                   // work with key and value
                 }
             }
         });
-      }
     }
-
+    google.maps.event.addDomListener(window, 'load', initialize);
     </script>
   </body>
 
