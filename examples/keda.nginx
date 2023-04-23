@@ -17,10 +17,10 @@ server {
     ssl_session_timeout  5m;
 
     location /static {
-        alias /root/keda/staticfiles;
+        alias /keda/staticfiles;
     }
     location /lists/results {
-        alias /root/keda/lists/results;
+        alias /keda/lists/results;
         autoindex on;
     }
     location ~ ^/cgi-bin/.*\.cgi$ {
