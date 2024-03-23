@@ -2,18 +2,17 @@
 # -*- coding: utf-8 -*-
 from django.http import *
 import datetime
+import json
 from django import template
-from django.utils import simplejson
 from django.conf import settings
 from django.template.loader import get_template
 from django.template import Context, RequestContext
 from django.forms.models import modelformset_factory
 from django.forms.models import inlineformset_factory
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 from reception.models import *
 from reception import constants
 from django.db.models import Q
-from django.core.context_processors import csrf
 from django import forms
 from itertools import chain
 from django.contrib.auth.decorators import login_required
@@ -22,7 +21,7 @@ import os
 
 import os, tempfile, zipfile
 from django.http import HttpResponse
-from django.core.servers.basehttp import FileWrapper
+from wsgiref.util import FileWrapper
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -30,11 +29,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def home(request):
     date = datetime.date.today()
     now = datetime.datetime.now()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
       # Do something for authenticated users.
       username = request.user.username
 
-    return render_to_response("welcome.html", {"now" : now,"date": date, "username": username}, context_instance=RequestContext(request))
+    ctx = {"now" : now,"date": date, "username": username}
+    return render(request, "welcome.html", ctx)
 
 def get_display(key, list):
     d = dict(list)
@@ -135,14 +135,14 @@ def availability(request):
 
     errors = None
     avail, errors = check_availability(avail, start, end, pending, notleft)
-    avail = sorted(avail, key=lambda (a, r): (a.area, int(a.no)))
+    avail = sorted(avail, key=lambda a, r: (a.area, int(a.no)))
 
     ctx = get_ctx(period, start, end, area, category, damaged, None, None, None)
     ctx.update({
       "avail": avail,
       "errors": errors,
       })
-    return render_to_response("availability.html", ctx, context_instance=RequestContext(request))
+    return render(request, "availability.html", ctx)
 
 
 @login_required(login_url='/accounts/login/')
@@ -189,7 +189,7 @@ def appartments(request):
       "apartments": Appartment.objects.all(),
       "result": result,
       })
-    return render_to_response("appartments.html", ctx, context_instance=RequestContext(request))
+    return render(request, "appartments.html", ctx)
 
 
 def parousiologio(request):
@@ -204,7 +204,7 @@ def parousiologio(request):
       "units": Unit.objects.all(),
       "unit": unit,
       }
-    return render_to_response("parousiologio.html", ctx, context_instance=RequestContext(request))
+    return render(request, "parousiologio.html", ctx)
 
 
 def get_datetime(value):
@@ -261,7 +261,7 @@ def info(request):
     ctx.update({
       "reservations": reservations,
       })
-    return render_to_response("info.html", ctx, context_instance=RequestContext(request))
+    return render(request, "info.html", ctx)
 
 
 def get_cvs(ctx):
@@ -331,7 +331,7 @@ def reservations(request):
     if cvs:
       return send_cvs(request, get_cvs(ctx), txt=txt)
     else:
-      return render_to_response("reservations.html", ctx, context_instance=RequestContext(request))
+      return render(request, "reservations.html", ctx)
 
 
 def send_cvs(request, cvs, txt=False):
@@ -344,7 +344,7 @@ def send_cvs(request, cvs, txt=False):
         ctx = {
           "cvs": cvs,
           }
-        return render_to_response("cvs.html", ctx, context_instance=RequestContext(request))
+        return render(request, "cvs.html", ctx)
 
 
 def paging(page, objects):
@@ -396,7 +396,7 @@ def logistic(request):
       "offset": offset,
       "metafora": metafora,
       })
-    return render_to_response("logistic.html", ctx, context_instance=RequestContext(request))
+    return render(request, "logistic.html", ctx)
 
 @login_required(login_url='/accounts/login/')
 def th(request):
@@ -411,7 +411,7 @@ def th(request):
       "reservations": reservations,
       "title": "Phone Activations",
       })
-    return render_to_response("th.html", ctx, context_instance=RequestContext(request))
+    return render(request, "th.html", ctx)
 
 @login_required(login_url='/accounts/login/')
 def damages(request):
@@ -423,7 +423,7 @@ def damages(request):
       "damages": damages,
       "date":date,
       }
-    return render_to_response("damages.html", ctx, context_instance=RequestContext(request))
+    return render(request, "damages.html", ctx)
 
 
 @login_required(login_url='/accounts/login/')
@@ -449,7 +449,7 @@ def gmap(request):
       "RS_CONFIRM": RS_CONFIRM,
       "RS_UNKNOWN": RS_UNKNOWN,
       }
-    return render_to_response("map.html", ctx, context_instance=RequestContext(request))
+    return render(request, "map.html", ctx)
 
 
 @login_required(login_url='/accounts/login/')
@@ -457,7 +457,7 @@ def gmap_data(request):
     period, start, end = get_start_end(request)
     f = open("latlng.json")
     content = f.read()
-    info = simplejson.loads(content)
+    info = json.loads(content)
     appartments = Appartment.objects.all()
     for a in appartments:
         fr = True
@@ -466,7 +466,7 @@ def gmap_data(request):
           info[a.appartment]["url"] = "/admin/reception/appartment/%s/" % a.id
         except:
           msg = u"Cannot add url for " + a.appartment
-          print msg.encode("utf-8")
+          print(msg.encode("utf-8"))
         for r in a.reservations.all():
             if r.status in (RS_CONFIRM, RS_PENDING, RS_UNKNOWN) and r.inside(start, end):
               fr = False
@@ -480,7 +480,7 @@ def gmap_data(request):
         if fr and info.get(a.appartment, None):
           info[a.appartment]["status"] = "FREE"
           info[a.appartment]["reservation"] = "Free!!"
-    return HttpResponse(simplejson.dumps(info))
+    return HttpResponse(json.dumps(info))
 
 @login_required(login_url='/accounts/login/')
 def lookup(request):
@@ -508,7 +508,7 @@ def lookup(request):
       "inside": inside,
       "persons": persons,
       }
-    return render_to_response("lookup.html", ctx, context_instance=RequestContext(request))
+    return render(request, "lookup.html", ctx)
 
 
 @login_required(login_url='/accounts/login/')
@@ -578,7 +578,7 @@ def stats(request):
         cvs = comments + "#" + header + data
         return send_cvs(request, cvs, txt=txt)
     else:
-      return render_to_response("stats.html", ctx, context_instance=RequestContext(request))
+      return render(request, "stats.html", ctx)
 
 def create_graph(comments, header, data):
    f = open("stats.txt", "w")
@@ -622,7 +622,7 @@ def test(request):
       "periods": Period.objects.all(),
       "reservations": reservations,
       }
-    return render_to_response("test.html", ctx, context_instance=RequestContext(request))
+    return render(request, "test.html", ctx)
 
 
 

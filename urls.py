@@ -1,43 +1,45 @@
-from django.conf.urls.defaults import *
-from django.views.generic import list_detail
+"""keda URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+
+from django.contrib.auth.views import LoginView, LogoutView
 from reception.views import *
 from django.conf import settings
 
 
-# Uncomment the next two lines to enable the admin:
-from django.contrib import admin
-admin.autodiscover()
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('accounts/login/', LoginView.as_view(), name='login'),
+    path('accounts/logout/', LogoutView.as_view(), name='logout'),
+    path('', home),
+    path('test/', test),
+    path('parousiologio/', parousiologio),
+    path('availability/', availability),
+    path('appartments/', appartments),
+    path('reservations/', reservations),
+    path('th/', th),
+    path('damages/', damages),
+    path('logistic/', logistic),
+    path('gmap/', gmap),
+    path('gmap_data/', gmap_data),
+    path('info/', info),
+    path('lookup/', lookup),
+    path('stats/', stats),
+    path('graphs/', send_file),
 
-
-urlpatterns = patterns('',
-    # Example:
-    # (r'^keda/', include('keda.foo.urls')),
-
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # (r'^admin/', include(admin.site.urls)),
-    (r'^accounts/login/$', 'django.contrib.auth.views.login'),
-    (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^$', home),
-    (r'^admin/', include(admin.site.urls)),
-    url(r'^test/$', test),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-                     {'document_root': settings.STATIC_ROOT}),
-    url(r'^parousiologio/$', parousiologio),
-    url(r'^availability/$', availability),
-    url(r'^appartments/$', appartments),
-    url(r'^reservations/$', reservations),
-    url(r'^th/$', th),
-    url(r'^damages/$', damages),
-    url(r'^logistic/$', logistic),
-    url(r'^gmap/$', gmap),
-    url(r'^gmap_data/$', gmap_data),
-    url(r'^info/$', info),
-    url(r'^lookup/$', lookup),
-    url(r'^stats/$', stats),
-    url(r'^graphs/$', send_file),
-
-)
+]
 

@@ -79,7 +79,7 @@ class Vehicle(models.Model):
     color = models.CharField("Color", max_length=20, blank=True, null=True)
     brand = models.CharField("Brand", max_length=20, blank=True, null=True)
     model = models.CharField("Model", max_length=20, blank=True, null=True)
-    owner = models.ForeignKey(Person, related_name="vehicles", null=True, blank=True)
+    owner = models.ForeignKey(Person, models.SET_NULL, related_name="vehicles", null=True, blank=True)
 
     def __unicode__(self):
         ret = u"%s" % self.plate
@@ -96,7 +96,7 @@ class ContactInfo(models.Model):
     mobile = models.CharField("Mobile Phone", max_length=30, blank=True, null=True)
     telephone = models.CharField("Telephone", max_length=30, blank=True, null=True)
     address = models.CharField("Address", max_length=30, blank=True, null=True)
-    person = models.ForeignKey(Person, related_name="contacts", null=True, blank=True)
+    person = models.ForeignKey(Person, models.CASCADE, related_name="contacts", null=True, blank=True)
 
     def __unicode__(self):
         ret = u""
@@ -126,7 +126,7 @@ class Relative(Person):
       (u"ΠΕΘΕΡΑ", "ΠΕΘΕΡΑ"),
       )
 
-    related = models.ForeignKey(Person, related_name="relatives", null=True, blank=True)
+    related = models.ForeignKey(Person, models.CASCADE, related_name="relatives", null=True, blank=True)
     relationship = models.CharField("Relationship", choices=RELATIONSHIPS, max_length=30, blank=True, null=True)
 
     def __unicode__(self):
@@ -137,7 +137,7 @@ class Relative(Person):
 
 
 class MilitaryPerson(Person):
-    rank = models.ForeignKey(Rank, related_name="military_persons", null=True, blank=True)
+    rank = models.ForeignKey(Rank, models.SET_NULL, related_name="military_persons", null=True, blank=True)
     active = models.BooleanField("Active", default=True)
     speciality = models.CharField("Speciality", max_length=20, null=True, blank=True)
 
@@ -178,7 +178,7 @@ class Staff(MilitaryPerson):
     category = models.CharField("Category", max_length=20, choices=CATEGORIES, null=True, blank=True)
     extra = models.CharField("Extra Info", max_length=25, null=True, blank=True)
     power = models.BooleanField("In Unit-Power", default=True)
-    unit = models.ForeignKey(Unit, related_name="staff", null=True, blank=True)
+    unit = models.ForeignKey(Unit, models.SET_NULL, related_name="staff", null=True, blank=True)
 
     def person_info(self):
               return ("staff", self.info())
@@ -228,7 +228,7 @@ class Appartment(models.Model):
     double = models.IntegerField("Double Beds", default=0, choices=BEDS)
     single = models.IntegerField("Single Beds", default=2, choices=BEDS)
     bunk = models.IntegerField("Bunk Beds", default=0, choices=BEDS)
-    category = models.ForeignKey(Category, related_name="appartments", default=None, blank=True, null=True)
+    category = models.ForeignKey(Category, models.SET_NULL, related_name="appartments", default=None, blank=True, null=True)
     ranking = models.IntegerField("Quality Ranking", choices=RANKINGS, default=None, blank=True, null=True)
 
     @property
@@ -277,9 +277,9 @@ class Damage(models.Model):
       ("OTHER", "Άλλου είδους βλάβη"),
     )
     tag = models.CharField("Tag", choices=DAMAGES, max_length=30)
-    appartment = models.ForeignKey(Appartment, related_name="damages", null=True, blank=True)
+    appartment = models.ForeignKey(Appartment, models.CASCADE, related_name="damages", null=True, blank=True)
     info = models.TextField("Further Info", null=True, blank=True)
-    notified = models.ForeignKey(Unit, null=True, blank=True)
+    notified = models.ForeignKey(Unit, models.SET_NULL, null=True, blank=True)
     date = models.DateField("Date", null=True, blank=True)
     fixed = models.BooleanField("Fixed", default=False)
 
@@ -337,13 +337,13 @@ class Reservation(models.Model):
 
     check_in = models.DateField("Check In", null=True, blank=True)
     check_out = models.DateField("Check Out", null=True, blank=True)
-    owner = models.ForeignKey(MilitaryPerson, related_name="reservations")
-    agent = models.IntegerField("Agent", choices=AGENTS, max_length=20, null=True, blank=True)
+    owner = models.ForeignKey(MilitaryPerson, models.CASCADE, related_name="reservations")
+    agent = models.IntegerField("Agent", choices=AGENTS, null=True, blank=True)
     persons = models.IntegerField("Persons", choices=PERSONS, default=1,
                                   null=True, blank=True)
-    appartment = models.ForeignKey(Appartment, related_name="reservations", null=True, blank=True)
-    status = models.IntegerField("Status", choices=STATUSES, max_length=20, null=True, blank=True)
-    res_type = models.IntegerField("Type", choices=RESERVATION_TYPES, max_length=20,
+    appartment = models.ForeignKey(Appartment, models.SET_NULL, related_name="reservations", null=True, blank=True)
+    status = models.IntegerField("Status", choices=STATUSES, null=True, blank=True)
+    res_type = models.IntegerField("Type", choices=RESERVATION_TYPES,
                                 null=True, blank=True)
     telephone = models.BooleanField("Telephone", default=False)
     book_ref = models.IntegerField("No", null=True, blank=True)
@@ -486,6 +486,7 @@ class PersonForm(BaseNestedModelForm):
 
     class Meta:
         model = Person
+        fields = "__all__"
 
     def full_clean(self):
         self.cleaned_data = {}
@@ -574,7 +575,7 @@ class ReservationForm(BaseNestedModelForm):
             if conflicting:
                 self.fields["resolve"] = ChoiceField(choices=ReservationForm.RESOLVE, required=False, label="Resolve")
                 resolve = self.cleaned_data.get("resolve", None)
-                print "resolving...."
+                print("resolving....")
                 msgs = [u"Conflicting Reservations:", ]
                 if not resolve:
                   self._update_errors({
@@ -599,7 +600,7 @@ class ReservationForm(BaseNestedModelForm):
                     conflicting[0].save()
                 msg = (u"Conflicting Reservations:\n%s\nRESOLVE: %s\nChanged: %s\nNew/Updated: %s" %
                        ("\n".join([c.info for c in conflicting]), resolve, conflicting[0].info, self.instance.info))
-                print msg.encode("utf-8")
+                print(msg.encode("utf-8"))
 
 
 
@@ -609,7 +610,7 @@ class InlineReservationForm(ReservationForm):
 class Receipt(models.Model):
     date = models.DateTimeField("Date")
     no = models.CharField("No", max_length=10)
-    reservation = models.ForeignKey(Reservation, related_name="receipts")
+    reservation = models.ForeignKey(Reservation, models.CASCADE, related_name="receipts")
     euro = models.DecimalField("Euro", decimal_places=2, max_digits=10 )
     pending = models.BooleanField("Pending", default=False)
 

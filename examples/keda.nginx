@@ -5,12 +5,11 @@ server {
 }
 
 server {
-    listen 443;
+    listen 443 ssl;
 
     server_name _ default;
 
 
-    ssl  on;
     ssl_certificate  /data/keda.pem;
     ssl_certificate_key  /data/keda.key;
 

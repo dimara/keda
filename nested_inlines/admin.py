@@ -1,17 +1,19 @@
 from django.contrib.admin.options import (ModelAdmin, InlineModelAdmin,
     csrf_protect_m, models, transaction, all_valid,
-    PermissionDenied, unquote, escape, Http404, reverse)
+    PermissionDenied, unquote, reverse)
+from django.http import Http404
+from django.utils.html import escape
 # Fix to make Django 1.5 compatible, maintain backwards compatibility
 try:
-    from django.contrib.admin.options import force_unicode
+    from django.contrib.admin.options import force_text
 except ImportError:
-    from django.utils.encoding import force_unicode
+    from django.utils.encoding import force_text
 
 from django.contrib.admin.helpers import InlineAdminFormSet, AdminForm
 from django.utils.translation import ugettext as _
 
-from forms import BaseNestedModelForm, BaseNestedInlineFormSet
-from helpers import AdminErrorList
+from .forms import BaseNestedModelForm, BaseNestedInlineFormSet
+from .helpers import AdminErrorList
 
 class NestedModelAdmin(ModelAdmin):
     class Media:
@@ -121,7 +123,7 @@ class NestedModelAdmin(ModelAdmin):
         return True
 
     @csrf_protect_m
-    @transaction.commit_on_success
+    @transaction.atomic
     def add_view(self, request, form_url='', extra_context=None):
         "The 'add' admin view for this model."
         model = self.model
@@ -202,7 +204,7 @@ class NestedModelAdmin(ModelAdmin):
                 media = media + self.wrap_nested_inline_formsets(request, inline, formset)
 
         context = {
-            'title': _('Add %s') % force_unicode(opts.verbose_name),
+            'title': _('Add %s') % force_text(opts.verbose_name),
             'adminform': adminForm,
             'is_popup': "_popup" in request.REQUEST,
             'show_delete': False,
@@ -215,7 +217,7 @@ class NestedModelAdmin(ModelAdmin):
         return self.render_change_form(request, context, form_url=form_url, add=True)
 
     @csrf_protect_m
-    @transaction.commit_on_success
+    @transaction.atomic
     def change_view(self, request, object_id, form_url='', extra_context=None):
         "The 'change' admin view for this model."
         model = self.model
@@ -227,7 +229,7 @@ class NestedModelAdmin(ModelAdmin):
             raise PermissionDenied
 
         if obj is None:
-            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_unicode(opts.verbose_name), 'key': escape(object_id)})
+            raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {'name': force_text(opts.verbose_name), 'key': escape(object_id)})
 
         if request.method == 'POST' and "_saveasnew" in request.POST:
             return self.add_view(request, form_url=reverse('admin:%s_%s_add' %
@@ -298,7 +300,7 @@ class NestedModelAdmin(ModelAdmin):
                 media = media + self.wrap_nested_inline_formsets(request, inline, formset)
 
         context = {
-            'title': _('Change %s') % force_unicode(opts.verbose_name),
+            'title': _('Change %s') % force_text(opts.verbose_name),
             'adminform': adminForm,
             'object_id': object_id,
             'original': obj,

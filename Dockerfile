@@ -1,32 +1,23 @@
-FROM debian:jessie
+# With bookworm apt update fails with NO_PUBKEY
+# https://serverfault.com/questions/1137215/how-can-i-write-a-dockerfile-based-on-debian-slim-in-which-apt-get-update-does
+#FROM debian:bookworm-20240311
+FROM debian:bullseye-20240311
 
-RUN rm /etc/apt/sources.list
-RUN printf "deb http://archive.debian.org/debian wheezy main" > /etc/apt/sources.list.d/wheezy.list
-RUN printf "deb http://archive.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
-
-RUN echo 'Acquire::Check-Valid-Until "0";' > /etc/apt/apt.conf.d/10archive
-
-RUN apt-get update
-
-RUN apt-get install procps nginx gunicorn -y --force-yes
-
-RUN apt-get install python-django/wheezy python-django-south/wheezy -y --force-yes
-
-# wget https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_amd64.deb
-ADD dumb-init_1.2.5_amd64.deb /
-RUN dpkg -i dumb-init_1.2.5_amd64.deb
+RUN apt update && apt install -y \
+  procps \
+  nginx \
+  gunicorn \
+  dumb-init \
+  openssl \
+  python3-django
 
 # https://stackoverflow.com/a/41797247
-RUN apt-get install locales locales-all -y --force-yes
+RUN apt install locales locales-all -y
 # RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG en_US.UTF-8
 
-ADD examples/keda.gunicorn /etc/gunicorn.d/keda
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
-
-RUN apt-get install openssl -y --force-yes
-# Direcory for SSL cert and database
-RUN mkdir -p /data
+RUN rm -f /etc/nginx/sites-enabled/default
 
 ADD . /keda
 
@@ -34,7 +25,6 @@ WORKDIR /keda
 
 # https://stackoverflow.com/questions/22541333/have-nginx-access-log-and-error-log-log-to-stdout-and-stderr-of-master-process
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log
-RUN ln -sf /dev/stdout /var/log/gunicorn/keda.log
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 

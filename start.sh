@@ -1,5 +1,9 @@
 #!/bin/sh
 
+set -e
+
+mkdir -p /data
+
 if [ ! -f /data/keda.key ]; then
 	echo WARN: Private key for KedaZ SSL certificate not found.
 	echo Generating a self-signed SSL certificate..
@@ -17,13 +21,18 @@ echo Using SSL cert..
 openssl x509 -in /data/keda.pem -text
 
 echo Initializing/Updating Django project...
-python manage.py syncdb --noinput
-python manage.py migrate
-python manage.py collectstatic --noinput
-python manage.py loaddata reception/fixtures/*
-#python manage.py createsuperuser --username=admin --email=admin@example.com --noinput
+echo Migrating DB...
+if [ -f /data/db.sqlite3 ]; then
+	echo DB exists. Faking initial migration...
+	python3 manage.py migrate --fake-initial
+else
+	python3 manage.py migrate
+fi
+python3 manage.py collectstatic --noinput
+python3 manage.py loaddata reception/fixtures/*
+#python3 manage.py createsuperuser --username=admin --email=admin@example.com --noinput
 echo Starting gunicorn...
-/usr/sbin/gunicorn-debian start
+./gunicorn_rc &
 echo Starting nginx...
 nginx
 echo Sleeping forever...
