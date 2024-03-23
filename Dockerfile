@@ -25,8 +25,8 @@ ADD examples/keda.gunicorn /etc/gunicorn.d/keda
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
 
 RUN apt-get install openssl -y --force-yes
-# https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl
-RUN openssl req -x509 -newkey rsa:4096 -keyout /etc/ssl/private/keda.key -out /etc/ssl/certs/keda.pem -sha256 -days 3650 -nodes -subj "/C=GR/ST=Attica/L=Athens/O=KedaZ/OU=Reception/CN=KedaZ"
+# Direcory for SSL cert and database
+RUN mkdir -p /data
 
 ADD . /keda
 

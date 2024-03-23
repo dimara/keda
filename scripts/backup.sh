@@ -3,7 +3,7 @@
 set -e
 
 LOGFILE=/var/log/keda-backup.log
-DB=/keda/db.sqlite3
+DB=/data/db.sqlite3
 BACKUPDIR=/backup
 
 if [ -e /etc/default/keda ]; then
