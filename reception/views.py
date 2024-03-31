@@ -633,7 +633,7 @@ def send_file(request):
     """
     filename=request.GET.get("filename", "stats.pdf")
     content_type=request.GET.get("content_type", "application/pdf")
-    wrapper = FileWrapper(open(filename))
+    wrapper = FileWrapper(open(filename, "rb"))
     response = HttpResponse(wrapper, content_type=content_type)
     response['Content-Length'] = os.path.getsize(filename)
     return response
