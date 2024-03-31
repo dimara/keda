@@ -16,7 +16,13 @@ RUN apt install locales locales-all -y
 # RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG en_US.UTF-8
 
-RUN apt install python3-pip -y && pip3 install python-monkey-business
+RUN apt install python3-pip --no-install-recommends -y
+
+# XXX: This will bring python-monkey-business
+# https://github.com/pypa/pip/issues/11717#issuecomment-1378384449
+#RUN pip3 install django-nested-admin==4.0.2
+ADD wheels /tmp/wheels
+RUN pip3 install --no-index --find-links /tmp/wheels django-nested-admin==4.0.2
 
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
 RUN rm -f /etc/nginx/sites-enabled/default
