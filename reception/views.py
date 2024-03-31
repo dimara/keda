@@ -586,7 +586,7 @@ def stats(request):
       return render(request, "stats.html", ctx)
 
 def create_graph(comments, header, data):
-   f = open("stats.txt", "w")
+   f = open("stats.txt", "wb")
    contents = comments + header + data
    f.write(contents.encode("utf-8"))
    f.close()
