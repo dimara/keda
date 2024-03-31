@@ -24,6 +24,11 @@ from django.http import HttpResponse
 from wsgiref.util import FileWrapper
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+# https://stackoverflow.com/questions/19182188/how-to-find-the-length-of-a-filter-object-in-python
+from functools import reduce
+
+def ilen(iterable):
+      return reduce(lambda sum, element: sum + 1, iterable, 0)
 
 @login_required(login_url='/accounts/login/')
 def home(request):
@@ -546,17 +551,17 @@ def stats(request):
       "show": show,
       "live": live,
       "reservations": reservations,
-      "total": len(reservations),
+      "total": ilen(reservations),
       "persons": persons,
       "euros": euros,
-      "regular": len(regular),
-      "b3": len(b3),
-      "ea": len(ea),
-      "my": len(my),
-      "osseay": len(osseay),
-      "agamon": len(agamon),
-      "paratheristes": len(paratheristes),
-      "monada": len(monada),
+      "regular": ilen(regular),
+      "b3": ilen(b3),
+      "ea": ilen(ea),
+      "my": ilen(my),
+      "osseay": ilen(osseay),
+      "agamon": ilen(agamon),
+      "paratheristes": ilen(paratheristes),
+      "monada": ilen(monada),
       })
     p = period.name if period else ""
     dates = u"%s: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))
@@ -569,9 +574,9 @@ def stats(request):
 """ % (p, start.isoformat(), end.isoformat(), timestamp)
     header = u"Ημ/νίες|ΤΑΚΤΙΚΟΙ|EURO|ΓΕΑ/Β3|Ε.Α.|Μ.Υ.|ΠΑΡ/ΣΤΕΣ|ΜΟΝΑΔΑ|ΟΣΣΕΑΥ|ΑΓΑΜΩΝ\n"
     data = u"%s|%d|%.2f|%d|%d|%d|%d|%d|%d|%d\n" % \
-           (dates, len(reservations), euros,
-            len(b3), len(ea), len(my),
-            len(paratheristes), len(monada), len(osseay), len(agamon))
+           (dates, ilen(reservations), euros,
+            ilen(b3), ilen(ea), ilen(my),
+            ilen(paratheristes), ilen(monada), ilen(osseay), ilen(agamon))
     graph = create_graph(comments, header, data)
     ctx.update({"graph": graph})
     if cvs:
