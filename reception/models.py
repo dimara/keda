@@ -20,7 +20,7 @@ class Rank(models.Model):
     short = models.CharField("Rank (abbreviation)", max_length=10)
     level = models.IntegerField("Level", default=0, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.short
 
     @property
@@ -40,7 +40,7 @@ class Person(models.Model):
     surname = models.CharField("Last Name", max_length=30)
     ident = models.CharField("ID", max_length=30, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         ret = u"%s " % (self.surname)
         if self.name:
           ret += self.name
@@ -80,7 +80,7 @@ class Vehicle(models.Model):
     model = models.CharField("Model", max_length=20, blank=True, null=True)
     owner = models.ForeignKey(Person, models.SET_NULL, related_name="vehicles", null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         ret = u"%s" % self.plate
         if self.brand:
             ret += u",%s" % self.brand
@@ -97,7 +97,7 @@ class ContactInfo(models.Model):
     address = models.CharField("Address", max_length=30, blank=True, null=True)
     person = models.ForeignKey(Person, models.CASCADE, related_name="contacts", null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         ret = u""
         if self.mobile:
           ret += u"Mobile: %s" % self.mobile
@@ -128,8 +128,8 @@ class Relative(Person):
     related = models.ForeignKey(Person, models.CASCADE, related_name="relatives", null=True, blank=True)
     relationship = models.CharField("Relationship", choices=RELATIONSHIPS, max_length=30, blank=True, null=True)
 
-    def __unicode__(self):
-        ret = super(Relative, self).__unicode__()
+    def __str__(self):
+        ret = super(Relative, self).__str__()
         if self.relationship:
             ret += u" - %s" % self.relationship
         return ret
@@ -156,7 +156,7 @@ class MilitaryPerson(Person):
         except:
           return ("militaryperson", self.info())
 
-    def __unicode__(self):
+    def __str__(self):
         return self.info()
 
 
@@ -164,7 +164,7 @@ class Unit(models.Model):
     name = models.CharField("Name", max_length=20)
     internal = models.CharField("Internal Number", max_length=10, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s (%s)" % (self.name, self.internal)
 
 
@@ -187,7 +187,7 @@ class Category(models.Model):
     desc = models.CharField("Description", max_length=20, blank=True, null=True)
     ranking = models.IntegerField("Ranking", blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s" % (self.desc)
 
 
@@ -234,7 +234,7 @@ class Appartment(models.Model):
     def beds(self):
         return u"%dΔ+%dΜ+%dΚ" % (self.double, self.single, self.bunk)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"%s-%s" % (self.area, self.no)
 
     @property
@@ -282,7 +282,7 @@ class Damage(models.Model):
     date = models.DateField("Date", null=True, blank=True)
     fixed = models.BooleanField("Fixed", default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         r = u"%s -> %s: %s" % (self.appartment, self.tag, self.info)
         if self.fixed:
             r += " (FIXED)"
@@ -348,7 +348,7 @@ class Reservation(models.Model):
     book_ref = models.IntegerField("No", null=True, blank=True)
     notes = models.CharField("Notes", max_length=200, null=True, blank=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return  u"Από %s έως %s, Όνομα: %s, Άτομα: %s, Δωμάτιο: %s, Status: %s" % \
                   (self.check_in, self.check_out, self.owner, self.persons, self.appartment, self.get_status_display())
 
@@ -462,7 +462,7 @@ class Period(models.Model):
     start = models.DateField("Starting Date")
     end = models.DateField("Ending Date")
 
-    def __unicode__(self):
+    def __str__(self):
         r = u"%s" % (self.name)
         if self.start:
             r += " (%s .." % self.start.strftime("%d %b")
@@ -613,7 +613,7 @@ class Receipt(models.Model):
     euro = models.DecimalField("Euro", decimal_places=2, max_digits=10 )
     pending = models.BooleanField("Pending", default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return u"No: %s, Euro: %0.2f, Name: %s, Reservation: %s" % \
                     (self.no, self.euro, self.reservation.owner, self.reservation)
 
