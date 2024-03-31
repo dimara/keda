@@ -112,7 +112,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'reception',
     # Uncomment the next line to enable the admin:
-    'nested_inlines',
+    #'nested_inlines',
+    'nested_admin',
     'django.contrib.admin',
     #'debug_toolbar',
 )

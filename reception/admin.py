@@ -1,29 +1,29 @@
 from django.contrib import admin
 from django.forms.models import BaseInlineFormSet
-from nested_inlines.admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
+from nested_admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
 from reception.models import *
 import datetime
 from reception.constants import *
 
-class RelativeInline(admin.TabularInline):
+class RelativeInline(NestedTabularInline):
     model = Relative
     fk_name = "related"
     extra = 0
     inlines = []
 
-class ContactInfoInline(admin.TabularInline):
+class ContactInfoInline(NestedTabularInline):
     model = ContactInfo
     fk_name = "person"
     extra = 0
     inlines = []
 
-class VehicleInline(admin.TabularInline):
+class VehicleInline(NestedTabularInline):
     model = Vehicle
     fk_name = "owner"
     extra = 0
     inlines = []
 
-class ReceiptInline(admin.TabularInline):
+class ReceiptInline(NestedTabularInline):
     model = Receipt
     fk_name = "reservation"
     extra = 0
@@ -46,7 +46,7 @@ class ReservationFormSet2(BaseInlineFormSet):
 
       return qs
 
-class ReservationAppartmentInline(admin.TabularInline):
+class ReservationAppartmentInline(NestedTabularInline):
     model = Reservation
     fk_name = "appartment"
     form = InlineReservationForm
@@ -64,7 +64,7 @@ class NestedReservationInline(NestedTabularInline):
         ReceiptInline,
         ]
 
-class ReservationInline(admin.TabularInline):
+class ReservationInline(NestedTabularInline):
     model = Reservation
     form = InlineReservationForm
     fk_name = "owner"
@@ -82,7 +82,7 @@ class NestedPersonAdmin(NestedModelAdmin):
         RelativeInline,
         ]
 
-class DamageInline(admin.TabularInline):
+class DamageInline(NestedTabularInline):
     model = Damage
     fk_name = "appartment"
     extra = 0
@@ -97,7 +97,7 @@ class NestedReservationAppartmentInline(NestedTabularInline):
         ReceiptInline,
         ]
 
-class AppartmentAdmin(admin.ModelAdmin):
+class AppartmentAdmin(NestedModelAdmin):
     list_display = ('appartment', 'rooms', 'beds', 'category', )
     ordering = ('area', 'no', 'category', )
     list_filter = ('area', 'category', )
@@ -139,7 +139,7 @@ class ReservationAdmin(admin.ModelAdmin):
     #def save_model(self, request, obj, form, change):
         #obj.save()
 
-class ReceiptAdmin(admin.ModelAdmin):
+class ReceiptAdmin(NestedModelAdmin):
     ordering = ('date', )
     list_display = ('date', 'no', 'reservation', 'euro', )
     search_fields = ('no', )

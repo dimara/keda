@@ -16,6 +16,8 @@ RUN apt install locales locales-all -y
 # RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 ENV LANG en_US.UTF-8
 
+RUN apt install python3-pip -y && pip3 install python-monkey-business
+
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
 RUN rm -f /etc/nginx/sites-enabled/default
 

@@ -4,7 +4,6 @@ from django.db import models
 from django.forms import ModelForm
 from django.forms import ChoiceField, ModelChoiceField, Field, HiddenInput, BooleanField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from nested_inlines.forms import BaseNestedModelForm
 from reception.constants import *
 import datetime
 
@@ -472,7 +471,7 @@ class Period(models.Model):
 
         return r
 
-class PersonForm(BaseNestedModelForm):
+class PersonForm(ModelForm):
     RESOLVE = (
       ("", "-------"),
       ("IGNORE", "Ignore"),
@@ -521,7 +520,7 @@ class PersonForm(BaseNestedModelForm):
               self.instance.id = existing
 
 
-class ReservationForm(BaseNestedModelForm):
+class ReservationForm(ModelForm):
     RESOLVE = (
       ("", "-------"),
       ("FORCE", "Force save"),
