@@ -24,12 +24,6 @@ from django.http import HttpResponse
 from wsgiref.util import FileWrapper
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-# https://stackoverflow.com/questions/19182188/how-to-find-the-length-of-a-filter-object-in-python
-from functools import reduce
-
-def ilen(iterable):
-      return reduce(lambda sum, element: sum + 1, iterable, 0)
-
 @login_required(login_url='/accounts/login/')
 def home(request):
     date = datetime.date.today()
@@ -525,11 +519,11 @@ def stats(request):
     cvs = request.GET.get("cvs", False)
     txt = request.GET.get("txt", False)
     reservations = Reservation.objects.all()
-    reservations = filter(lambda x: x.inside(start, end), reservations)
+    reservations = list(filter(lambda x: x.inside(start, end), reservations))
     if live:
-      reservations = filter(lambda x: x.status == RS_CONFIRM, reservations)
+      reservations = list(filter(lambda x: x.status == RS_CONFIRM, reservations))
     else:
-      reservations = filter(lambda x: x.status != RS_CANCEL, reservations)
+      reservations = list(filter(lambda x: x.status != RS_CANCEL, reservations))
 
     receipts = Receipt.objects.all()
     receipts = [r for r in receipts if r.inside(start, end)]
@@ -537,31 +531,31 @@ def stats(request):
 
     persons = sum([r.persons for r in reservations if r.persons])
 
-    regular = filter(lambda x: x.res_type == RT_REGULAR, reservations)
-    b3 = filter(lambda x: x.agent == RA_GEA, regular)
-    ea = filter(lambda x: x.agent == RA_EA, regular)
-    my = filter(lambda x: x.agent == RA_MY, regular)
-    osseay = filter(lambda x: x.res_type == RT_OSSEAY, reservations)
-    paratheristes = filter(lambda x: x.res_type == RT_DAILY, reservations)
-    monada = filter(lambda x: x.res_type == RT_UNIT, reservations)
-    agamon = filter(lambda x: x.res_type == RT_AGAMON, reservations)
+    regular = list(filter(lambda x: x.res_type == RT_REGULAR, reservations))
+    b3 = list(filter(lambda x: x.agent == RA_GEA, regular))
+    ea = list(filter(lambda x: x.agent == RA_EA, regular))
+    my = list(filter(lambda x: x.agent == RA_MY, regular))
+    osseay = list(filter(lambda x: x.res_type == RT_OSSEAY, reservations))
+    paratheristes = list(filter(lambda x: x.res_type == RT_DAILY, reservations))
+    monada = list(filter(lambda x: x.res_type == RT_UNIT, reservations))
+    agamon = list(filter(lambda x: x.res_type == RT_AGAMON, reservations))
 
     ctx = get_ctx(period, start, end, None, None, None, None, None, None)
     ctx.update({
       "show": show,
       "live": live,
       "reservations": reservations,
-      "total": ilen(reservations),
+      "total": len(reservations),
       "persons": persons,
       "euros": euros,
-      "regular": ilen(regular),
-      "b3": ilen(b3),
-      "ea": ilen(ea),
-      "my": ilen(my),
-      "osseay": ilen(osseay),
-      "agamon": ilen(agamon),
-      "paratheristes": ilen(paratheristes),
-      "monada": ilen(monada),
+      "regular": len(regular),
+      "b3": len(b3),
+      "ea": len(ea),
+      "my": len(my),
+      "osseay": len(osseay),
+      "agamon": len(agamon),
+      "paratheristes": len(paratheristes),
+      "monada": len(monada),
       })
     p = period.name if period else ""
     dates = u"%s: %s..%s" % (p,  start.strftime("%d %b"), end.strftime("%d %b"))
@@ -574,9 +568,9 @@ def stats(request):
 """ % (p, start.isoformat(), end.isoformat(), timestamp)
     header = u"Ημ/νίες|ΤΑΚΤΙΚΟΙ|EURO|ΓΕΑ/Β3|Ε.Α.|Μ.Υ.|ΠΑΡ/ΣΤΕΣ|ΜΟΝΑΔΑ|ΟΣΣΕΑΥ|ΑΓΑΜΩΝ\n"
     data = u"%s|%d|%.2f|%d|%d|%d|%d|%d|%d|%d\n" % \
-           (dates, ilen(reservations), euros,
-            ilen(b3), ilen(ea), ilen(my),
-            ilen(paratheristes), ilen(monada), ilen(osseay), ilen(agamon))
+           (dates, len(reservations), euros,
+            len(b3), len(ea), len(my),
+            len(paratheristes), len(monada), len(osseay), len(agamon))
     graph = create_graph(comments, header, data)
     ctx.update({"graph": graph})
     if cvs:
