@@ -4,7 +4,7 @@
     <i class="glyphicon glyphicon-chevron-right" id="fhide"></i>
     <select class="form-control" name="period">
         <option value="">Period..</option>
-        {% for p in periods %}
+        {% for p in periods reversed %}
         <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
         {% endfor %}
     </select>
