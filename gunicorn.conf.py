@@ -122,7 +122,7 @@ spew = False
 #       None to signal that Python should choose one on its own.
 #
 
-daemon = False
+daemon = True
 raw_env = [
     #'DJANGO_SECRET_KEY=something',
 ]
@@ -143,6 +143,8 @@ tmp_upload_dir = None
 #
 #       A string of "debug", "info", "warning", "error", "critical"
 #
+
+syslog = True
 
 errorlog = '-'
 loglevel = 'info'

@@ -22,12 +22,19 @@ RUN apt install python3-pip --no-install-recommends -y
 # https://github.com/pypa/pip/issues/11717#issuecomment-1378384449
 #RUN pip3 install django-nested-admin==4.0.2
 ADD wheels /tmp/wheels
-RUN pip3 install --no-index --find-links /tmp/wheels django-nested-admin==4.0.2
+RUN pip3 install --no-index --find-links /tmp/wheels django-nested-admin==4.0.2 django-dbbackup==4.1.0
 
 RUN apt install vim sqlite3 gnuplot-nox --no-install-recommends -y
 
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
 RUN rm -f /etc/nginx/sites-enabled/default
+
+# https://gist.github.com/mowings/59790ae930accef486bfb9a417e9d446
+RUN apt install rsyslog cron -y
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+RUN sed -i '/imudp/s/^#//' /etc/rsyslog.conf
+ADD examples/keda.rsyslog /etc/rsyslog.d/keda.conf
+ADD examples/keda.cron /etc/cron.d/keda
 
 ADD . /keda
 

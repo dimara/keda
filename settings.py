@@ -115,8 +115,13 @@ INSTALLED_APPS = (
     #'nested_inlines',
     'nested_admin',
     'django.contrib.admin',
+    'dbbackup',
     #'debug_toolbar',
 )
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': "/backup"}
+DBBACKUP_CLEANUP_KEEP = 30
 
 USER_DEFINED_AREAS = (
     ("I", "I"),

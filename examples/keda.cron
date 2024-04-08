@@ -1,0 +1,2 @@
+# Backup db every day at 01:00
+0 1 * * * root { echo Taking DB backup...; cd /keda; python3 manage.py dbbackup --clean; echo Listing backups...; python3 manage.py listbackups; } > /proc/1/fd/1 2>&1

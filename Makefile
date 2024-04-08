@@ -13,4 +13,5 @@ docker-run:
 	docker run --rm --name keda \
 		-p 8443:443 \
 		-v $(GIT_ROOT)/data:/data \
+		-v $(GIT_ROOT)/backup:/backup \
 		$(IMAGE)

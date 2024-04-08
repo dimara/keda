@@ -26,6 +26,7 @@
       --restart always \
       -p 8443:443 \
       -v $PWD/data:/data \
+      -v $PWD/backup:/backup \
       ${IMAGE?}
    ```
 
