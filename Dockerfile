@@ -24,6 +24,8 @@ RUN apt install python3-pip --no-install-recommends -y
 ADD wheels /tmp/wheels
 RUN pip3 install --no-index --find-links /tmp/wheels django-nested-admin==4.0.2 django-dbbackup==4.1.0
 
+ADD sqlite.py /usr/local/lib/python3.9/dist-packages/dbbackup/db/sqlite.py
+
 RUN apt install vim sqlite3 gnuplot-nox --no-install-recommends -y
 
 ADD examples/keda.nginx /etc/nginx/sites-enabled/keda
