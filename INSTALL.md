@@ -33,7 +33,7 @@
 1. Create super user:
    ```
    docker exec -ti keda \
-          python manage.py createsuperuser \
+          python3 manage.py createsuperuser \
               --username admin --email=admin@example.com
    ```
 

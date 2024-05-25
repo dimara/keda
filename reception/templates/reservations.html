@@ -43,7 +43,9 @@
                 </span>
             </td>
             <td> {{ r.get_res_type_display }} </td>
-            <td> {{ r.receipt.no }} </td>
+            <td>
+              <a target="_blank" href="/receipts/{{ r.receipt.no }}">{{ r.receipt.no }}</a>
+            </td>
             <td>
               {% if r.notifications.0 %}
                   <span rel="tooltip" class="n{{ r.notifications.0|join:" n" }}"> <span class="badge badge-important">E</span> </span>

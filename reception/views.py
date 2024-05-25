@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 from django.http import *
 import datetime
+from pytz import timezone
 import json
+from django.core.exceptions import ObjectDoesNotExist
 from django import template
 from django.conf import settings
 from django.template.loader import get_template
@@ -10,6 +12,7 @@ from django.template import Context, RequestContext
 from django.forms.models import modelformset_factory
 from django.forms.models import inlineformset_factory
 from django.shortcuts import render
+from django.utils import timezone
 from reception.models import *
 from reception import constants
 from django.db.models import Q
@@ -19,10 +22,16 @@ from django.contrib.auth.decorators import login_required
 from reception.constants import *
 import os
 
+import io
 import os, tempfile, zipfile
-from django.http import HttpResponse
+from django.http import HttpResponse, FileResponse
 from wsgiref.util import FileWrapper
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4, A5, landscape
+from reportlab.lib.units import mm, inch
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
 @login_required(login_url='/accounts/login/')
 def home(request):
@@ -623,6 +632,95 @@ def test(request):
       }
     return render(request, "test.html", ctx)
 
+
+@login_required(login_url='/accounts/login/')
+def print_receipt(request, no):
+    try:
+        receipt = Receipt.objects.get(no=no)
+    except ObjectDoesNotExist:
+        return render(request, "404.html", {})
+
+    tz = timezone.get_current_timezone()
+    date = receipt.date.astimezone(tz)
+
+    check_in = receipt.reservation.check_in
+    check_out = receipt.reservation.check_out
+    days = (check_out - check_in).days
+
+    buffer = io.BytesIO()
+    # landscape(A5)
+    # (width, height)
+    # (595.2755905511812, 419.52755905511816)
+    p = canvas.Canvas(buffer, pagesize=landscape(A5))
+    pdfmetrics.registerFont(TTFont('dejavu', 'DejaVuSans.ttf'))
+    pdfmetrics.registerFont(TTFont('dejavu-bold', 'DejaVuSans-Bold.ttf'))
+    logo = os.path.join(settings.ROOT_DIR,
+        "reception/static/reception/keda_z.jpg")
+    # x, y is lower left corner
+    p.drawBoundary(1, 10, 10, 575, 400)
+    # logo is 428x500
+    p.drawInlineImage(logo, 20, 330, width=61, height=71)
+    p.setFont('dejavu-bold', 12)
+    p.drawRightString(575, 390, "ΠΟΛΕΜΙΚΗ ΑΕΡΟΠΟΡΙΑ - ΚΕΔΑ/Ζ")
+    p.setFont('dejavu', 10)
+    p.drawRightString(575, 370, "AΕΡΟΠΟΡΙΑΣ 97, ΖΟΥΜΠΕΡΙ")
+    p.drawRightString(575, 360, "TK: 19005")
+    p.drawRightString(575, 350, "ΤΗΛ: 2294051158")
+    p.drawRightString(575, 340, "ΑΦΜ: 123456789")
+    p.drawRightString(575, 330, "ΔΟΥ: ΑΘΗΝΩΝ")
+
+    # 315
+    p.drawBoundary(1, 15, 200, 565, 115)
+
+    p.setFont('dejavu-bold', 12)
+    p.drawString(20, 300, "ΕΙΔΟΣ ΠΑΡΑΣΤΑΤΙΚΟΥ")
+    p.drawString(300, 300, "ΑΡΙΘΜΟΣ")
+    p.drawRightString(575, 300, "HM/NIA - ΩΡΑ")
+
+    p.setFont('dejavu', 12)
+    p.drawString(20, 280, "ΑΠΟΔΕΙΞΗ ΠΑΡΟΧΗΣ ΥΠΗΡΕΣΙΩΝ")
+    p.drawString(300, 280, receipt.no)
+    p.drawRightString(575, 280, date.strftime("%Y/%m/%d %H:%M"))
+
+    # 275
+    p.line(15, 275, 580, 275)
+
+    contacts = receipt.reservation.owner.contacts.all()
+    address = " ".join([c.address for c in contacts if c.address]) or "N/A"
+    mobile = " ".join([c.mobile for c in contacts if c.mobile]) or "N/A"
+    p.drawString(20, 260, "ΟΝΟΜ/ΝΥΜΟ: %s" % str(receipt.reservation.owner))
+    p.drawString(20, 245, "ΔΙΕΥΘΥΝΣΗ: %s" % address)
+    p.drawString(20, 230, "ΤΗΛ: %s" % mobile)
+    p.drawString(20, 215, "EMAIL:")
+
+    # 195
+    p.drawBoundary(1, 15, 100, 565, 95)
+
+    p.setFont('dejavu-bold', 12)
+    p.drawString(20, 180, "ΔΩΜΑΤΙΟ")
+    p.drawString(140, 180, "CHECK-IN")
+    p.drawString(260, 180, "CHECK-OUT")
+    p.drawString(380, 180, "ΜΕΡΕΣ")
+    p.drawRightString(575, 180, "ΑΞΙΑ")
+
+    p.setFont('dejavu', 12)
+    p.drawString(20, 160, str(receipt.reservation.appartment))
+    p.drawString(140, 160, check_in.isoformat())
+    p.drawString(260, 160, check_out.isoformat())
+    p.drawString(380, 160, str(days))
+    p.drawRightString(575, 160, str(receipt.euro))
+
+    p.setFont('dejavu', 8)
+    p.drawString(15, 20, "** ΑΘΕΩΡΗΤA ΒΑΣΗ ΠΟΛ. 1083/2003")
+
+    p.setFont('dejavu-bold', 16)
+    p.drawRightString(575, 30, "ΣΥΝΟΛΟ: %s" % str(receipt.euro))
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    filename = "%s_KEDAZ_RECEIPT_%s.pdf" % (date.date().isoformat(), receipt.no)
+    return FileResponse(buffer, as_attachment=True, filename=filename)
 
 
 def send_file(request):

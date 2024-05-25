@@ -36,7 +36,7 @@
             {% endwith %}
           <td> {{ res.appartment }} </td>
         {% endwith %}
-        <td> {{ r.no }} </td>
+        <td> <a target="_blank" href="/receipts/{{ r.no }}">{{ r.no }}</a> </td>
         <td align="right"> {{ r.euro|floatformat:2 }} </td>
         <td> {% if r.pending %} p {% endif %}</td>
       {% endfor %}

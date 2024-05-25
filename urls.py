@@ -41,6 +41,6 @@ urlpatterns = [
     path('lookup/', lookup),
     path('stats/', stats),
     path('graphs/', send_file),
-
+    path('receipts/<no>', print_receipt),
 ]
 

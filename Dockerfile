@@ -9,7 +9,9 @@ RUN apt update && apt install -y \
   gunicorn \
   dumb-init \
   openssl \
-  python3-django
+  python3-django \
+  python3-reportlab \
+  fonts-dejavu
 
 # https://stackoverflow.com/a/41797247
 RUN apt install locales locales-all -y

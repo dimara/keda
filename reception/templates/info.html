@@ -48,7 +48,7 @@
         <td>{{ r.get_res_type_display }}</td>
         <td>
         {% for p in r.receipts.all %}
-          {{ p.no }}<br>
+          <a target="_blank" href="/receipts/{{ p.no }}">{{ p.no }}</a><br>
         {% endfor %}
         </td>
         {% for rel in r.owner.relatives.all %}
