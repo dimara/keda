@@ -2,7 +2,7 @@
 <!-- <div class="col-md-3"> -->
 <div class="form-group">
     <i class="glyphicon glyphicon-chevron-right" id="fhide"></i>
-    <select class="form-control" name="period">
+    <select class="form-control" name="period" id="period">
         <option value="">Period..</option>
         {% for p in periods reversed %}
         <option value="{{ p.id }}"> Period: {{ p.name }}: Από {{ p.start }} έως {{ p.end }}</option>
@@ -10,15 +10,24 @@
     </select>
 <!-- </div> -->
 <!-- <div class="col-md-3"> -->
-	<input class="form-control" placeholder="From.." type="text" name="start" id="dp1"/>
+	<input class="form-control" placeholder="From.." type="text" name="start" id="start"/>
 <!-- </div> -->
 <!-- <div class="col-md-3"> -->
-	<input class="form-control" placeholder="Until.." type="text" name="end" id="dp2"/>
+	<input class="form-control" placeholder="Until.." type="text" name="end" id="end"/>
 <!-- </div> -->
 <!-- <div class="col-md-2"> -->
 	<div class="sckb">
-	<label> Exact Dates <input type="checkbox" name="exact"> </label>
+	<label> Exact Dates <input type="checkbox" name=exact id="exact"> </label>
 	</div>
 </div>
 <!-- </div> -->
 </div>
+<script>
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+urlParams.forEach((value, key) => {
+  element = document.getElementById(key)
+  if (element)
+    element.value = value
+})
+</script>
